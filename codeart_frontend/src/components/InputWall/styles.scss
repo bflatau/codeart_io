@@ -1,0 +1,43 @@
+@import '../../assets/styles/base.scss';
+
+.input-container { 
+    display: inline-block;
+    width: 100%;
+    background-color: lightgray;
+    // padding-top: 5%;
+    // padding-bottom: 5%;
+    // padding-left: 5%;
+    // padding-right: 5%;
+}
+
+.input-board {
+    display: inline-block;
+    width:100%;
+    height: 100%;
+    background-color: black;
+    // border: 3px solid black;
+    :hover{
+        background-color: lightgray;
+    }
+
+}
+
+.input-button, .input-button-active{
+    display: inline-block;
+    text-align: center;
+    background-color: white;
+    width: 9%;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+    margin-top: .5%;
+    margin-bottom: .5%;
+    margin-left: .5%;
+    margin-right: .5%;
+    
+    
+}
+
+
+.input-button-active{
+    background-color: green;
+}
