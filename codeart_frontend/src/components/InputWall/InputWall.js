@@ -1,8 +1,7 @@
 import React from 'react';
 import './styles.scss';
-import { Helmet } from 'react-helmet';
 import { inputBoardNumber } from '../../constants/appData/inputBoard';
-import { Redirect} from 'react-router-dom';
+import InputWallButton from '../InputWallButton';
 
 
 
@@ -34,15 +33,11 @@ class InputWall extends React.Component {
         for (let i = 0; i < inputBoardNumber; i++) {
           
             table.push(
-                <div 
+
+                <InputWallButton 
                     key={i+1} 
-                    onClick={()=>alert('you clicked ' + (i + 1))} 
-                    className= {(i === 20) ? 'input-button-active' : 'input-button'}
-                >
-
-                    {i +1} 
-
-                </div>
+                    buttonPosition={i + 1}
+                />
             )
         } 
         return table
@@ -55,14 +50,6 @@ class InputWall extends React.Component {
 		return (
 
 		    <div className="person-content-container">
-                <Helmet>
-                    <title>Oral History</title>
-                    <meta
-                    name="Person"
-                    content="person's name maybe?"
-                    />
-                </Helmet>
-
                 <div className='input-container'>
                     <div className='input-board'>
                        {this.createInputGrid()}
