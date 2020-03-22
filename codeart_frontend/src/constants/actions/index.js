@@ -1,0 +1,7 @@
+export const API_REQUEST = 'API_REQUEST';
+export const API_RESPONSE = 'API_RESPONSE';
+export const API_RESET = 'API_RESET';
+export const APPLICATION_LOADED = 'APPLICATION_LOADED';
+
+
+

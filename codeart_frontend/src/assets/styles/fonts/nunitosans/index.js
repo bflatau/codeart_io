@@ -1,0 +1,14 @@
+import './NunitoSans-Black.ttf';
+import './NunitoSans-BlackItalic.ttf';
+import './NunitoSans-Bold.ttf';
+import './NunitoSans-BoldItalic.ttf';
+import './NunitoSans-ExtraBold.ttf';
+import './NunitoSans-ExtraBoldItalic.ttf';
+import './NunitoSans-ExtraLight.ttf';
+import './NunitoSans-ExtraLightItalic.ttf';
+import './NunitoSans-Light.ttf';
+import './NunitoSans-LightItalic.ttf';
+import './NunitoSans-Regular.ttf';
+import './NunitoSans-RegularItalic.ttf';
+import './NunitoSans-SemiBold.ttf';
+import './NunitoSans-SemiBoldItalic.ttf';

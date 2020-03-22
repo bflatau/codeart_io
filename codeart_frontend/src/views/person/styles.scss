@@ -1,0 +1,62 @@
+.person-header-text-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    // background-color: rgb(245, 245, 245);
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.person-name { 
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.person-birth-death-container {
+    width: 100%;
+    font-size: 16px;
+    margin: auto;
+    text-align: center;
+}
+
+.person-birth-death-text {
+    // color: grey;
+    display: inline-block;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.person-story-container {
+    margin-top: 15px;
+    padding-bottom: 30px;
+    // background-color: lightgrey;
+}
+
+.person-story-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.person-story-author {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.person-story-date {
+    color: grey;
+}
+
+.person-story-text-container { 
+    margin-top: 25px;
+}
+
+.person-story-text {
+    color: grey;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 20px;
+}

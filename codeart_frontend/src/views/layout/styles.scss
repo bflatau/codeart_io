@@ -1,0 +1,39 @@
+.app-layout-container {
+  vertical-align: top;
+  width: 75%;
+  // padding-left: 12.5%;
+  margin-right: 12.5%;
+  display: inline-block;
+
+  @media (min-width: 1440px) {
+    width: 1000px;
+    margin-right: calc(50% - 500px);
+  }
+
+  @media (max-width: 1024px) {
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    // margin-right: calc(50% - 500px);
+  }
+}
+
+.app-side-nav-container {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 90px;
+  left: 20px;
+  vertical-align: top;
+  display: inline-block;
+  width: 12.5%;
+  text-align: left;
+
+  @media (min-width: 1440px) {
+    width: calc(50% - 500px);
+  }
+}
+
+
+*:focus {
+  outline: none;
+}

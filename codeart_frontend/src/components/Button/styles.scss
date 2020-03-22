@@ -1,0 +1,19 @@
+.button-wrapper {
+  width: calc(100% + 4px);
+  text-align: center;
+}
+
+.login-btn{
+  width: 100%;
+  background-color: lightcoral;
+  height: 30px;
+  font-size: 15pt;
+  color: black;
+  padding: 0;
+  border-width: 1px solid black;
+  cursor: pointer;
+}
+
+.button-wrapper--disabled {
+    opacity: 0.3;
+  }

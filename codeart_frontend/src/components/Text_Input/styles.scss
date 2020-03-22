@@ -1,0 +1,25 @@
+@import '../../assets/styles/base';
+
+.text-input {
+  $this: &;
+
+  &__wrapper {
+    border-radius: 5px;
+    width: 100%;
+  }
+
+  &__input {
+    padding: 0;
+    border-width: 1px solid black;
+    width: 100%;
+    text-align: center;
+    height: 30px;
+    margin-bottom: 15px;
+    font-size: 15pt;
+  }
+
+  &__error-msg {
+    height: 25px;
+    color: red;
+  }
+}

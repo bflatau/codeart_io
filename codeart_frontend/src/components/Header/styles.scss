@@ -1,0 +1,209 @@
+@import '../../assets/styles/base.scss';
+
+.header-container {
+  display: inline-block;
+  width: 100%;
+  // background-color: lightgrey;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  // padding-left: 1.5%;
+  // padding-right: 1.5%;
+  // padding-bottom: 10px;
+  // @media (max-width: 659px) {
+  //   padding-top: 15px;
+  //   padding-left: 5%;
+  //   padding-right: 5%;
+  //   padding-bottom: 0px;
+  //   height: 20vw;
+  //   position: fixed;
+  //   width: 90%;
+  //   background: white;
+  //   z-index: 10;
+  //   top: 0;
+  //   left: 0;
+  // }
+}
+// .header-logo-container {
+//   width: 270px;
+//   height: 100%;
+//   float: right;
+//   text-align: left;
+//   vertical-align: top;
+//   text-decoration: none;
+//   @media (max-width: 800px) {
+//     width: 225px;
+//   }
+//   @media (max-width: 659px) {
+//     width: 75%;
+    
+//   }
+// }
+
+.header-link{
+  text-decoration: none;
+
+  :hover{
+    color: rgb(167, 167, 167);
+  }
+}
+
+.header-logo-text  {
+  display: inline-block;
+  text-align: left;
+  font-size: 35px;
+  color: rgb(85, 85, 85);
+  font-family: 'Spartan';
+
+  
+
+}
+
+.nav-button-container {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 21px;
+  text-align: left;
+  @media (max-width: 659px) {
+    margin-top: 0px;
+    font-size: 18pt;
+    color: grey;
+  }
+}
+
+.nav-bar-menu__item {
+
+  @media (max-width: 659px) {
+    height: 31px !important;
+
+  }
+
+  &:hover{
+    color: rgb(193, 54, 52);
+    font-weight: bold;
+  }
+}
+
+.bm-menu-wrap {
+  @media (max-width: 659px) {
+    margin-left: -40px;
+  }
+}
+
+// .bm-item:hover {
+//   color: white;
+// }
+
+.nav-button {
+  // width: 10%;
+  padding-left: 3%;
+  padding-right: 3%;
+  height: 20px;
+  display: inline-block;
+  font-size: 15px;
+  font-family: 'Nunito Sans', sans-serif;
+  text-align: center;
+  color: $light-grey-text;
+
+  &:hover {
+    background-color: lightgray;
+  }
+}
+
+.nav-link-text {
+  font-family: 'Nunito Sans', sans-serif;
+  color: $light-grey-text;
+  text-decoration: none;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 55px;
+  height: 55px;
+  // left: 35px;
+  // top: 26px;
+}
+
+/* Size of custom Icon */
+
+// .bm-icon{
+//   font-size: 30px;
+// }
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: grey;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: rgb(193, 54, 52);
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 34px;
+  width: 34px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  // position: fixed;
+  // height: 100%;
+  overflow: hidden;
+  top: 0;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: rgb(75, 75, 75);
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+  overflow: hidden;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: grey;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: grey;
+  transition: color 0.2s;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  top: 0;
+}
+
+.burger_flag {
+  text-align: center;
+  width: 100%;
+  max-height: 30px;
+  outline: none;
+  img {
+    max-height: 50px;
+    max-width: 50px;
+    padding-top: 15px;
+  }
+}

@@ -1,0 +1,66 @@
+@import '../../assets/styles/base.scss';
+
+.app-footer-container {
+  width: 97%;
+  padding-left: 1.5%;
+  padding-right: 1.5%;
+  position: sticky;
+  // bottom: 4vw;
+  height: 25px;
+  vertical-align: middle;
+  line-height: 25px;
+  color: $light-grey-text;
+  font-family: 'Nunito Sans', sans-serif;
+  text-align: left;
+  padding-top: 10px;
+}
+
+.footer-icon-bar {
+  height: 100%;
+  display: inline-block;
+  @media (max-width: 550px) {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.footer-icon,
+.footer-icon-button {
+  height: 100%;
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: $light-grey-text;
+}
+
+.footer-icon-button {
+  cursor: pointer;
+}
+
+.footer-info-text-container {
+  font-size: 11px;
+  right: 10px;
+  height: 100%;
+  float: right;
+  @media (max-width: 550px) {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.footer-designed-by-container {
+  width: 100%;
+  font-size: 11px;
+  text-align: right;
+  color: rgb(151, 151, 151);
+  @media (max-width: 550px) {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.footer-link {
+  color: rgb(180, 0, 0);
+  text-decoration: none;
+  cursor: pointer;
+}
