@@ -5,11 +5,8 @@ const app = express();
 const cors = require('cors');
 
 /// REQUIRE CONTROLLERS ///
-// const userTestController = require('./controllers/users/userTestController');
-const loginController = require('./controllers/users/loginController');
-const permissionsController = require('./controllers/users/permissionsController');
-const emailController = require('./controllers/email/postmarkController');
-const storiesController = require('./controllers/stories/storiesController');
+const buttonController = require('./controllers/buttonController');
+
 
 /// SET UP CORS ///
 // need to call cors before setting up routes
@@ -33,36 +30,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 /// PUBLIC API ENDPOINTS ///
-app.route('/login')
-  .post(loginController.verify_password_and_user);
 
-app.route('/email')
-  .post(emailController.sendEmail)
-
-app.route('/person/:name')
-.get(storiesController.get_person_stories)
+app.route('/button/:buttonNumber')
+  .get(buttonController.updateBoard)
 
 
-
-
-app.route('/apitestget')
-  .get((req, res)=> {
-    res.json('GET WORKS!');
-  });
-
-  app.route('/apitestpost')
-  .post((req, res)=> {
-    res.json('POST WORKS!');
-  });
-
-
-/// PROTECTED API RESOURCES ///
-
-app.route('/cpanel')
-  .get(permissionsController.has_permission);
-  // .get((req, res)=> {
-  //   res.json('sup');
-  // });
 
 /// SET SERVER CONSTANTS ///
 const PORT = 8080;
