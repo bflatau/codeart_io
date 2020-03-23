@@ -17,13 +17,13 @@ function select(state) {
 class InputWallButtonConnector extends Component {
 
     render() {
-
-        const { dispatch, history } = this.props;
+        const { dispatch, history, buttonPosition} = this.props;
 
         return (
             <InputWallButton
                 {...this.props.api}
                 {...this.props.inputButtons}
+                buttonPosition={buttonPosition}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />

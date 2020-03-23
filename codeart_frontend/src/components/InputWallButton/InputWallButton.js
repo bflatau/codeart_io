@@ -12,7 +12,7 @@ class InputWallButton extends React.Component {
 	}
 	
 	render () {
-		const {numberOfKeys, inputButtonOn, inputButtonOff} = this.props;
+		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonPosition} = this.props;
 		return (
 		    <div 
                 className= {(this.state.buttonOn === true) ? 'input-button-active' : 'input-button'}
@@ -35,7 +35,7 @@ class InputWallButton extends React.Component {
             
             >
 
-					{numberOfKeys}
+					{buttonPosition}
             </div>
 		);
 	}
