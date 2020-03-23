@@ -9,7 +9,7 @@ import * as appActions  from '../../actionCreators';
 function select(state) {
 
     return {
-        api: state.api,
+        outputWall: state.outputWall,
         inputButtons: state.inputButtons
     };
 }
@@ -21,7 +21,7 @@ class InputWallButtonConnector extends Component {
 
         return (
             <InputWallButton
-                {...this.props.api}
+                {...this.props.outputWall}
                 {...this.props.inputButtons}
                 buttonPosition={buttonPosition}
                 {...history}

@@ -12,7 +12,7 @@ exports.updateBoard = (req, res) => {
   function generateResponseArray(){
     const responseArray = [];
     for (let i = 0; i < boardLength; i++){
-        responseArray.push(i + 2);
+        responseArray.push(i + parseInt(req.params.buttonNumber));
     }
     return responseArray;
   }
@@ -20,8 +20,12 @@ exports.updateBoard = (req, res) => {
   const responseValue = generateResponseArray();
  
       res.json({'data': responseValue});
-      console.log(req.params.buttonNumber)
+      console.log(req.params.buttonNumber);
 };
+
+
+
+
 
 
 exports.getGame = (req,res) => {

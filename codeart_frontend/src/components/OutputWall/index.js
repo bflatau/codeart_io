@@ -9,7 +9,7 @@ import * as appActions  from '../../actionCreators';
 function select(state) {
 
     return {
-        api: state.api,
+        outputWall: state.outputWall,
         inputButtons: state.inputButtons
     };
 }
@@ -22,7 +22,7 @@ class OutputWallConnector extends Component {
 
         return (
             <OutputWall
-                {...this.props.api}
+                {...this.props.outputWall}
                 {...this.props.inputButtons}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}

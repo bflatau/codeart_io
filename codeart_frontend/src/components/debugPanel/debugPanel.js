@@ -8,12 +8,12 @@ class DebugPanel extends React.Component {
 	}
 	
 	render () {
-		const {apiData, apiDataLoaded} = this.props;
+		const {outputWallData, outputWallDataLoaded} = this.props;
 
 		return (
 		    <div className='debug-panel-container'>
 
-				{(!apiDataLoaded) ? apiData : apiData.data }
+				{(!outputWallDataLoaded) ? outputWallData : outputWallData.data }
             </div>
 		);
 	}

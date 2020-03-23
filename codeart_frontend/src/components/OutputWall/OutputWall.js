@@ -24,11 +24,10 @@ class OutputWall extends React.Component {
 
 		
 	render () {
-        const {apiData, apiDataLoaded} = this.props;
-        console.log(apiData, 'this is api data');
+        const {outputWallData, outputWallDataLoaded} = this.props;
 		return (
             <div className='output-container'>
-                {this.createOutputGrid(apiData, apiDataLoaded)}
+                {this.createOutputGrid(outputWallData, outputWallDataLoaded)}
             </div> 
 		);
 	}

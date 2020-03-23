@@ -17,9 +17,9 @@ function generateStartArray() {
 
 
 const initialState = {
-    // apiData: bufferArrayResults(),
-    apiData: generateStartArray(),
-    apiDataLoaded: false
+    // outputWallData: bufferArrayResults(),
+    outputWallData: generateStartArray(),
+    outputWallDataLoaded: false
 };
 
 
@@ -28,17 +28,17 @@ export default createReducer(initialState, {
     [API_RESPONSE]: (state, action) => {
         return {
                 ...state,
-                apiData: action.data,
-                apiDataLoaded: true
+                outputWallData: action.data,
+                outputWallDataLoaded: true
         };  
     },
 
     [API_RESET]: (state, action) => {
         return {
             ...state,
-            // apiData: bufferArrayResults(), 
-            apiData: generateStartArray(), 
-            apiDataLoaded: false
+            // outputWallData: bufferArrayResults(), 
+            outputWallData: generateStartArray(), 
+            outputWallDataLoaded: false
         };
     }
 });
