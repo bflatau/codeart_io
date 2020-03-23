@@ -10,33 +10,33 @@ import {
 import{ getRequest } from '../constants/api-utils/api-requests';
 
 
-export function apiRequested() {
+export function apiRequested(requestURL) {
     return dispatch => {
         dispatch({
             type: API_REQUEST
         });
 
         setTimeout(() => {
-            getRequest().then(data => {
+            getRequest(requestURL).then(data => {
                 dispatch(dataFetched(data))
             });
 
-        }, 2000);
+        }, 500);
     }
 }
 
 export function dataFetched(response) {
-    const responseArray = [];
+    // const responseArray = [];
 
-    for(let i = 0; i< response.length; i++){
-        responseArray.push(response[i]);
-    }
+    // for(let i = 0; i< response.length; i++){
+    //     responseArray.push(response[i]);
+    // }
 
     return {
         type: API_RESPONSE,
         data: {
-            // ...response
-            responseArray
+            ...response
+            // responseArray
         }
     };
 }

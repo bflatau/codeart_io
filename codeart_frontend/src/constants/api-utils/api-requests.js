@@ -1,6 +1,6 @@
-export function getRequest() {
+export function getRequest(endpoint) {
 
-  const url = 'http://localhost:8080/story';
+  const url = `http://localhost:8080/${endpoint}`;
   return fetch(url).then(response => response.json());
 }
 

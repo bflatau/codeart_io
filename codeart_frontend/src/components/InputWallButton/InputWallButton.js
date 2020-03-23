@@ -12,7 +12,8 @@ class InputWallButton extends React.Component {
 	}
 	
 	render () {
-		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonPosition} = this.props;
+		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonPosition, apiRequested} = this.props;
+
 		return (
 		    <div 
                 className= {(this.state.buttonOn === true) ? 'input-button-active' : 'input-button'}
@@ -26,7 +27,8 @@ class InputWallButton extends React.Component {
 						(numberOfKeys > 0) ?
 						()=>{
 							this.setState({buttonOn: true})
-							inputButtonOn(numberOfKeys)
+							inputButtonOn(numberOfKeys);
+							apiRequested(`button/${buttonPosition}`);
 						}
 						: 
 						()=>{alert('No more keys!')}

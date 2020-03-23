@@ -7,7 +7,7 @@ import { outputBoardNumber } from '../../constants/appData/outputBoard';
 
 class OutputWall extends React.Component {
 
-    createOutputGrid = () => {
+    createOutputGrid = (data, loaded) => {
         let table = []
     
         for (let i = 0; i < outputBoardNumber; i++) {
@@ -15,7 +15,7 @@ class OutputWall extends React.Component {
             table.push(
 
                 <div key={i+1} className="output-board-item" >
-                    {i +1 }
+                    {(!loaded) ? (data[i] + 1) : data.data[i] }
                 </div>
             )
         } 
@@ -24,9 +24,11 @@ class OutputWall extends React.Component {
 
 		
 	render () {
+        const {apiData, apiDataLoaded} = this.props;
+        console.log(apiData, 'this is api data');
 		return (
             <div className='output-container'>
-                {this.createOutputGrid()}
+                {this.createOutputGrid(apiData, apiDataLoaded)}
             </div> 
 		);
 	}
