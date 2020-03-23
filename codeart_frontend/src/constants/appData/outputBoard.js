@@ -1,0 +1,1 @@
+export const outputBoardNumber = 120;

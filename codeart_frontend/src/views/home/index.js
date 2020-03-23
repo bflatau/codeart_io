@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './styles.scss';
 import { Helmet } from 'react-helmet';
-import InputWallConnector from '../../components/InputWall'
+import InputWallConnector from '../../components/InputWall';
+import OutputWallConnector from '../../components/OutputWall';
 
 export default class HomeView extends Component {
 
@@ -43,6 +44,7 @@ export default class HomeView extends Component {
             </Helmet>
 
             <InputWallConnector/>
+            <OutputWallConnector/>
             
           </div>
       );

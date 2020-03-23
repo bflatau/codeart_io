@@ -24,12 +24,10 @@ class InputWall extends React.Component {
       }
 		
 	render () {
-        console.log(this.props)
-
 		return (
 		   
             <div className='input-container'>
-                <div className='input-header'>Number of Keys Left: {this.props.numberOfKeys}</div>
+                <div className='input-header'>Number of Keys Left: <span className='input-header-highlight'>{this.props.numberOfKeys}</span></div>
                 <div className='input-board'>
                     {this.createInputGrid()}
                 </div> 

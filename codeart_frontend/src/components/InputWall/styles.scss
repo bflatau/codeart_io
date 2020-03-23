@@ -2,15 +2,30 @@
 
 .input-container { 
     display: inline-block;
-    width: 100%;
+    width: 90%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+    padding-bottom: 4%;
+    background-color: gray;
 }
 
 .input-board {
     display: inline-block;
     width:100%;
     height: 100%;
-    background-color: black;
 
+}
+
+.input-header{
+    color: white;
+    font-size: 16px;
+    padding-left: .5%;
+}
+
+.input-header-highlight{
+    color: black;
+    margin-left: 1%;
 }
 
 .input-button, .input-button-active{

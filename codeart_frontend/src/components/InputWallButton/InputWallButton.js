@@ -29,7 +29,7 @@ class InputWallButton extends React.Component {
 							inputButtonOn(numberOfKeys)
 						}
 						: 
-						()=>{console.log('no!')}
+						()=>{alert('No more keys!')}
 
 					}
             
