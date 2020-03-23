@@ -6,18 +6,9 @@ import { withRouter } from 'react-router';
 const AppHeader = ({ menuItemSelected }) => (
   <div className="header-container">
     <div className="header-logo-container">
-      <Link
-        onClick={() => {
-          menuItemSelected({
-            title: 'home',
-            redirectURL: '/',
-          });
-        }}
-        to={'/'}
-        className= "header-link"
-      >
+      <div>
         <div className="header-logo-text"> Code Art 2020: I/O </div>
-      </Link>
+      </div>
     </div>
   </div>
 );

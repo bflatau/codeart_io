@@ -1,48 +1,38 @@
 import React from 'react';
 import './styles.scss';
-import { Helmet } from 'react-helmet';
-import { storyPeople } from '../../constants/appData/people';
-import { Redirect} from 'react-router-dom';
+import { inputBoardNumber } from '../../constants/appData/inputBoard';
+import InputWallButtonConnector from '../InputWallButton/';
 
 
 
 class InputWall extends React.Component {
-	// constructor (props) {
-	// 	super(props);
 
-	// 	this.state = {
-	// 		currentImageIndex: 0,
-	// 		projectImages: this.props.images.map((picture) => {
-	// 			const img = new Image();
-	// 			img.src = picture;
-	// 			return img
-	// 		}) 
-	// 	};
+    createInputGrid = () => {
+        let table = []
+    
+        for (let i = 0; i < inputBoardNumber; i++) {
+          
+            table.push(
 
-	// }
-
-	
-	
-    componentDidMount() {
-      console.log('loaded yo!');
-	}
-	
-
-	
+                <InputWallButtonConnector 
+                    key={i+1} 
+                    buttonPosition={i + 1}
+                />
+            )
+        } 
+        return table
+      }
+		
 	render () {
 		return (
-			  <div className="person-content-container">
-          <Helmet>
-            <title>Oral History</title>
-            <meta
-              name="Person"
-              content="person's name maybe?"
-            />
-          </Helmet>
-
-          <div> sup now</div>
-        </div>
-    
+		   
+            <div className='input-container'>
+                <div className='input-header'>Number of Keys Left: <span className='input-header-highlight'>{this.props.numberOfKeys}</span></div>
+                <div className='input-board'>
+                    {this.createInputGrid()}
+                </div> 
+            </div>
+           
 		);
 	}
 }
