@@ -1,31 +1,11 @@
 import React from 'react';
 import './styles.scss';
 import { inputBoardNumber } from '../../constants/appData/inputBoard';
-import InputWallButton from '../InputWallButton';
+import InputWallButtonConnector from '../InputWallButton/';
 
 
 
 class InputWall extends React.Component {
-	// constructor (props) {
-	// 	super(props);
-
-	// 	this.state = {
-	// 		currentImageIndex: 0,
-	// 		projectImages: this.props.images.map((picture) => {
-	// 			const img = new Image();
-	// 			img.src = picture;
-	// 			return img
-	// 		}) 
-	// 	};
-
-	// }
-
-	
-	
-    componentDidMount() {
-      console.log('loaded yo!');
-    }
-    
 
     createInputGrid = () => {
         let table = []
@@ -34,7 +14,7 @@ class InputWall extends React.Component {
           
             table.push(
 
-                <InputWallButton 
+                <InputWallButtonConnector 
                     key={i+1} 
                     buttonPosition={i + 1}
                 />
@@ -42,11 +22,8 @@ class InputWall extends React.Component {
         } 
         return table
       }
-	
-
-	
+		
 	render () {
-
 		return (
 
 		    <div className="person-content-container">
@@ -55,12 +32,6 @@ class InputWall extends React.Component {
                        {this.createInputGrid()}
                     </div> 
                 </div>
-
-
-
-
-
-
             </div>
 		);
 	}

@@ -6,7 +6,7 @@ import InputWallConnector from '../../components/InputWall'
 export default class HomeView extends Component {
 
   componentDidMount() {
-    console.log('hiiiiii')
+    console.log('home page mounted!')
   }
 
 //   handleLoginSubmitted = () => {

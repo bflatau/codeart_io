@@ -2,7 +2,9 @@ import {
   API_REQUEST,
   API_RESPONSE,
   API_RESET,
-  APPLICATION_LOADED
+  APPLICATION_LOADED,
+  INPUT_BUTTON_ON,
+  INPUT_BUTTON_OFF
 } from '../constants/actions';
 
 import{ getRequest } from '../constants/api-utils/api-requests';
@@ -42,5 +44,21 @@ export function dataFetched(response) {
 export function resetApiData() {
     return {
         type: API_RESET
+    };
+}
+
+
+
+export function inputButtonOn(data){
+    return {
+        type: INPUT_BUTTON_ON,
+        data: data -1
+    };
+}
+
+export function inputButtonOff(data){
+    return {
+        type: INPUT_BUTTON_OFF,
+        data: data + 1
     };
 }

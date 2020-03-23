@@ -1,31 +1,35 @@
-import React from 'react';
-import './styles.scss';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import InputWallButton from './InputWallButton';
+import * as appActions  from '../../actionCreators';
 
 
-class InputWallButton extends React.Component {
-	constructor (props) {
-		super(props);
+function select(state) {
 
-		this.state = {
-			buttonOn: false,
-		};
-
-	}
-	
-	render () {
-		return (
-		    <div 
-                className= {(this.state.buttonOn === true) ? 'input-button-active' : 'input-button'}
-                onClick={()=> {(this.state.buttonOn === true) ? this.setState({buttonOn: false}) :
-                
-                this.setState({buttonOn: true})}}
-            >
-
-                {this.props.buttonPosition}
-
-            </div>
-		);
-	}
+    return {
+        api: state.api,
+        inputButtons: state.inputButtons
+    };
 }
 
-export default InputWallButton;
+class InputWallButtonConnector extends Component {
+
+    render() {
+
+        const { dispatch, history } = this.props;
+
+        return (
+            <InputWallButton
+                {...this.props.api}
+                {...this.props.inputButtons}
+                {...history}
+                {...bindActionCreators(appActions, dispatch)}
+            />
+        );
+    }
+
+}
+
+export default withRouter(connect(select)(InputWallButtonConnector));
