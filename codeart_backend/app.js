@@ -34,6 +34,9 @@ app.use(cors());
 app.route('/button/:buttonNumber')
   .get(buttonController.updateBoard)
 
+  app.route('/:gameNumber/getkeys')
+  .get(buttonController.getKeys)
+
 
 
 /// SET SERVER CONSTANTS ///

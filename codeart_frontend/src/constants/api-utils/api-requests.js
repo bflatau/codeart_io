@@ -1,3 +1,20 @@
+
+export function apiRequest(requestURL, requestType, responseType) {
+  return dispatch => {
+      dispatch({
+          type: requestType
+      });
+
+      setTimeout(() => {
+          getRequest(requestURL).then(data => {
+              dispatch(dataFetched(data, responseType))
+          });
+
+      }, 500);
+  }
+}
+
+
 export function getRequest(endpoint) {
 
   const url = `http://localhost:8080/${endpoint}`;
@@ -6,18 +23,11 @@ export function getRequest(endpoint) {
 
 
 
-
-// export function getRequest() {
-
-//     const requestUrl = {
-//         Multimedia: `http://localhost:8080/joe/photos/images?year=${req.subcat}`,
-//         Stories: `http://localhost:8080/joe/stories/story?category=${req.subcat}`,
-//         About: `http://localhost:8080/joe/stories/story?category=${req.subcat}`,
-//     }
-
-//     const url = requestUrl[req.maincat];
-
-//     console.log('this is the get request url', url);
-
-//     return fetch(url).then(response => response.json());
-// }
+export function dataFetched(response, responseType) {
+  return {
+      type: responseType,
+      data: {
+          ...response
+      }
+  };
+}

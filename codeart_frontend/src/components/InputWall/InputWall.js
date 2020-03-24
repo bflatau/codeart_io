@@ -7,6 +7,10 @@ import InputWallButtonConnector from '../InputWallButton/';
 
 class InputWall extends React.Component {
 
+    // componentDidMount() {
+    //     this.props.getGameKeys('1/getkeys');
+    // }
+
     createInputGrid = () => {
         let table = []
     

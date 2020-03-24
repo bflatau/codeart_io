@@ -1,50 +1,21 @@
 import {
-  API_REQUEST,
-  API_RESPONSE,
-  API_RESET,
-  APPLICATION_LOADED,
+  REQUEST_OUTPUT_VALUES,
+  REQUESTED_OUTPUT_VALUE_RESPONSE,
   INPUT_BUTTON_ON,
-  INPUT_BUTTON_OFF
+  INPUT_BUTTON_OFF,
+  GET_GAME_KEYS,
+  GAME_KEYS_RESPONSE
 } from '../constants/actions';
 
-import{ getRequest } from '../constants/api-utils/api-requests';
+import{ apiRequest } from '../constants/api-utils/api-requests';
 
 
-export function apiRequested(requestURL) {
-    return dispatch => {
-        dispatch({
-            type: API_REQUEST
-        });
-
-        setTimeout(() => {
-            getRequest(requestURL).then(data => {
-                dispatch(dataFetched(data))
-            });
-
-        }, 500);
-    }
+export function getGridValues(requestURL){
+    return apiRequest(requestURL, REQUEST_OUTPUT_VALUES, REQUESTED_OUTPUT_VALUE_RESPONSE);
 }
 
-export function dataFetched(response) {
-    // const responseArray = [];
-
-    // for(let i = 0; i< response.length; i++){
-    //     responseArray.push(response[i]);
-    // }
-
-    return {
-        type: API_RESPONSE,
-        data: {
-            ...response
-            // responseArray
-        }
-    };
-}
-
-export function resetApiData() {
-    return {
-        type: API_RESET
-    };
+export function getGameKeys(requestURL){
+    return apiRequest(requestURL, GET_GAME_KEYS, GAME_KEYS_RESPONSE);
 }
 
 

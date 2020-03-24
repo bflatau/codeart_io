@@ -10,9 +10,10 @@ class InputWallButton extends React.Component {
 			buttonOn: false
 		};
 	}
+
 	
 	render () {
-		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonPosition, apiRequested} = this.props;
+		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonPosition, getGridValues} = this.props;
 
 		return (
 		    <div 
@@ -28,7 +29,7 @@ class InputWallButton extends React.Component {
 						()=>{
 							this.setState({buttonOn: true})
 							inputButtonOn(numberOfKeys);
-							apiRequested(`button/${buttonPosition}`);
+							getGridValues(`button/${buttonPosition}`);
 						}
 						: 
 						()=>{alert('No more keys!')}
