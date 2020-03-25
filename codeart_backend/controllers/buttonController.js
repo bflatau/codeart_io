@@ -1,14 +1,15 @@
+const boardLength = 120;
+
+
+const games = [
+  { gameNumber: 1, numberOfKeys: 10 },
+  { gameNumber: 2, numberOfKeys: 14 },
+  { gameNumber: 3, numberOfKeys: 13 },
+]
+
 
 exports.updateBoard = (req, res) => {
-
-  const boardLength = 120;
-  // const games = [
-  //   {
-  //     gameNumber: 1,
-  //     numberOfKeys: 4
-  //   }
-  // ]
-
+  
   function generateResponseArray(){
     const responseArray = [];
     for (let i = 0; i < boardLength; i++){
@@ -26,6 +27,6 @@ exports.updateBoard = (req, res) => {
 
 
 exports.getKeys = (req,res) => {
-  res.json({'data': req.params.gameNumber});
+  res.json({'data': games[req.params.gameNumber].numberOfKeys});
 
 }

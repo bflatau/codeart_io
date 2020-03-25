@@ -20,7 +20,7 @@ class InputWall extends React.Component {
 
                 <InputWallButtonConnector 
                     key={i+1} 
-                    buttonPosition={i + 1}
+                    buttonValue={i + 1}
                 />
             )
         } 

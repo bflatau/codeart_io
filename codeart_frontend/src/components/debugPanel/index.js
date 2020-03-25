@@ -10,7 +10,7 @@ function select(state) {
 
     return {
         api: state.api,
-        inputButtons: state.inputButtons
+        inputButtons: state.inputButtons,
     };
 }
 

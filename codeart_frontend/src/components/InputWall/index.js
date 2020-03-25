@@ -10,7 +10,7 @@ function select(state) {
 
     return {
         outputWall: state.outputWall,
-        inputButtons: state.inputButtons,
+        inputWall: state.inputWall,
     };
 }
 
@@ -23,7 +23,7 @@ class InputWallConnector extends Component {
         return (
             <InputWall
                 {...this.props.outputWall}
-                {...this.props.inputButtons}
+                {...this.props.inputWall}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />

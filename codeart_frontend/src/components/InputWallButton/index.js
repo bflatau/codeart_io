@@ -10,20 +10,22 @@ function select(state) {
 
     return {
         outputWall: state.outputWall,
-        inputButtons: state.inputButtons
+        inputWall: state.inputWall,
+        dropDown: state.dropDown
     };
 }
 
 class InputWallButtonConnector extends Component {
 
     render() {
-        const { dispatch, history, buttonPosition} = this.props;
+        const { dispatch, history, buttonValue} = this.props;
 
         return (
             <InputWallButton
                 {...this.props.outputWall}
-                {...this.props.inputButtons}
-                buttonPosition={buttonPosition}
+                {...this.props.inputWall}
+                {...this.props.dropDown}
+                buttonValue={buttonValue}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />

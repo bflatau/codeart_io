@@ -1,5 +1,4 @@
 import createReducer from '../utils/createReducer';
-import { bufferArrayResults } from '../constants/api-utils/api-loading-value';
 import { outputBoardNumber }  from '../constants/appData/outputBoard';
 import { REQUESTED_OUTPUT_VALUE_RESPONSE } from '../constants/actions';
 
@@ -14,7 +13,6 @@ function generateStartArray() {
 
 
 const initialState = {
-    // outputWallData: bufferArrayResults(),
     outputWallData: generateStartArray(),
     outputWallDataLoaded: false
 };

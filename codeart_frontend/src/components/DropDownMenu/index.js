@@ -9,7 +9,8 @@ import * as appActions  from '../../actionCreators';
 function select(state) {
 
     return {
-        inputButtons: state.inputButtons
+        inputButtons: state.inputButtons,
+        dropDown: state.dropDown
     };
 }
 
@@ -23,6 +24,7 @@ class DropDownMenuConnector extends Component {
             <DropDownMenu
                 {...this.props.api}
                 {...this.props.inputButtons}
+                {...this.props.dropDown}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />

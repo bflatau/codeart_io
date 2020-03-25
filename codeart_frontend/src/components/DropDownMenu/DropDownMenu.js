@@ -19,16 +19,16 @@ class DropDownMenu extends Component {
 
     this.props.getGameKeys(`${option.value}/getkeys`)
 
-    console.log(this.props);
+    this.props.setGameValue(option.value);
   }
 
   render () {
     const { toggleClassName, togglePlaholderClassName, toggleMenuClassName, toggleOptionsClassName } = this.state
 
     const options = [
-        { value: 1, label: 'Game One' },
-        { value: 2, label: 'Game Two' },
-        { value: 3, label: 'Game Three' },     
+        { value: 0, label: 'Game One' },
+        { value: 1, label: 'Game Two' },
+        { value: 2, label: 'Game Three' },     
     ]
 
     const defaultOption = this.state.selected.label;

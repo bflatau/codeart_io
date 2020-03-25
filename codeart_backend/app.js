@@ -31,11 +31,14 @@ app.use(cors());
 
 /// PUBLIC API ENDPOINTS ///
 
-app.route('/button/:buttonNumber')
+app.route('/update/:gameNumber/:toggle/:buttonNumber')
   .get(buttonController.updateBoard)
 
-  app.route('/:gameNumber/getkeys')
-  .get(buttonController.getKeys)
+app.route('/update/:gameNumber/:toggle/:buttonNumber')
+.get(buttonController.updateBoard)
+
+app.route('/:gameNumber/getkeys')
+.get(buttonController.getKeys)
 
 
 

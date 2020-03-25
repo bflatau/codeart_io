@@ -7,7 +7,7 @@ import { GAME_KEYS_RESPONSE } from '../constants/actions';
 
 
 const initialState = {
-    numberOfKeys:'Pick A Game!',
+    numberOfKeys:'???',
 };
 
 
