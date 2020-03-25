@@ -1,5 +1,5 @@
 import createReducer from '../utils/createReducer';
-import { outputBoardNumber }  from '../constants/appData/outputBoard';
+import { outputBoardNumber }  from '../constants/appData/boardData';
 import { REQUESTED_OUTPUT_VALUE_RESPONSE } from '../constants/actions';
 
 function generateStartArray() {

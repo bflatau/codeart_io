@@ -1,9 +1,6 @@
 import React from 'react';
 import './styles.scss';
-import { outputBoardNumber } from '../../constants/appData/outputBoard';
-
-
-
+import { outputBoardNumber } from '../../constants/appData/boardData';
 
 class OutputWall extends React.Component {
 

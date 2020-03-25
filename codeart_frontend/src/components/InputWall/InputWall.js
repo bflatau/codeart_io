@@ -1,18 +1,20 @@
 import React from 'react';
 import './styles.scss';
-import { inputBoardNumber } from '../../constants/appData/inputBoard';
+import { inputBoardNumber } from '../../constants/appData/boardData';
 import InputWallButtonConnector from '../InputWallButton/';
 
 
 
 class InputWall extends React.Component {
 
-    // componentDidMount() {
-    //     this.props.getGameKeys('1/getkeys');
-    // }
+    componentDidUpdate(prevProps) {
+		if (prevProps.boardActive !== this.props.boardActive) {
+			this.props.activateInputBoard();
+		}
+	  }
 
     createInputGrid = () => {
-        let table = []
+        let table = [];
     
         for (let i = 0; i < inputBoardNumber; i++) {
             table.push(

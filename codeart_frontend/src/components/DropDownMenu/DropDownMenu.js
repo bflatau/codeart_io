@@ -20,6 +20,8 @@ class DropDownMenu extends Component {
     this.props.getGameKeys(`${option.value}/getkeys`)
 
     this.props.setGameValue(option.value);
+
+    this.props.resetInputBoard();
   }
 
   render () {
@@ -32,7 +34,7 @@ class DropDownMenu extends Component {
     ]
 
     const defaultOption = this.state.selected.label;
-    const placeHolderValue = this.state.selected.value;
+    // const placeHolderValue = this.state.selected.value;
 
     return (
 
@@ -41,8 +43,8 @@ class DropDownMenu extends Component {
           options={options}
           onChange={this._onSelect}
           value={defaultOption}
-          placeholder="Select an option"
-        //   className={ toggleClassName ? 'my-custom-class' : '' }
+          // placeholder="Select an option"
+         //   className={ toggleClassName ? 'my-custom-class' : '' }
         //   placeholderClassName={ togglePlaholderClassName ? 'my-custom-class' : '' }
         //   menuClassName={ toggleMenuClassName ? 'my-custom-class' : '' }
         />
