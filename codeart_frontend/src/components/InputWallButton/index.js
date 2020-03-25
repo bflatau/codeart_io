@@ -9,21 +9,23 @@ import * as appActions  from '../../actionCreators';
 function select(state) {
 
     return {
-        api: state.api,
-        inputButtons: state.inputButtons
+        outputWall: state.outputWall,
+        inputWall: state.inputWall,
+        dropDown: state.dropDown
     };
 }
 
 class InputWallButtonConnector extends Component {
 
     render() {
-        const { dispatch, history, buttonPosition} = this.props;
+        const { dispatch, history, buttonValue} = this.props;
 
         return (
             <InputWallButton
-                {...this.props.api}
-                {...this.props.inputButtons}
-                buttonPosition={buttonPosition}
+                {...this.props.outputWall}
+                {...this.props.inputWall}
+                {...this.props.dropDown}
+                buttonValue={buttonValue}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />

@@ -2,28 +2,28 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import InputWall from './InputWall';
+import DebugPanel from './debugPanel';
 import * as appActions  from '../../actionCreators';
 
 
 function select(state) {
 
     return {
-        outputWall: state.outputWall,
-        inputWall: state.inputWall,
+        api: state.api,
+        inputButtons: state.inputButtons,
     };
 }
 
-class InputWallConnector extends Component {
+class DebugPanelConnector extends Component {
 
     render() {
 
         const { dispatch, history } = this.props;
 
         return (
-            <InputWall
-                {...this.props.outputWall}
-                {...this.props.inputWall}
+            <DebugPanel
+                {...this.props.api}
+                {...this.props.inputButtons}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />
@@ -32,4 +32,4 @@ class InputWallConnector extends Component {
 
 }
 
-export default withRouter(connect(select)(InputWallConnector));
+export default withRouter(connect(select)(DebugPanelConnector));

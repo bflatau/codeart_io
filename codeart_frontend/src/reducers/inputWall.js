@@ -1,17 +1,24 @@
 import createReducer from '../utils/createReducer';
-import { bufferArrayResults } from '../constants/api-utils/api-loading-value';
 
 import { INPUT_BUTTON_ON } from '../constants/actions';
 import { INPUT_BUTTON_OFF } from '../constants/actions';
+import { GAME_KEYS_RESPONSE } from '../constants/actions';
 
 
 
 const initialState = {
-    numberOfKeys: 4,
+    numberOfKeys:'???',
 };
 
 
 export default createReducer(initialState, {
+
+    [GAME_KEYS_RESPONSE]: (state, action) => {
+        return {
+                ...state,
+                numberOfKeys: action.data.data
+        };  
+    },
 
     [INPUT_BUTTON_ON]: (state, action) => {
         return {

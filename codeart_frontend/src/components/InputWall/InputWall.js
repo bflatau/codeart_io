@@ -7,16 +7,18 @@ import InputWallButtonConnector from '../InputWallButton/';
 
 class InputWall extends React.Component {
 
+    // componentDidMount() {
+    //     this.props.getGameKeys('1/getkeys');
+    // }
+
     createInputGrid = () => {
         let table = []
     
         for (let i = 0; i < inputBoardNumber; i++) {
-          
             table.push(
-
                 <InputWallButtonConnector 
                     key={i+1} 
-                    buttonPosition={i + 1}
+                    buttonValue={i + 1}
                 />
             )
         } 

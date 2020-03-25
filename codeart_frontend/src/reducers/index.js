@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 // Import all the reducers...
-import app from './app';
-import api from './api';
-import inputButtons from './inputButtons';
+import outputWall from './outputWall';
+import inputWall from './inputWall';
+import dropDown from './dropDown';
 
 // Combine all reducers into a single reducer for Redux to run
 export const reducer = combineReducers({
-  app,
-  api,
-  inputButtons
+  outputWall,
+  inputWall,
+  dropDown
 });

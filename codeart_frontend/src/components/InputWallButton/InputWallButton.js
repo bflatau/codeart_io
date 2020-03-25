@@ -10,9 +10,11 @@ class InputWallButton extends React.Component {
 			buttonOn: false
 		};
 	}
+
 	
 	render () {
-		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonPosition} = this.props;
+		const {numberOfKeys, inputButtonOn, inputButtonOff, buttonValue, getGridValues, gameValue} = this.props;
+
 		return (
 		    <div 
                 className= {(this.state.buttonOn === true) ? 'input-button-active' : 'input-button'}
@@ -21,12 +23,14 @@ class InputWallButton extends React.Component {
 					()=>{
 						this.setState({buttonOn: false})
 						inputButtonOff(numberOfKeys);
+						getGridValues(`update/${gameValue}/${0}/${buttonValue}`);
 						} :
 						
 						(numberOfKeys > 0) ?
 						()=>{
 							this.setState({buttonOn: true})
-							inputButtonOn(numberOfKeys)
+							inputButtonOn(numberOfKeys);
+							getGridValues(`update/${gameValue}/${1}/${buttonValue}`);
 						}
 						: 
 						()=>{alert('No more keys!')}
@@ -35,7 +39,7 @@ class InputWallButton extends React.Component {
             
             >
 
-					{buttonPosition}
+					{buttonValue}
             </div>
 		);
 	}

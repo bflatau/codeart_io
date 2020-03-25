@@ -2,28 +2,29 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import InputWall from './InputWall';
+import DropDownMenu from './dropDownMenu';
 import * as appActions  from '../../actionCreators';
 
 
 function select(state) {
 
     return {
-        outputWall: state.outputWall,
-        inputWall: state.inputWall,
+        inputButtons: state.inputButtons,
+        dropDown: state.dropDown
     };
 }
 
-class InputWallConnector extends Component {
+class DropDownMenuConnector extends Component {
 
     render() {
 
         const { dispatch, history } = this.props;
 
         return (
-            <InputWall
-                {...this.props.outputWall}
-                {...this.props.inputWall}
+            <DropDownMenu
+                {...this.props.api}
+                {...this.props.inputButtons}
+                {...this.props.dropDown}
                 {...history}
                 {...bindActionCreators(appActions, dispatch)}
             />
@@ -32,4 +33,4 @@ class InputWallConnector extends Component {
 
 }
 
-export default withRouter(connect(select)(InputWallConnector));
+export default withRouter(connect(select)(DropDownMenuConnector));

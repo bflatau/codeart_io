@@ -3,6 +3,8 @@ import './styles.scss';
 import { Helmet } from 'react-helmet';
 import InputWallConnector from '../../components/InputWall';
 import OutputWallConnector from '../../components/OutputWall';
+import DebugPanelConnector from '../../components/DebugPanel';
+import DropDownMenuConnector from '../../components/DropDownMenu';
 
 export default class HomeView extends Component {
 
@@ -42,9 +44,10 @@ export default class HomeView extends Component {
                   content="I/O Input, Output"
                 />
             </Helmet>
-
+            <DropDownMenuConnector/>
             <InputWallConnector/>
             <OutputWallConnector/>
+            <DebugPanelConnector/>
             
           </div>
       );

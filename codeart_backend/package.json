@@ -15,15 +15,8 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/bflatau/benreact_backend#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
-    "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-validator": "^6.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "pg-promise": "^9.1.2",
-    "postmark": "^2.3.1",
-    "prompt": "^1.0.0"
+    "express": "^4.17.1"
   }
 }
