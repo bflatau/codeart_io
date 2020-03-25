@@ -15,9 +15,7 @@ class InputWall extends React.Component {
         let table = []
     
         for (let i = 0; i < inputBoardNumber; i++) {
-          
             table.push(
-
                 <InputWallButtonConnector 
                     key={i+1} 
                     buttonValue={i + 1}
