@@ -8,8 +8,8 @@ import InputWallButtonConnector from '../InputWallButton/';
 class InputWall extends React.Component {
 
     componentDidUpdate(prevProps) {
-		if (prevProps.boardActive !== this.props.boardActive) {
-			this.props.activateInputBoard();
+		if (prevProps.boardActive !== this.props.boardActive && this.props.boardActive != true) {
+            this.props.activateInputBoard();
 		}
 	  }
 
