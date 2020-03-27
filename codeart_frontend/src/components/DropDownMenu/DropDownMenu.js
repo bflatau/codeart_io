@@ -17,7 +17,7 @@ class DropDownMenu extends Component {
     console.log('You selected game', option.value)
     this.setState({selected: option})
 
-    this.props.getGameKeys(`${option.value}/getkeys`)
+    this.props.getGameKeys(`game/${option.value}/getkeyquantity`)
 
     this.props.setGameValue(option.value);
 
