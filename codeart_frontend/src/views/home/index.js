@@ -12,33 +12,12 @@ export default class HomeView extends Component {
     console.log('home page mounted!')
   }
 
-//   handleLoginSubmitted = () => {
-//       const { loginSubmitted } = this.props;
-//       const username = this.refs.usernameInput.getValue();
-//       const password = this.refs.passwordInput.getValue();
-
-//       loginSubmitted(username, password);
-//   };
-
-//   handleInputKeyup = (e) => {
-//       const { loginErrorCleared, errorMessage } = this.props;
-
-//       if (e.keyCode === 13) {
-//           this.handleLoginSubmitted();
-//       } else if (errorMessage) {
-//           loginErrorCleared();
-//       }
-//   }
-
-  render() {
-      const { loginSubmitted, errorMessage } = this.props;
-      
-
+  render() {      
       return (
           <div className='home-content-container'>
           
             <Helmet>
-              <title>Code Art</title>
+              <title>I/O</title>
                 <meta
                   name="Home"
                   content="I/O Input, Output"

@@ -52,6 +52,8 @@ export function apiRequest(requestURL, requestType, responseType) {
         dispatch({
             type: SUBMIT_BOARD_STATUS,
         });
+
+        console.log('sending this array', boardArray);
   
         fetch(`http://localhost:8080/${endpoint}`, {
           method: 'POST',
@@ -65,26 +67,6 @@ export function apiRequest(requestURL, requestType, responseType) {
     }
   }
 
-
-
-//   export function sendBoardStatus(endpoint, boardArray) {
-  
-//     return dispatch => {
-//         dispatch({
-//             type: SUBMIT_BOARD_STATUS,
-//         });
-  
-//         fetch(`http://localhost:8080/${endpoint}`, {
-//           method: 'POST',
-//           headers: {
-//             'Accept': 'application/json, text/plain, */*',
-//             'Content-Type': 'application/json'
-//           },
-//           body: JSON.stringify({boardArray: boardArray})
-//           }).then(res=>res.json(), console.log(res))
-//           .then(res => dataFetched(res, REQUESTED_OUTPUT_VALUE_RESPONSE ))
-//     }
-//   }
 
 
 export function getGridValues(requestURL){
