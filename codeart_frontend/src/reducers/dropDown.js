@@ -1,5 +1,4 @@
 import createReducer from '../utils/createReducer';
-import { outputBoardNumber }  from '../constants/appData/outputBoard';
 import { SET_GAME_VALUE } from '../constants/actions';
 
 

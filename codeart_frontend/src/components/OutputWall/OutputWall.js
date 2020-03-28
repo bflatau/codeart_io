@@ -1,9 +1,6 @@
 import React from 'react';
 import './styles.scss';
-import { outputBoardNumber } from '../../constants/appData/outputBoard';
-
-
-
+import { outputBoardNumber } from '../../constants/appData/boardData';
 
 class OutputWall extends React.Component {
 
@@ -14,7 +11,8 @@ class OutputWall extends React.Component {
           
             table.push(
 
-                <div key={i+1} className="output-board-item" >
+                <div key={i+1} className={(loaded === true && data.data[i] === 'X') ? "output-board-item-on": "output-board-item-off" } >
+                    {console.log('data from server', data.data)}
                     {(!loaded) ? (data[i] + 1) : data.data[i] }
                 </div>
             )
