@@ -35,10 +35,10 @@ app.route('/game/:gameNumber/on/:buttonNumber')
   .get(buttonController.handleKeyOn)
 
 app.route('/game/:gameNumber/off/:buttonNumber')
-.get(buttonController.handleKeyOff)
+  .get(buttonController.handleKeyOff)
 
 app.route('/game/:gameNumber/getkeyquantity')
-.get(buttonController.getKeyQuantity)
+  .get(buttonController.getKeyQuantity)
 
 
 
