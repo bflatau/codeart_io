@@ -1,19 +1,16 @@
 import React from 'react';
 import './styles.scss';
-import { outputBoardNumber } from '../../constants/appData/boardData';
 
 class OutputWall extends React.Component {
 
     createOutputGrid = (data, loaded) => {
         let table = []
-    
-        for (let i = 0; i < outputBoardNumber; i++) {
+        for (let i = 0; i < data.data.length; i++) {
           
             table.push(
 
                 <div key={i+1} className={(loaded === true && data.data[i] === 'X') ? "output-board-item-on": "output-board-item-off" } >
-                    {console.log('data from server', data.data)}
-                    {(!loaded) ? (data[i] + 1) : data.data[i] }
+                    {(!loaded) ? (data.data[i + 1 ]) : data.data[i] }
                 </div>
             )
         } 
@@ -23,6 +20,7 @@ class OutputWall extends React.Component {
 		
 	render () {
         const {outputWallData, outputWallDataLoaded} = this.props;
+
 		return (
             <div className='output-container'>
                 {this.createOutputGrid(outputWallData, outputWallDataLoaded)}

@@ -25,7 +25,7 @@ function getRandom(arr, n) {
 }
 
 
-console.log(getRandom([1,2,3,4], 2));
+// console.log(getRandom([1,2,3,4], 2));
 
 
 
@@ -38,17 +38,18 @@ exports.getKeyQuantity = (req,res) => {
 }
 
 
-
-
 exports.handleKeyOn = (req, res) => {
-  
+ 
+  const buttonInt = parseInt(req.params.buttonNumber);
+  const gameInt = parseInt(req.params.gameNumber);
+  const outputBoardArray = req.body.boardArray.data;
+
   function generateResponseArray(){
-    const buttonInt = parseInt(req.params.buttonNumber);
-    const gameInt = parseInt(req.params.gameNumber);
+
     const responseArray = [];
 
     //i values translate to direct board numbers (start at 1 NOT 0!)
-    for (let i = 0; i < boardLength; i++){
+    for (let i = 0; i < outputBoardArray.length; i++){
 
       if (i === 11 && i === buttonInt && gameInt === 1 ) {
         responseArray.push('X')
@@ -58,14 +59,12 @@ exports.handleKeyOn = (req, res) => {
       }
        
     }
+    // console.log(responseArray);
     return responseArray;
   }
-
-  const responseValue = generateResponseArray();
- 
-      res.json({'data': responseValue});
-      console.log(req.params.buttonNumber);
-      console.log(req.params.gameNumber);
+      
+  res.json({'data': generateResponseArray()});
+    
 };
 
 

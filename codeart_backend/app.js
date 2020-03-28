@@ -32,10 +32,10 @@ app.use(cors());
 /// PUBLIC API ENDPOINTS ///
 
 app.route('/game/:gameNumber/on/:buttonNumber')
-  .get(buttonController.handleKeyOn)
+  .post(buttonController.handleKeyOn)
 
 app.route('/game/:gameNumber/off/:buttonNumber')
-  .get(buttonController.handleKeyOff)
+  .post(buttonController.handleKeyOff)
 
 app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity)

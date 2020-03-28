@@ -7,11 +7,9 @@ import {
   GAME_KEYS_RESPONSE,
   SET_GAME_VALUE,
   TURN_INPUT_OFF,
-  TURN_INPUT_ON
+  TURN_INPUT_ON,
+  SUBMIT_BOARD_STATUS
 } from '../constants/actions';
-
-// import{ apiRequest } from '../constants/api-utils/api-requests';
-
 
 
 
@@ -36,8 +34,8 @@ export function apiRequest(requestURL, requestType, responseType) {
     const url = `http://localhost:8080/${endpoint}`;
     return fetch(url).then(response => response.json());
   }
-  
-  
+
+
   export function dataFetched(response, responseType) {
     return {
         type: responseType,
@@ -54,6 +52,8 @@ export function apiRequest(requestURL, requestType, responseType) {
         dispatch({
             type: SUBMIT_BOARD_STATUS,
         });
+
+        console.log('sending this array', boardArray);
   
         fetch(`http://localhost:8080/${endpoint}`, {
           method: 'POST',
@@ -63,9 +63,10 @@ export function apiRequest(requestURL, requestType, responseType) {
           },
           body: JSON.stringify({boardArray: boardArray})
           }).then(res=>res.json())
-          .then(res => dataFetched(res, REQUESTED_OUTPUT_VALUE_RESPONSE ))
+          .then(data => dispatch(dataFetched(data, REQUESTED_OUTPUT_VALUE_RESPONSE )))
     }
   }
+
 
 
 export function getGridValues(requestURL){
