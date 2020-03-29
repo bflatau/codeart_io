@@ -8,7 +8,8 @@ import {
   SET_GAME_VALUE,
   TURN_INPUT_OFF,
   TURN_INPUT_ON,
-  SUBMIT_BOARD_STATUS
+  SUBMIT_BOARD_STATUS,
+  RESET_OUTPUT_BOARD
 } from '../constants/actions';
 
 
@@ -114,7 +115,11 @@ export function activateInputBoard(){
     };
 }
 
-
+export function resetOutputBoard(){
+    return {
+        type: RESET_OUTPUT_BOARD
+    };
+}
 
 
 

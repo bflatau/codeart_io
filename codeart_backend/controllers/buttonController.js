@@ -10,39 +10,8 @@ const games = [
 
 ///FUNCTIONS////
 
-function getRandomSuccessResponses (boardArray, searchValue, numberOfResults){
-  const takenIndexes = [];
-  let outputBoardArray = boardArray.slice();
 
-  //loop through initial board array and identify which winning values are taken and send to an array//
-  for (i = 0; i < boardArray.length; i++){
-    if (boardArray[i] === searchValue){
-      takenIndexes.push(i);
-    }
-  }
 
-  //loop for the number of new winning values to be added, identify random indices, check that they are unique
-  // and then add them the array of taken indices, if not unique, generate a new number and try again
-  for (i = 0; i < numberOfResults; i++){
-    let randomIndex = Math.floor(Math.random() * boardArray.length);
-
-    findUnique(randomIndex);
-
-    function findUnique(randomValue){
-      if (outputBoardArray[randomValue] !== searchValue){
-        outputBoardArray[randomValue] = searchValue;
-      }
-      else{
-        let otherRandomIndex = Math.floor(Math.random() * boardArray.length);
-        findUnique(otherRandomIndex);
-      }
-    }   
-    
-  }
-
-  return outputBoardArray;
-
-}
 
 
 ////CONTROLLERS/////
@@ -59,20 +28,45 @@ exports.handleKeyOn = (req, res) => {
   const requestBoardArray = req.body.boardArray.data;
   const magicButtonPressed = games[gameInt].winningKeys.includes(buttonInt);
   const magicButtons = games[gameInt].winningKeys;
-  const correctValue = games[gameInt].winningValue;
-  const numberOfCorrectValues = (requestBoardArray.length / magicButtons.length);
+  const searchValue = games[gameInt].winningValue;
+  const numberOfResults = (requestBoardArray.length / magicButtons.length);
 
-  function generateResponseArray(){
-    if (magicButtonPressed){
-      return getRandomSuccessResponses(requestBoardArray, correctValue, numberOfCorrectValues);
+
+  function getRandomInputResponses (){
+    const takenIndexes = [];
+    let outputBoardArray = requestBoardArray.slice();
+  
+    //loop through initial board array and identify which winning values are taken and send to an array//
+    for (i = 0; i < requestBoardArray.length; i++){
+      if (requestBoardArray[i] === searchValue){
+        takenIndexes.push(i);
+      }
     }
-    else{
-      return requestBoardArray;
+  
+    //loop for the number of new winning values to be added, identify random indices, check that they are unique
+    // and then add them the array of taken indices, if not unique, generate a new number and try again
+    for (i = 0; i < numberOfResults; i++){
+      let randomIndex = Math.floor(Math.random() * requestBoardArray.length);
+  
+      findUnique(randomIndex);
+  
+      function findUnique(randomValue){
+        if (outputBoardArray[randomValue] !== searchValue){
+
+          (magicButtonPressed) ? outputBoardArray[randomValue] = searchValue :
+          outputBoardArray[randomValue] = Math.floor(Math.random() * 10);
+        }
+        else{
+          let otherRandomIndex = Math.floor(Math.random() * requestBoardArray.length);
+          findUnique(otherRandomIndex);
+        }
+      }   
+      
     }
+    return outputBoardArray;
   }
 
-  res.json({'data': generateResponseArray()});
-    
+  res.json({'data': getRandomInputResponses()});  
 };
 
 

@@ -1,6 +1,6 @@
 import createReducer from '../utils/createReducer';
 import { outputBoardNumber }  from '../constants/appData/boardData';
-import { REQUESTED_OUTPUT_VALUE_RESPONSE } from '../constants/actions';
+import { REQUESTED_OUTPUT_VALUE_RESPONSE, RESET_OUTPUT_BOARD } from '../constants/actions';
 
 import { SUBMIT_BOARD_STATUS } from '../constants/actions';
 
@@ -31,13 +31,13 @@ export default createReducer(initialState, {
         };  
     },
 
-    // [SUBMIT_BOARD_STATUS]: (state, action) => {
-    //     console.log(state.outputWallData)  
+    [RESET_OUTPUT_BOARD]: (state, action) => { 
 
-    //     return{
-    //         ...state
-    //     }
-    // },
+        return{
+            ...state,
+            outputWallData: {data: generateStartArray()},
+        }
+    },
 
 });
 
