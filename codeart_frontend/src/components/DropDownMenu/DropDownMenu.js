@@ -22,6 +22,10 @@ class DropDownMenu extends Component {
     this.props.setGameValue(option.value);
 
     this.props.resetInputBoard();
+
+    this.props.resetOutputBoard();
+
+
   }
 
   render () {

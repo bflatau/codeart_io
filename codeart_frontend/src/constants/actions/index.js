@@ -8,5 +8,6 @@ export const SET_GAME_VALUE = 'SET_GAME_VALUE';
 export const TURN_INPUT_OFF = 'TURN_INPUT_OFF';
 export const TURN_INPUT_ON = 'TURN_INPUT_ON';
 export const SUBMIT_BOARD_STATUS = 'SUBMIT_BOARD_STATUS';
+export const RESET_OUTPUT_BOARD = 'RESET_OUTPUT_BOARD';
 
 
