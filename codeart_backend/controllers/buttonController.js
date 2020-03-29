@@ -1,34 +1,48 @@
 const boardLength = 120;
 
 const games = [
-  { gameNumber: 0, winningKeys: [ 1, 2, 3, 4, 5, 6 ] },
-  { gameNumber: 1, winningKeys: [ 116, 117, 118, 119, 120 ] },
-  { gameNumber: 2, winningKeys: [ 21, 22, 23, 24, 25 ] },
+  { gameNumber: 0, winningKeys: [ 1, 2, 3, 4, 5, 6 ], winningValue: 'X' },
+  { gameNumber: 1, winningKeys: [ 46, 47, 48, 49, 50 ], winningValue: 'Y' },
+  { gameNumber: 2, winningKeys: [ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 ], winningValue: 'Z' },
 ]
 
 
 
 ///FUNCTIONS////
 
-function getRandom(arr, n) {
-  var result = new Array(n),
-      len = arr.length,
-      taken = new Array(len);
-  if (n > len)
-      throw new RangeError("getRandom: more elements taken than available");
-  while (n--) {
-      var x = Math.floor(Math.random() * len);
-      result[n] = arr[x in taken ? taken[x] : x];
-      taken[x] = --len in taken ? taken[len] : len;
+function getRandomSuccessResponses (boardArray, searchValue, numberOfResults){
+  const takenIndexes = [];
+  let outputBoardArray = boardArray.slice();
+
+  //loop through initial board array and identify which winning values are taken and send to an array//
+  for (i = 0; i < boardArray.length; i++){
+    if (boardArray[i] === searchValue){
+      takenIndexes.push(i);
+    }
   }
-  return result;
+
+  //loop for the number of new winning values to be added, identify random indices, check that they are unique
+  // and then add them the array of taken indices, if not unique, generate a new number and try again
+  for (i = 0; i < numberOfResults; i++){
+    let randomIndex = Math.floor(Math.random() * boardArray.length);
+
+    findUnique(randomIndex);
+
+    function findUnique(randomValue){
+      if (outputBoardArray[randomValue] !== searchValue){
+        outputBoardArray[randomValue] = searchValue;
+      }
+      else{
+        let otherRandomIndex = Math.floor(Math.random() * boardArray.length);
+        findUnique(otherRandomIndex);
+      }
+    }   
+    
+  }
+
+  return outputBoardArray;
+
 }
-
-
-// console.log(getRandom([1,2,3,4], 2));
-
-
-
 
 
 ////CONTROLLERS/////
@@ -45,36 +59,18 @@ exports.handleKeyOn = (req, res) => {
   const requestBoardArray = req.body.boardArray.data;
   const magicButtonPressed = games[gameInt].winningKeys.includes(buttonInt);
   const magicButtons = games[gameInt].winningKeys;
+  const correctValue = games[gameInt].winningValue;
+  const numberOfCorrectValues = (requestBoardArray.length / magicButtons.length);
 
   function generateResponseArray(){
-
-    let responseBoardArray = requestBoardArray.slice();
-
-
     if (magicButtonPressed){
-      replacementValues = getRandom(requestBoardArray, (requestBoardArray.length / magicButtons.length));
-
-      console.log('here are replacement values', replacementValues);
-
-      function replaceWithX(){ replacementValues.forEach(value =>{
-          responseBoardArray.splice(value, 1, 'X');
-          console.log(responseBoardArray);
-        });
-
-        return responseBoardArray;
-      }
-      
-
-      return replaceWithX();
-
+      return getRandomSuccessResponses(requestBoardArray, correctValue, numberOfCorrectValues);
     }
-
     else{
       return requestBoardArray;
     }
-    // return responseArray;
   }
-      
+
   res.json({'data': generateResponseArray()});
     
 };
