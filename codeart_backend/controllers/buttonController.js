@@ -1,9 +1,9 @@
 const boardLength = 120;
 
 const games = [
-  { gameNumber: 0, winningKeys: [ 1, 10, 41, 50 ] },
-  { gameNumber: 1, winningKeys: [ 1, 2, 3, 4, 5 ] },
-  { gameNumber: 2, winningKeys: [ 25 ] },
+  { gameNumber: 0, winningKeys: [ 1, 2, 3, 4, 5, 6 ] },
+  { gameNumber: 1, winningKeys: [ 116, 117, 118, 119, 120 ] },
+  { gameNumber: 2, winningKeys: [ 21, 22, 23, 24, 25 ] },
 ]
 
 
@@ -42,25 +42,37 @@ exports.handleKeyOn = (req, res) => {
  
   const buttonInt = parseInt(req.params.buttonNumber);
   const gameInt = parseInt(req.params.gameNumber);
-  const outputBoardArray = req.body.boardArray.data;
+  const requestBoardArray = req.body.boardArray.data;
+  const magicButtonPressed = games[gameInt].winningKeys.includes(buttonInt);
+  const magicButtons = games[gameInt].winningKeys;
 
   function generateResponseArray(){
 
-    const responseArray = [];
+    let responseBoardArray = requestBoardArray.slice();
 
-    //i values translate to direct board numbers (start at 1 NOT 0!)
-    for (let i = 0; i < outputBoardArray.length; i++){
 
-      if (i === 11 && i === buttonInt && gameInt === 1 ) {
-        responseArray.push('X')
+    if (magicButtonPressed){
+      replacementValues = getRandom(requestBoardArray, (requestBoardArray.length / magicButtons.length));
+
+      console.log('here are replacement values', replacementValues);
+
+      function replaceWithX(){ replacementValues.forEach(value =>{
+          responseBoardArray.splice(value, 1, 'X');
+          console.log(responseBoardArray);
+        });
+
+        return responseBoardArray;
       }
-      else {
-        responseArray.push(1);
-      }
-       
+      
+
+      return replaceWithX();
+
     }
-    // console.log(responseArray);
-    return responseArray;
+
+    else{
+      return requestBoardArray;
+    }
+    // return responseArray;
   }
       
   res.json({'data': generateResponseArray()});
@@ -69,19 +81,11 @@ exports.handleKeyOn = (req, res) => {
 
 
 exports.handleKeyOff = (req, res) => {
-  
-  function generateResponseArray(){
-    const responseArray = [];
-    for (let i = 0; i < boardLength; i++){
-        responseArray.push(0);
-    }
-    return responseArray;
-  }
 
-  const responseValue = generateResponseArray();
+  const outputBoardArray = req.body.boardArray.data;
+
  
-      res.json({'data': responseValue});
-      console.log(req.params.buttonNumber);
+      res.json({'data': outputBoardArray});
 };
 
 
