@@ -16,7 +16,7 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/index.html',
-      title: 'Awa',
+      title: 'Code Art',
       favicon: 'src/assets/images/app/favicon.ico',
     }),
     new webpack.DefinePlugin({
