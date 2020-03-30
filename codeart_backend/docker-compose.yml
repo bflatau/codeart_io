@@ -5,11 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nodejs
+    image: node90
     container_name: codeartnode
     restart: unless-stopped
-    #ports:
-    #  - '8090:8090' 
+#    ports:
+#      - '8080:8090' 
     networks:
       - nginxdockerssl_app-network
 
