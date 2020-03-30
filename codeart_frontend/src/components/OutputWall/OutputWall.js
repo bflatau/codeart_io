@@ -9,9 +9,9 @@ class OutputWall extends React.Component {
           
             table.push(
 
-                <div key={i+1} className={(loaded === true && data.data[i] === 'X') ? "output-board-item-on": "output-board-item-off" } >
-                    {/* {(!loaded) ? (data.data[i] + 1) : data.data[i] } */}
-                    {data.data[i] }
+                // <div key={i+1} className={(loaded === true && data.data[i] === 'X') ? "output-board-item-on": "output-board-item-off" } >
+                <div key={i+1} className={`output-board-item-${data.data[i]}`} >
+                    {/* {data.data[i] } */}
 
                 </div>
             )
