@@ -42,7 +42,7 @@ class DropDownMenu extends Component {
 
     return (
 
-      <div>
+      <div className='dropdown-container'>
         <Dropdown
           options={options}
           onChange={this._onSelect}

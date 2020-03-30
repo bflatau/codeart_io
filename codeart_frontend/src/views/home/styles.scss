@@ -9,12 +9,9 @@ $bottom-image-height: 12vw;
   // min-height: $first-row-height;
   // max-height: 605px;
   width: 100%;
-  margin-top: 10px;
+  margin-top: -20px;
   display: inline-block;
-  @media (max-width: 659px) {
-    margin-top: 22vw;
-    padding-bottom: 12vw;
-  }
+ 
 }
 
 .home-main-image-container {
