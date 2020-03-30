@@ -43,7 +43,7 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 
 /// SET SERVER CONSTANTS ///
-const PORT = 8080;
+const PORT = 8090;
 const HOST = '0.0.0.0';
 
 /// RUN SERVER ///

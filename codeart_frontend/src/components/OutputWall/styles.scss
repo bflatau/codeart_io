@@ -40,15 +40,19 @@
 .output-board-item-X {
     background-image: url('/images/backgrounds/background-X.jpg');
     background-attachment: fixed;
-    // background-position: top center;
+    background-position: center;
 }
 
 .output-board-item-Y {
-    background-color: white;
+    background-image: url('/images/backgrounds/background-Y.jpg');
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .output-board-item-Z {
-    background-color: white;
+    background-image: url('/images/backgrounds/background-Z.jpg');
+    background-attachment: fixed;
+    background-position: center;
 }
 
 
