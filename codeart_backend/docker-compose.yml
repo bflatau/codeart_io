@@ -6,25 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     image: nodejs
-    container_name: nodejs
+    container_name: codeartnode
     restart: unless-stopped
     #ports:
     #  - '8080:8080' 
-    networks:
-      - nginxdockerssl_app-network
-  postgres:
-    # restart: always
-    # image: kiasaki/alpine-postgres:9.5
-    image: postgres
-    container_name: postgres_db
-    environment:
-      - POSTGRES_USER=ben
-      - POSTGRES_PASSWORD=maximus
-      - POSTGRES_DB=archfolio
-    ports:
-      - '5432:5432'
-    volumes:
-      - database:/var/lib/postgresql/data
     networks:
       - nginxdockerssl_app-network
 
@@ -36,24 +21,3 @@ networks:
     external: true 
 
 
-
-# version: "3"
-# services:
-# #  Create a service named db.
-#   db:
-# #   Use the Docker Image postgres. This will pull the newest release.
-#     image: "postgres"
-# #   Give the container the name my_postgres. You can changes to something else.
-#     container_name: "postgres"
-# #   Setup the username, password, and database name. You can changes these values.
-#     environment:
-#       - POSTGRES_USER=ben
-#       - POSTGRES_PASSWORD=maximus
-#       - POSTGRES_DB=awa
-# #   Maps port 54320 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
-#     ports:
-#       - "54320:5432"
-# #   Set a volume some that database is not lost after shutting down the container.
-# #   I used the name postgres-data but you can changed it to something else.
-#     volumes:
-#       - ./postgres-data:/var/lib/postgresql/data
