@@ -32,7 +32,7 @@ export function apiRequest(requestURL, requestType, responseType) {
   
   export function getRequest(endpoint) {
   
-    const url = `http://codeart.benflatau.com/api/${endpoint}`;
+    const url = `https://codeart.benflatau.com/api/${endpoint}`;
     return fetch(url).then(response => response.json());
   }
 
@@ -56,7 +56,7 @@ export function apiRequest(requestURL, requestType, responseType) {
 
         console.log('sending this array', boardArray);
   
-        fetch(`http://codeart.benflatau.com/api/${endpoint}`, {
+        fetch(`https://codeart.benflatau.com/api/${endpoint}`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain, */*',
