@@ -1,0 +1,18 @@
+.input-board-container{
+    margin-top: 15px;
+    width: 100%;
+    display: inline-block;
+    background-color: white;
+}
+
+
+.input-board-users{
+    display: inline-block;
+    width: 100%;
+}
+
+.input-board{
+    display: inline-block;
+    width: 100%;
+    min-height: 300px;
+}

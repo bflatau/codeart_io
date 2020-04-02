@@ -58,9 +58,11 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 
 /// WEB SOCKET STUFF ///
-// This is what the socket.io syntax is like, we will work this later
+
 io.on('connection', socket => {
+
   console.log('New client connected')
+  io.sockets.emit('connected users', io.engine.clientsCount);
   
   // just like on the client side, we have a socket.on method that takes a callback function
   socket.on('change color', (color) => {
@@ -73,6 +75,7 @@ io.on('connection', socket => {
   // disconnect is fired when a client leaves the server
   socket.on('disconnect', () => {
     console.log('user disconnected')
+    io.sockets.emit('connected users', io.engine.clientsCount);
   })
 })
 
