@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './socket-test.css';
 
-function App() {
+function SocketTest() {
   return (
     <div className="App">
       <header className="App-header">
@@ -23,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default SocketTest;
