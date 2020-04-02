@@ -9,10 +9,14 @@
 .input-board-users{
     display: inline-block;
     width: 100%;
+    padding-left: 2%;
+    margin-top: 1%;
 }
 
 .input-board{
     display: inline-block;
-    width: 100%;
-    min-height: 300px;
+    width: 98%;
+    margin-bottom: 20px;
+    padding-left: 1%;
+    padding-right: 1%;
 }

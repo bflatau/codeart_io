@@ -1,19 +1,34 @@
 import React, { Component } from "react";
 import './style.css';
+import InputBoardButton from '../InputBoardButton';
 
 class InputBoard extends Component {
     constructor() {
         super();
         this.state = {
-            numberOfUsers: 0
+            numberOfUsers: 0,
+            numberOfInputs: 10
         };
     }
 
     componentDidMount() {
         this.props.socket.on('connected users', (data) => {
-            console.log(data)
-            this.setState({ numberOfUsers: data })
+            this.setState({ numberOfUsers: data.numberOfUsers, numberOfInputs: data.numberOfInputs })
         })
+    }
+
+    createInputGrid = () => {
+        let table = [];
+
+        for (let i = 0; i < this.state.numberOfInputs; i++) {
+            table.push(
+                <InputBoardButton
+                    key={i + 1}
+                    buttonValue={i + 1}
+                />
+            )
+        }
+        return table
     }
 
     render() {
@@ -23,7 +38,9 @@ class InputBoard extends Component {
                 <div className="input-board-users">
                   People Playing: {this.state.numberOfUsers}
                 </div>
-                <div className="input-board"></div>
+                <div className="input-board">
+                    {this.createInputGrid()}
+                </div>
             </div>
         )
     }

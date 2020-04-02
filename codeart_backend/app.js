@@ -61,8 +61,10 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 io.on('connection', socket => {
 
+  const numberOfInputs = 50;
+
   console.log('New client connected')
-  io.sockets.emit('connected users', io.engine.clientsCount);
+  io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
   
   // just like on the client side, we have a socket.on method that takes a callback function
   socket.on('change color', (color) => {
