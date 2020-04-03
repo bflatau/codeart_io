@@ -35,8 +35,9 @@ board.on("ready", function() {
 
 
   buttons = new five.Buttons({
-      pins: [12, 11, 10],
-      holdtime: 2000
+      pins: [53, 51, 49, 47, 45, 43, 41, 39],
+      holdtime: 2000,
+      isPullup: true
     //   pin: 50
     //   invert: true
   });
@@ -51,19 +52,19 @@ board.on("ready", function() {
   // Button Event API
   
   // "down" the button is pressed
-//   button.on("down", function() {
-//     console.log("down");
-//   });
+  buttons.on("down", function(button) {
+    console.log(`button ${button.pin} is down`);
+  });
 
   // "hold" the button is pressed for specified time.
   //        defaults to 500ms (1/2 second)
   //        set
-  buttons.on("hold", function(button) {
-    console.log("this button is on", button.pin);
-  });
+  // buttons.on("hold", function(button) {
+  //   console.log("this button is on", button.pin);
+  // });
 
   // "up" the button is released
-//   button.on("up", function() {
-//     console.log("up");
-//   });
+  buttons.on("up", function(button) {
+    console.log(`button ${button.pin} is up`);
+  });
 });
