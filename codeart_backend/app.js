@@ -14,6 +14,7 @@ const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
 const buttonController = require('./controllers/buttonController');
+const megaController= require('./controllers/megaController');
 
 
 /// SET UP CORS ///
@@ -66,6 +67,7 @@ io.on('connection', socket => {
   io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
   // io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
   
+  megaController.initializeMega(io);
 
   socket.on('button pressed', (buttonID) => {
     console.log(`button ${buttonID} was pressed`)
