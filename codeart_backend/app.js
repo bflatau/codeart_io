@@ -56,34 +56,29 @@ app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity);
 
 
+/// ARDUINO STUFF ///
 
+megaController.initializeMega(io);
 
 /// WEB SOCKET STUFF ///
 
 io.on('connection', socket => {
 
   /// On connect, console log on server, and then send number of users to client
-  console.log('New client connected')
   io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
-  // io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
-  
-  megaController.initializeMega(io);
 
-  socket.on('button pressed', (buttonID) => {
-    console.log(`button ${buttonID} was pressed`)
-    io.sockets.emit('button pressed', buttonID)
-  })
+  /// get mega button state when connecting and send to newly connected user
+  if (megaController.getMegaState().length > 0){  
+    megaController.getMegaState().forEach(button =>{
+      io.to(socket.id).emit('button down', button)
+    });
+  } 
 
-
-  socket.on('change color', (color) => {
-    console.log('Color Changed to: ', color)
-    io.sockets.emit('change color', color)
-  })
-  
   /// When a user disconnects, console log and then update the clients with the user count
   socket.on('disconnect', () => {
     console.log('user disconnected')
-    io.sockets.emit('connected users', io.engine.clientsCount);
+    io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
+
   })
 })
 

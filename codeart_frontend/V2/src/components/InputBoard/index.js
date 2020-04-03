@@ -16,7 +16,11 @@ class InputBoard extends Component {
             this.setState({ numberOfUsers: data.numberOfUsers })
         })
 
-        this.props.socket.on('button pressed', (data) => {
+        this.props.socket.on('button down', (data) => {
+            this.updateBoardArray(data);
+        })
+
+        this.props.socket.on('button up', (data) => {
             this.updateBoardArray(data);
         })
     }
