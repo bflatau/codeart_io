@@ -14,20 +14,13 @@ exports.initializeMega = (io) => {
       //   invert: true
     });
 
-    buttonPressed = ()=>{
-      buttons.on("down", function(button) {
-        console.log(`button ${button.pin} is down`);
-        io.sockets.emit('button pressed', button.pin)
-      });
-    }
-   
-   buttonPressed();
+    buttons.on("down", function(button) {
+      console.log(`button ${button.pin} is down`);
+      io.sockets.emit('button pressed', button.pin)
+    });
+  
   });
   
-  
-  // io.sockets.emit('button pressed', testNumber)
-
-
 }
 
 
