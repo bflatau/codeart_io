@@ -1,7 +1,5 @@
 const buttonMap = {
-
   /// GREEN WIRES ///
-
   '54': 0,
   '55': 1,
   '56': 2,
@@ -14,7 +12,6 @@ const buttonMap = {
   '63': 9,
 
   /// BLUE WIRES ///
-
   '2': 10,
   '3': 11,
   '4': 12,
@@ -27,8 +24,6 @@ const buttonMap = {
   '11': 19,
 
   /// YELLOW WIRES ///
-
-  
   '51': 20,
   '50': 21,
   '49': 22,
@@ -41,7 +36,6 @@ const buttonMap = {
   '42': 29,
 
   /// PURPLE WIRES ///
-
   '41': 30,
   '40': 31,
   '39': 32,
@@ -54,7 +48,6 @@ const buttonMap = {
   '32': 39,
 
   /// ORANGE WIRES ///
-
   '31': 40,
   '30': 41,
   '29': 42,
@@ -65,13 +58,9 @@ const buttonMap = {
   '24': 47,
   '23': 48,
   '22': 49
-
-
 };
 
 const activeButtons = [];
-
-
 
 exports.getMegaState = () =>{
   return activeButtons;
@@ -98,9 +87,6 @@ exports.initializeMega = (io) => {
             '41', '40', '39', '38', '37', '36', '35', '34', '33', '32',
             // ORANGE PINS ///
             '31', '30', '29', '28', '27', '26', '25', '24', '23', '22'
-
-
-          
           ],
           // holdtime: 2000,
           isPullup: true
@@ -114,8 +100,6 @@ exports.initializeMega = (io) => {
         io.sockets.emit('button down', buttonMap[button.pin]);
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
-
-        // console.log(activeButtons);
       });
 
       buttons.on("up", function(button) {
@@ -124,25 +108,10 @@ exports.initializeMega = (io) => {
         io.sockets.emit('button up', buttonMap[button.pin])
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
-        // splice out the 
+        // splice out the button that was released
         if (upIndex > -1) {
           activeButtons.splice(upIndex, 1);
         }
-
-        // console.log(activeButtons);
       });
-    
     });  
 }
-
-
-
-
-
-// "hold" the button is pressed for specified time.
-//        defaults to 500ms (1/2 second)
-//        set
-// buttons.on("hold", function(button) {
-//   console.log("this button is on", button.pin);
-// });
-

@@ -5,8 +5,6 @@ const socketIO = require('socket.io');
 const bodyParser  = require("body-parser");
 const cors = require('cors');
 
-
-
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
 const server = http.createServer(app);
@@ -16,12 +14,11 @@ const io = socketIO(server);
 const buttonController = require('./controllers/buttonController');
 const megaController= require('./controllers/megaController');
 
-
 /// SET UP CORS ///
 // need to call cors before setting up routes
 // Set up a whitelist and check against it:
 
-// const whitelist = ['http://test.awarchitect.com']
+// const whitelist = ['http://codeart.benflatau.com']
 // const corsOptions = {
 //     origin: function (origin, callback) {
 //         if (whitelist.indexOf(origin) !== -1) {
@@ -41,7 +38,6 @@ app.use(cors());
 
 
 /// PUBLIC API ENDPOINTS ///
-
 app.get('/bentest', function (req, res) {
   res.send('helloooooo')
 });
@@ -55,13 +51,10 @@ app.route('/game/:gameNumber/off/:buttonNumber')
 app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity);
 
-
 /// ARDUINO STUFF ///
-
 megaController.initializeMega(io);
 
 /// WEB SOCKET STUFF ///
-
 io.on('connection', socket => {
 
   /// On connect, console log on server, and then send number of users to client
@@ -82,8 +75,7 @@ io.on('connection', socket => {
   })
 })
 
-
-//// NEW SERVER STUFF /////
+//// WEB SERVER STUFF /////
 const port = 8090;
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
