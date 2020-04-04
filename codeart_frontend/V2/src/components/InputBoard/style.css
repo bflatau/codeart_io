@@ -25,51 +25,47 @@
 
 
 .column-symbol-layout-container, .row-symbol-layout-container{
-    /* BENDO: need to fix this */
-    width: 76.8%;
-    /* height: 300px; */
+    width: 900px;
     position: fixed;
-    /* background-color: orange; */
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
+    margin:auto;
     left: 0;
     right: 0;
     z-index: 1;
 }
 
 .column-symbol-container{
-    width: 96%;
-    padding-left: 2%;
-    padding-right: 2%;
-    margin-top: .5%;
+    width: 830px;
+    margin: auto;
 }
-
-.row-symbol-container{
-    width: 112%;
-    margin-top: 4%;
-}
-
 
 .column-symbol{
     color: red;
-    font-size: 2em; 
+    font-size: 25px; 
     text-align: center;
     display: inline-block;
     width: 6%;
     margin-left: 2%;
     margin-right: 2%;
-    margin-bottom: 4.2%;
+    margin-bottom: 4.55%;
+}
+
+
+.row-symbol-container{
+    width: 945px;
+    margin: auto;
+    margin-top: 35px;
+    padding-left: 20px;
+    /* bendo mess with padding left */
 }
 
 .row-symbol{
     color: blue;
-    font-size: 2em; 
+    font-size: 25px; 
     text-align: center;
     display: inline-block;
     width: 4%;
-    margin-right: 4.5%;
-    margin-bottom: 3.8%;
+    margin-right: 4.7%;
+    margin-bottom: 4%;
 }
 
 .orange{
