@@ -1,28 +1,27 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
-import './socket-test.css';
+// import socketIOClient from "socket.io-client";
+import './style.css';
 
 class SocketTest extends Component {
   constructor() {
     super();
     this.state = {
-      endpoint: "http://raspberrypi:8090",
+      endpoint: "http://0.0.0.0:8090",
       color: 'white',
     };
   }
 
   componentDidMount() {
     // on initial mount, set all websocket stuff //
-    const socket = socketIOClient(this.state.endpoint);
-    socket.on('change color', (col) => {
+    this.props.socket.on('change color', (col) => {
       document.body.style.backgroundColor = col
     })
   }
 
   // sending sockets
   send = () => {
-    const socket = socketIOClient(this.state.endpoint);
-    socket.emit('change color', this.state.color) // change 'red' to this.state.color
+    // const socket = socketIOClient(this.state.endpoint);
+    this.props.socket.emit('change color', this.state.color) // change 'red' to this.state.color
   }
   
   // adding the function
