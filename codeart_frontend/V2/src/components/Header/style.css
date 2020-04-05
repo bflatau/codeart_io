@@ -1,0 +1,9 @@
+.header{
+  /* font-family: 'IBM Plex Serif', serif; */
+  /* font-family: 'Zilla Slab', serif; */
+  font-family: 'Libre Barcode 128 Text', cursive;
+  font-size: 35px;
+  /* margin-bottom:15px; */
+  color: rgb(207, 207, 207);
+  /* text-shadow: 2px 2px #2e2e2e; */
+}
