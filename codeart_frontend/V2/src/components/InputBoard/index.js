@@ -7,30 +7,58 @@ class InputBoard extends Component {
         super();
         this.state = {
             numberOfUsers: 0,
-            numberOfInputs: 10
+            boardInputs: Array(50).fill('O'),
         };
     }
 
     componentDidMount() {
         this.props.socket.on('connected users', (data) => {
-            this.setState({ numberOfUsers: data.numberOfUsers, numberOfInputs: data.numberOfInputs })
+            this.setState({ numberOfUsers: data.numberOfUsers })
+        })
+
+        this.props.socket.on('button pressed', (data) => {
+            this.updateBoardArray(data);
         })
     }
+
+
+    updateBoardArray = i => {
+        this.setState(state => {
+        //const value has to be the same as state value setState (key:value)
+          const boardInputs = state.boardInputs.map((item, j) => {
+            if (j === i && item !== 'I') {
+              return 'I';
+            } 
+            else if(j === i && item === 'I') {
+              return 'O';
+            } 
+            else{
+                return item;
+            }
+          });
+          return {
+            boardInputs,
+          };
+        });
+      };
 
     createInputGrid = () => {
         let table = [];
 
-        for (let i = 0; i < this.state.numberOfInputs; i++) {
+        for (let i = 0; i < this.state.boardInputs.length; i++) {
             table.push(
                 <InputBoardButton
                     key={i}
-                    buttonValue={i}
+                    buttonID={i}
+                    buttonValue={this.state.boardInputs[i]}
                     socket={this.props.socket}
                 />
             )
         }
         return table
     }
+
+    // Array(5).fill(2)
 
     render() {
 

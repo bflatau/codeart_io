@@ -61,11 +61,10 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 io.on('connection', socket => {
 
-  const numberOfInputs = 50;
-
   /// On connect, console log on server, and then send number of users to client
   console.log('New client connected')
-  io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
+  io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
+  // io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
   
 
   socket.on('button pressed', (buttonID) => {

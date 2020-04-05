@@ -21,7 +21,7 @@ class InputBoardButton extends Component {
             <div 
                 className="input-board-button"
                 onClick={()=>{
-                    this.props.socket.emit('button pressed', this.props.buttonValue)
+                    this.props.socket.emit('button pressed', this.props.buttonID)
 
                     // (this.state.buttonOn) ? this.setState({ buttonOn: false }) : this.setState({ buttonOn: true })
                     
