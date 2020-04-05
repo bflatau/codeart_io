@@ -23,8 +23,9 @@ class InputBoard extends Component {
         for (let i = 0; i < this.state.numberOfInputs; i++) {
             table.push(
                 <InputBoardButton
-                    key={i + 1}
-                    buttonValue={i + 1}
+                    key={i}
+                    buttonValue={i}
+                    socket={this.props.socket}
                 />
             )
         }
