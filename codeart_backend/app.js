@@ -61,20 +61,24 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 io.on('connection', socket => {
 
-  const numberOfInputs = 50;
-
+  /// On connect, console log on server, and then send number of users to client
   console.log('New client connected')
-  io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
+  io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
+  // io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
   
-  // just like on the client side, we have a socket.on method that takes a callback function
+
+  socket.on('button pressed', (buttonID) => {
+    console.log(`button ${buttonID} was pressed`)
+    io.sockets.emit('button pressed', buttonID)
+  })
+
+
   socket.on('change color', (color) => {
-    // once we get a 'change color' event from one of our clients, we will send it to the rest of the clients
-    // we make use of the socket.emit method again with the argument given to use from the callback function above
     console.log('Color Changed to: ', color)
     io.sockets.emit('change color', color)
   })
   
-  // disconnect is fired when a client leaves the server
+  /// When a user disconnects, console log and then update the clients with the user count
   socket.on('disconnect', () => {
     console.log('user disconnected')
     io.sockets.emit('connected users', io.engine.clientsCount);
