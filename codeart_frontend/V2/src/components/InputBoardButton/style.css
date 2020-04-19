@@ -1,15 +1,17 @@
 .input-board-button{
     color: white;
-    font-size: 35px; 
+    font-size: 25px; 
     text-align: center;
     display: inline-block;
-    width: 8%;
-    margin-left: 1%;
-    margin-right: 1%;
-    margin-top: 2%;
+    width: 6%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 3.5%;
     padding-top: 1.5%;
     padding-bottom: 1.5%;
     background-color: black;
+    z-index: 10;
+    position: relative;
 
 }
 

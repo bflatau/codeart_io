@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import './style.css';
 import InputBoardButton from '../InputBoardButton';
 
+
+const gameBoardSymbolsTop = [1, 2, 3, 4, 5 , 6 , 7 , 8, 9 , 10];
+
 class InputBoard extends Component {
     constructor() {
         super();
@@ -61,18 +64,28 @@ class InputBoard extends Component {
         }
         return table
     }
-
-    // Array(5).fill(2)
-
+    
     render() {
-
         return (
             <div className="input-board-container">
                 <div className="input-board-users">
                   People Playing: {this.state.numberOfUsers}
                 </div>
                 <div className="input-board">
+                  
+                    <div className='symbol-layout-container'>
+                        <div className='symbol-container'>
+                            {   
+                                gameBoardSymbolsTop.map((symbol, id)=>{
+                                    return( <div className='symbol' key={id}> {symbol} </div>)
+                                }) 
+                            }
+                        </div>
+                       
+                    </div>
+
                     {this.createInputGrid()}
+
                 </div>
             </div>
         )
