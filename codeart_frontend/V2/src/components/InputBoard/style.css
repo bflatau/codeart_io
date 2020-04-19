@@ -9,34 +9,22 @@
 
 .input-board-users{
     display: inline-block;
-    width: 100%;
+    width: 98%;
     padding-left: 2%;
     margin-top: 1%;
-    /* margin-bottom: 1%; */
+    margin-bottom: 1%;
 }
 
 .input-board{
     display: inline-block;
     width: 96%;
-    margin-bottom: 20px;
+    margin-bottom: 5%;
     padding-left: 2%;
     padding-right: 2%;
 }
 
-/* .symbol-container{
-    width: 73.5%;
-    height: 300px;
-    position: fixed;
-    background-color: orange;
-    left: 0%;
-    top: 0;
-    margin-top: 9%;
-    padding-left: 13.125%;
-    padding-right: 13.125%;
-    z-index: 1;
-} */
 
-.symbol-layout-container{
+.column-symbol-layout-container, .row-symbol-layout-container{
     /* BENDO: need to fix this */
     width: 76.8%;
     /* height: 300px; */
@@ -50,15 +38,20 @@
     z-index: 1;
 }
 
-.symbol-container{
+.column-symbol-container{
     width: 96%;
     padding-left: 2%;
     padding-right: 2%;
-    /* background-color: red; */
+    margin-top: .5%;
+}
+
+.row-symbol-container{
+    width: 112%;
+    margin-top: 4%;
 }
 
 
-.symbol{
+.column-symbol{
     color: red;
     font-size: 25px; 
     text-align: center;
@@ -66,6 +59,19 @@
     width: 6%;
     margin-left: 2%;
     margin-right: 2%;
-    padding-bottom: 1.5%;
-    background-color: blue;
+    margin-bottom: 5.5%;
+}
+
+.row-symbol{
+    color: blue;
+    font-size: 25px; 
+    text-align: center;
+    display: inline-block;
+    width: 4%;
+    margin-right: 4.5%;
+    margin-bottom: 4.75%;
+}
+
+.orange{
+    color: orange;
 }

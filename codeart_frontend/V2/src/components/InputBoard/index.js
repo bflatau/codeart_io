@@ -1,9 +1,25 @@
 import React, { Component } from "react";
 import './style.css';
 import InputBoardButton from '../InputBoardButton';
+import { TiPlus } from "react-icons/ti";
 
 
-const gameBoardSymbolsTop = [1, 2, 3, 4, 5 , 6 , 7 , 8, 9 , 10];
+const gameBoardSymbolsColumns = [
+    1, 2, 3, 4, 5 , 6 , <TiPlus className = 'orange' /> , 8, 9 , 10,
+    11, 12, 13, 15, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+    31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60
+];
+
+const gameBoardSymbolsRows = [
+    1, 2, 3, 4, 5 , 6 , 7 , 8, 9 , 10, 11, 
+    12, 13, 15, 15, 16, 17, 18, 19, 20, 21, 22, 
+    23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 
+    34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 
+    45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 
+];
 
 class InputBoard extends Component {
     constructor() {
@@ -73,15 +89,24 @@ class InputBoard extends Component {
                 </div>
                 <div className="input-board">
                   
-                    <div className='symbol-layout-container'>
-                        <div className='symbol-container'>
+                    <div className='column-symbol-layout-container'>
+                        <div className='column-symbol-container'>
                             {   
-                                gameBoardSymbolsTop.map((symbol, id)=>{
-                                    return( <div className='symbol' key={id}> {symbol} </div>)
+                                gameBoardSymbolsColumns.map((symbol, id)=>{
+                                    return( <div className='column-symbol' key={id}> {symbol} </div>)
                                 }) 
                             }
                         </div>
-                       
+                    </div>
+
+                    <div className='row-symbol-layout-container'>
+                        <div className='row-symbol-container'>
+                            {   
+                                gameBoardSymbolsRows.map((symbol, id)=>{
+                                    return( <div className='row-symbol' key={id}> {symbol} </div>)
+                                }) 
+                            }
+                        </div>
                     </div>
 
                     {this.createInputGrid()}

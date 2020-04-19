@@ -3,12 +3,12 @@
     font-size: 25px; 
     text-align: center;
     display: inline-block;
-    width: 6%;
-    margin-left: 2%;
-    margin-right: 2%;
+    width: 5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
     margin-top: 3.5%;
-    padding-top: 1.5%;
-    padding-bottom: 1.5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     background-color: black;
     z-index: 10;
     position: relative;
