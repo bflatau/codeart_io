@@ -53,25 +53,56 @@
 
 .column-symbol{
     color: red;
-    font-size: 25px; 
+    font-size: 2em; 
     text-align: center;
     display: inline-block;
     width: 6%;
     margin-left: 2%;
     margin-right: 2%;
-    margin-bottom: 5.5%;
+    margin-bottom: 4.6%;
 }
 
 .row-symbol{
     color: blue;
-    font-size: 25px; 
+    font-size: 2em; 
     text-align: center;
     display: inline-block;
     width: 4%;
     margin-right: 4.5%;
-    margin-bottom: 4.75%;
+    margin-bottom: 4%;
 }
 
 .orange{
     color: orange;
+}
+
+.purple{
+    color: purple;
+}
+
+.cyan{
+    color: cyan;
+}
+
+.blue{
+    color: blue;
+}
+
+.red{
+    color: red;
+}
+
+.yellow{
+    color: yellow;
+}
+
+.green{
+    color: green;
+}
+
+.magenta{
+    color: magenta;
+}
+.black{
+    color: black;
 }
