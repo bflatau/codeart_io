@@ -1,19 +1,21 @@
 .input-board-button{
     color: white;
-    font-size: 35px; 
+    font-size: 20px; 
     text-align: center;
     display: inline-block;
-    width: 8%;
-    margin-left: 1%;
-    margin-right: 1%;
-    margin-top: 2%;
-    padding-top: 1.5%;
-    padding-bottom: 1.5%;
+    width: 5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 3.5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     background-color: black;
+    z-index: 10;
+    position: relative;
 
 }
 
-.input-board-button:hover {
+/* .input-board-button:hover {
   background-color: rgb(54, 54, 54);
   cursor: pointer;
-}
+} */

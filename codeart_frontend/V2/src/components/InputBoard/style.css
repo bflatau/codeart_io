@@ -3,20 +3,102 @@
     width: 100%;
     display: inline-block;
     background-color: white;
+    z-index: 5;
 }
 
 
 .input-board-users{
     display: inline-block;
-    width: 100%;
+    width: 98%;
     padding-left: 2%;
     margin-top: 1%;
+    margin-bottom: 1%;
 }
 
 .input-board{
     display: inline-block;
-    width: 98%;
-    margin-bottom: 20px;
-    padding-left: 1%;
-    padding-right: 1%;
+    width: 96%;
+    margin-bottom: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+.column-symbol-layout-container, .row-symbol-layout-container{
+    width: 900px;
+    position: fixed;
+    margin:auto;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.column-symbol-container{
+    width: 830px;
+    margin: auto;
+}
+
+.column-symbol{
+    color: red;
+    font-size: 25px; 
+    text-align: center;
+    display: inline-block;
+    width: 6%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 4.55%;
+}
+
+
+.row-symbol-container{
+    width: 945px;
+    margin: auto;
+    margin-top: 35px;
+    padding-left: 20px;
+    /* bendo mess with padding left */
+}
+
+.row-symbol{
+    color: blue;
+    font-size: 25px; 
+    text-align: center;
+    display: inline-block;
+    width: 4%;
+    margin-right: 4.7%;
+    margin-bottom: 4%;
+}
+
+.orange{
+    color: orange;
+}
+
+.purple{
+    color: purple;
+}
+
+.cyan{
+    color: cyan;
+}
+
+.blue{
+    color: blue;
+}
+
+.red{
+    color: red;
+}
+
+.yellow{
+    color: yellow;
+}
+
+.green{
+    color: green;
+}
+
+.magenta{
+    color: magenta;
+}
+.black{
+    color: black;
 }

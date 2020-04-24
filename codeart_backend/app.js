@@ -5,8 +5,6 @@ const socketIO = require('socket.io');
 const bodyParser  = require("body-parser");
 const cors = require('cors');
 
-
-
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
 const server = http.createServer(app);
@@ -14,13 +12,13 @@ const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
 const buttonController = require('./controllers/buttonController');
-
+const megaController= require('./controllers/megaController');
 
 /// SET UP CORS ///
 // need to call cors before setting up routes
 // Set up a whitelist and check against it:
 
-// const whitelist = ['http://test.awarchitect.com']
+// const whitelist = ['http://codeart.benflatau.com']
 // const corsOptions = {
 //     origin: function (origin, callback) {
 //         if (whitelist.indexOf(origin) !== -1) {
@@ -40,7 +38,6 @@ app.use(cors());
 
 
 /// PUBLIC API ENDPOINTS ///
-
 app.get('/bentest', function (req, res) {
   res.send('helloooooo')
 });
@@ -54,39 +51,31 @@ app.route('/game/:gameNumber/off/:buttonNumber')
 app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity);
 
-
-
+/// ARDUINO STUFF ///
+megaController.initializeMega(io);
 
 /// WEB SOCKET STUFF ///
-
 io.on('connection', socket => {
 
   /// On connect, console log on server, and then send number of users to client
-  console.log('New client connected')
   io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
-  // io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount, numberOfInputs: numberOfInputs });
-  
 
-  socket.on('button pressed', (buttonID) => {
-    console.log(`button ${buttonID} was pressed`)
-    io.sockets.emit('button pressed', buttonID)
-  })
+  /// get mega button state when connecting and send to newly connected user
+  if (megaController.getMegaState().length > 0){  
+    megaController.getMegaState().forEach(button =>{
+      io.to(socket.id).emit('button down', button)
+    });
+  } 
 
-
-  socket.on('change color', (color) => {
-    console.log('Color Changed to: ', color)
-    io.sockets.emit('change color', color)
-  })
-  
   /// When a user disconnects, console log and then update the clients with the user count
   socket.on('disconnect', () => {
     console.log('user disconnected')
-    io.sockets.emit('connected users', io.engine.clientsCount);
+    io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
+
   })
 })
 
-
-//// NEW SERVER STUFF /////
+//// WEB SERVER STUFF /////
 const port = 8090;
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
