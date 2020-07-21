@@ -143,3 +143,22 @@ a, button, input, select {
 	margin-top: 20px;
 	padding: 10px;
 }
+
+
+#c {
+  background: #4D79D8;
+  -webkit-animation: hue 100s infinite;
+  animation: hue 100s infinite;
+} @keyframes hue {
+  0%   {background-color: #4D79D8;}
+  25%  {background-color: #33cc33;}
+  50%  {background-color: #d3a438;}
+  75%  {background-color: #ea3224;}
+  100% {background-color: #4D79D8;}
+} @-webkit-keyframes hue {
+  0%   {background-color: #4D79D8;}
+  25%  {background-color: #33cc33;}
+  50%  {background-color: #d3a438;}
+  75%  {background-color: #ea3224;}
+  100% {background-color: #4D79D8;}
+}

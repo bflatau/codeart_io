@@ -52,8 +52,6 @@ export function init() {
         controls.enableZoom = false;
         scene.userData.controls = controls;
 
-        console.log(controls);
-
         // add one random mesh to each scene
         // var geometry = geometries[ geometries.length * Math.random() | 0 ];
         var geometry = geometries[0];
@@ -112,11 +110,11 @@ export function render() {
 
     canvas.style.transform = `translateY(${window.scrollY}px)`;
 
-    renderer.setClearColor( 0xffffff );
+    renderer.setClearColor( 0xffffff ); //background color
     renderer.setScissorTest( false );
     renderer.clear();
 
-    renderer.setClearColor( 0xe0e0e0 );
+    renderer.setClearColor( 0xe0e0e0 ); //box background color
     renderer.setScissorTest( true );
 
     scenes.forEach( function ( scene ) {
