@@ -1,4 +1,7 @@
 import "./styles.scss";
-import threecode from './js/threecode';
+import inputBoxThreeJs from './js/inputBoxThreeJs';
+import header from './js/header';
 
+
+// init();
 console.log("hello stupid!");

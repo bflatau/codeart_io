@@ -50,6 +50,8 @@ export function init() {
         controls.maxDistance = 5;
         controls.enablePan = false;
         controls.enableZoom = false;
+        controls.maxPolarAngle = 0;
+        controls.minPolarAngle = Math.PI/2;
         scene.userData.controls = controls;
 
         // add one random mesh to each scene
@@ -108,7 +110,8 @@ export function render() {
 
     updateSize();
 
-    canvas.style.transform = `translateY(${window.scrollY}px)`;
+    // BENDO: check if this can come back??
+    // canvas.style.transform = `translateY(${window.scrollY}px)`;
 
     renderer.setClearColor( 0xffffff ); //background color
     renderer.setScissorTest( false );
