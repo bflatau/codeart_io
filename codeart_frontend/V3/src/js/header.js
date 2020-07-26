@@ -68,7 +68,7 @@ export function init() {
         TweenMax.fromTo(leon.drawing[i], 1.6, {
             value: 0
         }, {
-            delay: i * 0.05,
+            delay: i * 0.25,
             value: 1,
             ease: Power4.easeOut
         });

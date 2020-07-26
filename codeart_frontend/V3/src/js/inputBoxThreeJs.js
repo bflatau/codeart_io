@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from './customOrbitControls';
+import { OrbitControls } from './lib/customOrbitControls';
 
 
 var canvas;
@@ -33,9 +33,9 @@ export function init() {
         var sceneElement = document.createElement( 'div' );
         element.appendChild( sceneElement );
 
-        var descriptionElement = document.createElement( 'div' );
-        descriptionElement.innerText = 'Scene ' + ( i + 1 );
-        element.appendChild( descriptionElement );
+        // var descriptionElement = document.createElement( 'div' );
+        // descriptionElement.innerText = 'Scene ' + ( i + 1 );
+        // element.appendChild( descriptionElement );
 
         // the element that represents the area we want to render the scene
         scene.userData.element = sceneElement;
@@ -111,7 +111,7 @@ export function render() {
     updateSize();
 
     // BENDO: check if this can come back??
-    // canvas.style.transform = `translateY(${window.scrollY}px)`;
+    canvas.style.transform = `translateY(${window.scrollY}px)`;
 
     renderer.setClearColor( 0xffffff ); //background color
     renderer.setScissorTest( false );
@@ -132,8 +132,9 @@ export function render() {
         // get its position relative to the page's viewport
         var rect = element.getBoundingClientRect();
 
+
         // check if it's offscreen. If so skip it
-        if ( rect.bottom < 0 || rect.top > renderer.domElement.clientHeight ||
+        if ( rect.bottom < 0 || rect.top > renderer.domElement.clientHeight  ||
              rect.right < 0 || rect.left > renderer.domElement.clientWidth ) {
 
             return; // it's off screen
@@ -144,7 +145,7 @@ export function render() {
         var width = rect.right - rect.left;
         var height = rect.bottom - rect.top;
         var left = rect.left;
-        var bottom = renderer.domElement.clientHeight - rect.bottom;
+        var bottom = renderer.domElement.clientHeight - rect.bottom + 208;//BENDO: header height
 
         renderer.setViewport( left, bottom, width, height );
         renderer.setScissor( left, bottom, width, height );
