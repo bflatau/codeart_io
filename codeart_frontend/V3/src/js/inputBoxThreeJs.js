@@ -11,7 +11,7 @@ animate();
 
 export function init() {
 
-    canvas = document.getElementById( "c" );
+    canvas = document.getElementById( "canvas" );
 
     var geometries = [
         new THREE.BoxBufferGeometry( 1, 1, 1 ),

@@ -1,48 +1,35 @@
 $primary-color: white;
 $bg: black;
 
-
-
-h1 {
-  color: $primary-color;
-  background-color: $bg;
+#header-container{
+	display: block;
+	height: 40px;
 }
 
-
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
-
-body {
-  background-color: #fff;
-  color: #444;
-}
-
-a {
-  color: #08f;
-}
 
 #content {
 // margin-top: 200px;
-  position: absolute;
-          width: 100%;
-  z-index: 1;
-          text-align: center;
+	position: absolute;
+	left: 0;
+	width: 100%;
+  	// z-index: 1;
+	text-align: center;
+	// display: inline-block;
+
 }
 
-#c {
+#canvas {
   position: absolute;
-  /* left: 0; */
+  left: 0;
 //   top: 200px;
   width: 100%;
   height: 100%;
 }
 
 .list-item {
-          display: inline-block;
-          width: 10%;
-  margin: 1%;
+	display: inline-block;
+    width: 10%;
+  	margin: 1%;
   /* box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.25); */
 }
 
@@ -60,117 +47,49 @@ a {
 }
 
 
+// #info {
+// 	position: relative;
+// 	top: 0px;
+// 	width: 100%;
+// 	padding: 10px;
+// 	box-sizing: border-box;
+// 	text-align: center;
+// 	-moz-user-select: none;
+// 	-webkit-user-select: none;
+// 	-ms-user-select: none;
+// 	user-select: none;
+// 	pointer-events: none;
+// 	z-index: 1; /* TODO Solve this in HTML */
+// }
 
-body {
-	margin: 0;
-	background-color: #000;
-	color: #fff;
-	font-family: Monospace;
-	font-size: 13px;
-	line-height: 24px;
-	overscroll-behavior: none;
-}
-
-a {
-	color: #ff0;
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-button {
-	cursor: pointer;
-	text-transform: uppercase;
-}
-
-canvas {
-	display: block;
-}
-
-#info {
-	position: relative;
-	top: 0px;
-	width: 100%;
-	padding: 10px;
-	box-sizing: border-box;
-	text-align: center;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	pointer-events: none;
-	z-index: 1; /* TODO Solve this in HTML */
-}
-
-a, button, input, select {
-	pointer-events: auto;
-}
-
-.dg.ac {
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	z-index: 2 !important; /* TODO Solve this in HTML */
-}
-
-#overlay {
-	position: relative;
-	z-index: 2;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: rgba(0,0,0,0.7);
-}
-
-	#overlay button {
-		background: #ffffff;
-		border: 0;
-		color: #000000;
-		padding: 16px 20px;
-		text-transform: uppercase;
-		cursor: pointer;
-	}
-
-#notSupported {
-	width: 50%;
-	margin: auto;
-	background-color: #f00;
-	margin-top: 20px;
-	padding: 10px;
-}
+// a, button, input, select {
+// 	pointer-events: auto;
+// }
 
 
-#c {
-  background: #4D79D8;
-  -webkit-animation: hue 100s infinite;
-  animation: hue 100s infinite;
-} @keyframes hue {
-  0%   {background-color: #4D79D8;}
-  25%  {background-color: #33cc33;}
-  50%  {background-color: #d3a438;}
-  75%  {background-color: #ea3224;}
-  100% {background-color: #4D79D8;}
-} @-webkit-keyframes hue {
-  0%   {background-color: #4D79D8;}
-  25%  {background-color: #33cc33;}
-  50%  {background-color: #d3a438;}
-  75%  {background-color: #ea3224;}
-  100% {background-color: #4D79D8;}
-}
+// #c {
+//   background: #4D79D8;
+//   -webkit-animation: hue 100s infinite;
+//   animation: hue 100s infinite;
+// } @keyframes hue {
+//   0%   {background-color: #4D79D8;}
+//   25%  {background-color: #33cc33;}
+//   50%  {background-color: #d3a438;}
+//   75%  {background-color: #ea3224;}
+//   100% {background-color: #4D79D8;}
+// } @-webkit-keyframes hue {
+//   0%   {background-color: #4D79D8;}
+//   25%  {background-color: #33cc33;}
+//   50%  {background-color: #d3a438;}
+//   75%  {background-color: #ea3224;}
+//   100% {background-color: #4D79D8;}
+// }
 
-#header-container{
-	display: inline-block;
-}
+
 
 #app{
 	height: 100%;
+	display: inline-block;
 }
 
 // .header-canvas{

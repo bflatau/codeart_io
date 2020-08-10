@@ -1,7 +1,7 @@
 import "./styles.scss";
 import inputBoxThreeJs from './js/inputBoxThreeJs';
-import header from './js/header';
+// import header from './js/header';
 
 
 // init();
-console.log("hello stupid!");
+console.log("I work!");
