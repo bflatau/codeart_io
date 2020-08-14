@@ -21,7 +21,8 @@ export function init() {
     ];
 
     var content = document.getElementById( 'content' );
-
+    
+    // 40 == number of boxes
     for ( var i = 0; i < 40; i ++ ) {
 
         var scene = new THREE.Scene();

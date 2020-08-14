@@ -1,14 +1,34 @@
 $primary-color: white;
 $bg: black;
 
+body{
+  padding: 0;
+  margin: 0;
+}
+
+#app{
+  // height: 100%;
+  // width: 100%;
+	// display: inline-block;
+}
+
+
 #header-container{
-	display: block;
-	height: 40px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-size: 30px;
+  color: white;
+  background-color: black;
+  width: 100%;
+  position: fixed;
+  display: block;
+  z-index: 99;
+
 }
 
 
 #content {
-// margin-top: 200px;
+  // margin-top: 200px;
 	position: absolute;
 	left: 0;
 	width: 100%;
@@ -21,7 +41,7 @@ $bg: black;
 #canvas {
   position: absolute;
   left: 0;
-//   top: 200px;
+  // margin-top: 200px;
   width: 100%;
   height: 100%;
 }
@@ -87,10 +107,6 @@ $bg: black;
 
 
 
-#app{
-	height: 100%;
-	display: inline-block;
-}
 
 // .header-canvas{
 // 	width: 100%;
