@@ -112,7 +112,7 @@ export function render() {
     updateSize();
 
     // BENDO: check if this can come back??
-    // canvas.style.transform = `translateY(${window.scrollY}px)`;
+    canvas.style.transform = `translateY(${window.scrollY}px)`;
 
     renderer.setClearColor( 0xffffff ); //background color
     renderer.setScissorTest( false );
