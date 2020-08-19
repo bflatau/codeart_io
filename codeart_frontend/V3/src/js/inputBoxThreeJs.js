@@ -71,12 +71,16 @@ export function init() {
 
         var x = document.createElement("canvas");
         var xc = x.getContext("2d");
+
+        //scale of text
         x.width = x.height = 128;
-        xc.shadowColor = "#000";
-        xc.shadowBlur = 7;
-        xc.fillStyle = "orange";
-        xc.font = "30pt arial bold";
-        xc.fillText('Test', 10, 64);
+        // xc.shadowColor = "#000";
+        // xc.shadowBlur = 0;
+        xc.fillStyle = "white";
+        xc.font = "60pt arial bold";
+
+        // X, Y for text position
+        xc.fillText('X', 34, 90);
 
         var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(x), transparent: true });
         xm.map.needsUpdate = true;
