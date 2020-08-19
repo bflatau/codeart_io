@@ -34,9 +34,9 @@ export function init() {
         var sceneElement = document.createElement( 'div' );
         element.appendChild( sceneElement );
 
-        var descriptionElement = document.createElement( 'div' );
-        descriptionElement.innerText = 'Scene ' + ( i + 1 );
-        element.appendChild( descriptionElement );
+        // var descriptionElement = document.createElement( 'div' );
+        // descriptionElement.innerText = 'Scene ' + ( i + 1 );
+        // element.appendChild( descriptionElement );
 
         // the element that represents the area we want to render the scene
         scene.userData.element = sceneElement;
@@ -111,7 +111,7 @@ export function render() {
 
     updateSize();
 
-    // BENDO: check if this can come back??
+    // BENNOTE: check this thing periodically, kinda cool
     canvas.style.transform = `translateY(${window.scrollY}px)`;
 
     renderer.setClearColor( 0xffffff ); //background color
