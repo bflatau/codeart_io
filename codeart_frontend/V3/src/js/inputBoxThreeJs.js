@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from './customOrbitControls';
+import { OrbitControls } from './lib/customOrbitControls';
 
 
 var canvas;
@@ -57,6 +57,7 @@ export function init() {
 
         // add one random mesh to each scene
         // var geometry = geometries[ geometries.length * Math.random() | 0 ];
+        //BENNOTE: just create boxes!
         var geometry = geometries[0];
 
         var material = new THREE.MeshStandardMaterial( {
@@ -68,7 +69,28 @@ export function init() {
 
         } );
 
-        scene.add( new THREE.Mesh( geometry, material ) );
+        var x = document.createElement("canvas");
+        var xc = x.getContext("2d");
+        x.width = x.height = 128;
+        xc.shadowColor = "#000";
+        xc.shadowBlur = 7;
+        xc.fillStyle = "orange";
+        xc.font = "30pt arial bold";
+        xc.fillText('Test', 10, 64);
+
+        var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(x), transparent: true });
+        xm.map.needsUpdate = true;
+
+        var mesh = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), xm);
+        mesh.position.x = 0;
+        mesh.position.y = 0;
+        mesh.position.z = 0;
+        mesh.doubleSided = true;
+        scene.add(mesh);
+
+
+
+        scene.add( new THREE.Mesh( geometry, material) );
 
         scene.add( new THREE.HemisphereLight( 0xaaaaaa, 0x444444 ) );
 
