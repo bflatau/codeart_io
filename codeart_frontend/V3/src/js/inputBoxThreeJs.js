@@ -10,8 +10,18 @@ init();
 animate();
 
 export function init() {
+    
 
     canvas = document.getElementById( "canvas" );
+
+
+    //BENDO CHANGE COLOR BACKGROUND??
+    // var ctx = canvas.getContext("2d");
+    // // Add behind elements.
+    // ctx.globalCompositeOperation = 'difference';
+    // // Now draw!
+    // ctx.fillStyle = "blue";
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     var geometries = [
         new THREE.BoxBufferGeometry( 1, 1, 1 ),
@@ -177,15 +187,12 @@ export function init() {
 
         ];
         
-        
-        // for (var i = 0; i < textCanvasMeshes.length; i++){
         textCanvasMeshes[0].map.needsUpdate = true;
         textCanvasMeshes[1].map.needsUpdate = true;
         textCanvasMeshes[2].map.needsUpdate = true;
         textCanvasMeshes[3].map.needsUpdate = true;
         textCanvasMeshes[4].map.needsUpdate = true;
         textCanvasMeshes[5].map.needsUpdate = true;
-        // }
         
 
         // var textMesh = new THREE.Mesh(new THREE.BoxBufferGeometry(1, 1, 1), textCanvasMeshes);
@@ -193,13 +200,17 @@ export function init() {
 
         /// END CREATE TEXT CANVAS ///
 
+
+        ///CHANGE BACKGROUND COLOR OF SPINNY BOXES
+        scene.background = new THREE.Color(0x2A2A2A); 
+
         scenes.push( scene );
 
     }
 
 
     renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true } );
-    renderer.setClearColor( 0xffffff, 1 );
+    renderer.setClearColor(0xb0f442, 1 );
     renderer.setPixelRatio( window.devicePixelRatio );
 
 }
@@ -231,11 +242,11 @@ export function render() {
     // BENNOTE: check this thing periodically, kinda cool
     canvas.style.transform = `translateY(${window.scrollY}px)`;
 
-    renderer.setClearColor( 0xffffff ); //background color
+    renderer.setClearColor( 0x000000 ); //background color
     renderer.setScissorTest( false );
     renderer.clear();
 
-    renderer.setClearColor( 0xe0e0e0 ); //box background color
+    renderer.setClearColor( 0xe0e0e0 ); // spinny box color?
     renderer.setScissorTest( true );
 
     scenes.forEach( function ( scene ) {
