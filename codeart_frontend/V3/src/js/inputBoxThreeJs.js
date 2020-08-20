@@ -60,14 +60,63 @@ export function init() {
         //BENNOTE: just create boxes!
         var geometry = geometries[0];
 
-        var material = new THREE.MeshStandardMaterial( {
 
-            color: new THREE.Color().setHSL( Math.random(), 1, 0.75 ),
-            roughness: 0.5,
-            metalness: 0,
-            flatShading: true
+        var materials = [ 
+            
+            new THREE.MeshStandardMaterial( {
+                color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
+                roughness: 0.5,
+                metalness: 0,
+                flatShading: true
+            }),
 
-        } );
+            new THREE.MeshStandardMaterial({
+                color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
+                roughness: 0.5,
+                metalness: 0,
+                flatShading: true
+            }),
+
+            new THREE.MeshStandardMaterial({
+                color: 'black',
+                roughness: 0.5,
+                metalness: 0,
+                flatShading: true
+            }),
+
+            new THREE.MeshStandardMaterial({
+                color: 'black',
+                roughness: 0.5,
+                metalness: 0,
+                flatShading: true
+            }),
+
+            new THREE.MeshStandardMaterial({
+                color: 'black',
+                roughness: 0.5,
+                metalness: 0,
+                flatShading: true
+            }),
+
+            new THREE.MeshStandardMaterial({
+                color: 'black',
+                roughness: 0.5,
+                metalness: 0,
+                flatShading: true
+            })
+
+        ];
+
+        scene.add( new THREE.Mesh( geometry, materials) );
+
+        scene.add( new THREE.HemisphereLight( 0xaaaaaa, 0x444444 ) );
+
+        var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+        light.position.set( 1, 1, 1 );
+        scene.add( light );
+
+
+        ///CREATE TEXT CANVAS///
 
         var x = document.createElement("canvas");
         var xc = x.getContext("2d");
@@ -79,8 +128,11 @@ export function init() {
         xc.fillStyle = "white";
         xc.font = "60pt arial bold";
 
-        // X, Y for text position
-        xc.fillText('X', 34, 90);
+        var letters = ['X', 'O', 'I', 'B'];
+        var textVal = letters[ letters.length * Math.random() | 0 ];
+
+        // numbers are X, Y for text position
+        xc.fillText(textVal, 34, 90);
 
         var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(x), transparent: true });
         xm.map.needsUpdate = true;
@@ -92,15 +144,7 @@ export function init() {
         mesh.doubleSided = true;
         scene.add(mesh);
 
-
-
-        scene.add( new THREE.Mesh( geometry, material) );
-
-        scene.add( new THREE.HemisphereLight( 0xaaaaaa, 0x444444 ) );
-
-        var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-        light.position.set( 1, 1, 1 );
-        scene.add( light );
+        /// END CREATE TEXT CANVAS ///
 
         scenes.push( scene );
 
