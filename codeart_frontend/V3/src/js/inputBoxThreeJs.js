@@ -116,33 +116,80 @@ export function init() {
         scene.add( light );
 
 
-        ///CREATE TEXT CANVAS///
+        ///CREATE A CANVAS///
 
-        var x = document.createElement("canvas");
-        var xc = x.getContext("2d");
+        var aCanvas = document.createElement("canvas");
+        var aCanvas2d = aCanvas.getContext("2d");
 
         //scale of text
-        x.width = x.height = 128;
-        // xc.shadowColor = "#000";
-        // xc.shadowBlur = 0;
-        xc.fillStyle = "white";
-        xc.font = "60pt arial bold";
+        aCanvas.width = aCanvas.height = 128;
+        aCanvas2d.fillStyle = "white";
+        aCanvas2d.font = "60pt arial bold";
 
-        var letters = ['X', 'O', 'I', 'B'];
-        var textVal = letters[ letters.length * Math.random() | 0 ];
+        var lettersA = ['&', '@', '%', '$'];
+        var textValA = lettersA[ lettersA.length * Math.random() | 0 ];
 
         // numbers are X, Y for text position
-        xc.fillText(textVal, 34, 90);
+        aCanvas2d.fillText(textValA, 34, 90);
 
-        var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(x), transparent: true });
-        xm.map.needsUpdate = true;
 
-        var mesh = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), xm);
-        mesh.position.x = 0;
-        mesh.position.y = 0;
-        mesh.position.z = 0;
-        mesh.doubleSided = true;
-        scene.add(mesh);
+
+        ///CREATE B CANVAS///
+
+        var bCanvas = document.createElement("canvas");
+        var bCanvas2d = bCanvas.getContext("2d");
+
+        //scale of text
+        bCanvas.width = bCanvas.height = 128;
+        bCanvas2d.fillStyle = "white";
+        bCanvas2d.font = "60pt arial bold";
+
+        var lettersB = ['&', '@', '%', '$'];
+        var textValB = lettersB[lettersB.length * Math.random() | 0];
+
+        // numbers are X, Y for text position
+        bCanvas2d.fillText(textValB, 34, 90);
+
+
+       
+        ///CREATE X CANVAS ///
+
+        var xCanvas = document.createElement("canvas");
+        var xCanvas2d = xCanvas.getContext("2d");
+
+        //scale of text
+        xCanvas.width = xCanvas.height = 128;
+        xCanvas2d.fillStyle = "white";
+        xCanvas2d.font = "60pt arial bold";
+
+        // numbers are X, Y for text position
+        xCanvas2d.fillText('X', 34, 90);
+
+        
+
+        var textCanvasMeshes = [
+            new THREE.MeshBasicMaterial({ map: new THREE.Texture(aCanvas), transparent: true }),
+            new THREE.MeshBasicMaterial({ map: new THREE.Texture(bCanvas), transparent: true }),
+            new THREE.MeshBasicMaterial({ map: new THREE.Texture(aCanvas), transparent: true }),
+            new THREE.MeshBasicMaterial({ map: new THREE.Texture(aCanvas), transparent: true }),
+            new THREE.MeshBasicMaterial({ map: new THREE.Texture(xCanvas), transparent: true }),
+            new THREE.MeshBasicMaterial({ map: new THREE.Texture(xCanvas), transparent: true })
+
+        ];
+        
+        
+        // for (var i = 0; i < textCanvasMeshes.length; i++){
+        textCanvasMeshes[0].map.needsUpdate = true;
+        textCanvasMeshes[1].map.needsUpdate = true;
+        textCanvasMeshes[2].map.needsUpdate = true;
+        textCanvasMeshes[3].map.needsUpdate = true;
+        textCanvasMeshes[4].map.needsUpdate = true;
+        textCanvasMeshes[5].map.needsUpdate = true;
+        // }
+        
+
+        // var textMesh = new THREE.Mesh(new THREE.BoxBufferGeometry(1, 1, 1), textCanvasMeshes);
+        scene.add(new THREE.Mesh(geometry, textCanvasMeshes));
 
         /// END CREATE TEXT CANVAS ///
 
