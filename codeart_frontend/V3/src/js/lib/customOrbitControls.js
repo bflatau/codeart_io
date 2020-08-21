@@ -155,6 +155,16 @@ var OrbitControls = function ( object, domElement ) {
 
 			var position = scope.object.position;
 
+			//START BEN EDITS
+
+				if(position.x === 0 || position.x === 2 ){
+					console.log(position.x)
+				}
+				
+				// console.log(scope.domElement.id)
+			//END BEN EDITS
+
+
 			offset.copy( position ).sub( scope.target );
 
 			// rotate offset to "y-axis-is-up" space
@@ -497,6 +507,8 @@ var OrbitControls = function ( object, domElement ) {
 	function handleMouseDownRotate( event ) {
 
 		rotateStart.set( event.clientX, event.clientY );
+
+
 
 	}
 
