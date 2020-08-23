@@ -157,10 +157,18 @@ var OrbitControls = function ( object, domElement ) {
 
 			//START BEN EDITS
 
-				if(position.x === 0 || position.x === 2 ){
-					console.log(position.x)
+				if(position.x === 2){
+					console.log('SIDE A');
 				}
+				else if(position.x === -2){
+					console.log('SIDE B');
+				}
+				else if(Math.abs(position.x) >= 0 && Math.abs(position.x) < 0.01 ){
+					console.log("OFF")
+				}
+				  
 				
+
 				// console.log(scope.domElement.id)
 			//END BEN EDITS
 
