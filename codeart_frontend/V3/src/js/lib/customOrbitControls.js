@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -167,7 +169,12 @@ var OrbitControls = function ( object, domElement ) {
 					console.log("OFF")
 				}
 				  
-				// console.log(position.x);
+
+				// console.log(THREE.Math.radToDeg(Math.abs(position.x)) % 360)
+				// console.log(position);
+
+				// console.log(scope.object.rotation.x);
+				// console.log(scope.object.quaternion.x);
 
 				// console.log(scope.domElement.id)
 
@@ -546,6 +553,10 @@ var OrbitControls = function ( object, domElement ) {
 		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );
 
 		rotateStart.copy( rotateEnd );
+
+		//START BEN
+			console.log(THREE.Math.radToDeg(event.clientX) % 360);
+		//END BEN
 
 		scope.update();
 
