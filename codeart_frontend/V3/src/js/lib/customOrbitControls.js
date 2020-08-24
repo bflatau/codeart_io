@@ -68,7 +68,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	// Set to false to disable rotating
 	this.enableRotate = true;
-	this.rotateSpeed = 1.0;
+	this.rotateSpeed = .35;
 
 	// Set to false to disable panning
 	this.enablePan = true;
@@ -157,19 +157,20 @@ var OrbitControls = function ( object, domElement ) {
 
 			//START BEN EDITS
 
-				if(position.x === 2){
+				if(position.x > 1.999 && position.x < 2.001){
 					console.log('SIDE A');
 				}
-				else if(position.x === -2){
+				else if(position.x < -1.999 && position.x > -2.001){
 					console.log('SIDE B');
 				}
-				else if(Math.abs(position.x) >= 0 && Math.abs(position.x) < 0.01 ){
+				else if(position.x > -0.04 && position.x < 0.04 ){
 					console.log("OFF")
 				}
 				  
-				
+				// console.log(position.x);
 
 				// console.log(scope.domElement.id)
+
 			//END BEN EDITS
 
 
