@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -68,7 +70,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	// Set to false to disable rotating
 	this.enableRotate = true;
-	this.rotateSpeed = 1.0;
+	this.rotateSpeed = .25;
 
 	// Set to false to disable panning
 	this.enablePan = true;
@@ -97,6 +99,11 @@ var OrbitControls = function ( object, domElement ) {
 	this.target0 = this.target.clone();
 	this.position0 = this.object.position.clone();
 	this.zoom0 = this.object.zoom;
+
+	//BEN box spin
+	var sideARotate = true;
+	var sideBRotate = true;
+	var sideXRotate = false; 
 
 	//
 	// public methods
@@ -154,6 +161,43 @@ var OrbitControls = function ( object, domElement ) {
 		return function update() {
 
 			var position = scope.object.position;
+
+			//START BEN EDITS
+
+				if(position.x > 1.999 && position.x < 2.001 && sideARotate){					
+					this.enableRotate = false;
+					setTimeout(() => {
+						 this.enableRotate = true; 
+						 sideARotate = false;
+						 sideBRotate = true;
+						 sideXRotate = true;
+					}, 500);
+					console.log(scope.domElement.id, 'SIDE A');
+				}
+				else if(position.x < -1.999 && position.x > -2.001 && sideBRotate){
+					this.enableRotate = false;
+					setTimeout(() => { 
+						this.enableRotate = true;
+						sideARotate = true;
+						sideBRotate = false;
+						sideXRotate = true; 
+					}, 500);
+					console.log(scope.domElement.id, 'SIDE B');
+
+				}
+				else if(position.x > -0.04 && position.x < 0.04 && sideXRotate){
+					this.enableRotate = false;
+					setTimeout(() => { 
+						this.enableRotate = true;
+						sideARotate = true;
+						sideBRotate = true;
+						sideXRotate = false;  
+					}, 500);
+					console.log(scope.domElement.id, 'OFF');
+				}
+
+			//END BEN EDITS
+
 
 			offset.copy( position ).sub( scope.target );
 
@@ -498,6 +542,8 @@ var OrbitControls = function ( object, domElement ) {
 
 		rotateStart.set( event.clientX, event.clientY );
 
+
+
 	}
 
 	function handleMouseDownDolly( event ) {
@@ -525,6 +571,10 @@ var OrbitControls = function ( object, domElement ) {
 		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );
 
 		rotateStart.copy( rotateEnd );
+
+		//START BEN
+			// console.log(THREE.Math.radToDeg(event.clientX) % 360);
+		//END BEN
 
 		scope.update();
 

@@ -14,21 +14,7 @@ export function init() {
 
     canvas = document.getElementById( "canvas" );
 
-
-    //BENDO CHANGE COLOR BACKGROUND??
-    // var ctx = canvas.getContext("2d");
-    // // Add behind elements.
-    // ctx.globalCompositeOperation = 'difference';
-    // // Now draw!
-    // ctx.fillStyle = "blue";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    var geometries = [
-        new THREE.BoxBufferGeometry( 1, 1, 1 ),
-        new THREE.SphereBufferGeometry( 0.5, 12, 8 ),
-        new THREE.DodecahedronBufferGeometry( 0.5 ),
-        new THREE.CylinderBufferGeometry( 0.5, 0.5, 1, 12 )
-    ];
+    var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
 
     var content = document.getElementById( 'content' );
     
@@ -42,11 +28,10 @@ export function init() {
         element.className = 'list-item';
 
         var sceneElement = document.createElement( 'div' );
-        element.appendChild( sceneElement );
+        //give boxes an id 
+        sceneElement.id = i;
 
-        // var descriptionElement = document.createElement( 'div' );
-        // descriptionElement.innerText = 'Scene ' + ( i + 1 );
-        // element.appendChild( descriptionElement );
+        element.appendChild( sceneElement );
 
         // the element that represents the area we want to render the scene
         scene.userData.element = sceneElement;
@@ -64,12 +49,6 @@ export function init() {
         controls.maxPolarAngle = 0;
         controls.minPolarAngle = Math.PI/2;
         scene.userData.controls = controls;
-
-        // add one random mesh to each scene
-        // var geometry = geometries[ geometries.length * Math.random() | 0 ];
-        //BENNOTE: just create boxes!
-        var geometry = geometries[0];
-
 
         var materials = [ 
             
@@ -186,7 +165,8 @@ export function init() {
             new THREE.MeshBasicMaterial({ map: new THREE.Texture(xCanvas), transparent: true })
 
         ];
-        
+
+        // BENDO: HOW TO REFACTOR THIS?????
         textCanvasMeshes[0].map.needsUpdate = true;
         textCanvasMeshes[1].map.needsUpdate = true;
         textCanvasMeshes[2].map.needsUpdate = true;
