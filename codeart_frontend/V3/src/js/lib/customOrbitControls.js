@@ -70,7 +70,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	// Set to false to disable rotating
 	this.enableRotate = true;
-	this.rotateSpeed = .35;
+	this.rotateSpeed = .25;
 
 	// Set to false to disable panning
 	this.enablePan = true;
@@ -99,6 +99,11 @@ var OrbitControls = function ( object, domElement ) {
 	this.target0 = this.target.clone();
 	this.position0 = this.object.position.clone();
 	this.zoom0 = this.object.zoom;
+
+	//BEN box spin
+	var sideARotate = true;
+	var sideBRotate = true;
+	var sideXRotate = false; 
 
 	//
 	// public methods
@@ -159,24 +164,37 @@ var OrbitControls = function ( object, domElement ) {
 
 			//START BEN EDITS
 
-				if(position.x > 1.999 && position.x < 2.001){
-					console.log('SIDE A');
+				if(position.x > 1.999 && position.x < 2.001 && sideARotate){					
+					this.enableRotate = false;
+					setTimeout(() => {
+						 this.enableRotate = true; 
+						 sideARotate = false;
+						 sideBRotate = true;
+						 sideXRotate = true;
+					}, 500);
+					console.log(scope.domElement.id, 'SIDE A');
 				}
-				else if(position.x < -1.999 && position.x > -2.001){
-					console.log('SIDE B');
+				else if(position.x < -1.999 && position.x > -2.001 && sideBRotate){
+					this.enableRotate = false;
+					setTimeout(() => { 
+						this.enableRotate = true;
+						sideARotate = true;
+						sideBRotate = false;
+						sideXRotate = true; 
+					}, 500);
+					console.log(scope.domElement.id, 'SIDE B');
+
 				}
-				else if(position.x > -0.04 && position.x < 0.04 ){
-					console.log("OFF")
+				else if(position.x > -0.04 && position.x < 0.04 && sideXRotate){
+					this.enableRotate = false;
+					setTimeout(() => { 
+						this.enableRotate = true;
+						sideARotate = true;
+						sideBRotate = true;
+						sideXRotate = false;  
+					}, 500);
+					console.log(scope.domElement.id, 'OFF');
 				}
-				  
-
-				// console.log(THREE.Math.radToDeg(Math.abs(position.x)) % 360)
-				// console.log(position);
-
-				// console.log(scope.object.rotation.x);
-				// console.log(scope.object.quaternion.x);
-
-				// console.log(scope.domElement.id)
 
 			//END BEN EDITS
 
@@ -555,7 +573,7 @@ var OrbitControls = function ( object, domElement ) {
 		rotateStart.copy( rotateEnd );
 
 		//START BEN
-			console.log(THREE.Math.radToDeg(event.clientX) % 360);
+			// console.log(THREE.Math.radToDeg(event.clientX) % 360);
 		//END BEN
 
 		scope.update();
