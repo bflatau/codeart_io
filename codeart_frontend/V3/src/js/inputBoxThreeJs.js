@@ -6,6 +6,96 @@ var canvas;
 
 var scenes = [], renderer;
 
+var aSide = [
+    { color: .5, letter: '$', letterPosition: 44 },
+    { color: .5, letter: '@', letterPosition: 28 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+    { color: .5, letter: '$', letterPosition: 34 },
+    { color: .5, letter: '@', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '%', letterPosition: 34 },
+
+];
+
+var bSide = [
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+    { color: .5, letter: '&', letterPosition: 34 },
+];
+
+console.log(bSide.length);
+
+
 init();
 animate();
 
@@ -60,7 +150,7 @@ export function init() {
             }),
 
             new THREE.MeshStandardMaterial({
-                color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
+                color: new THREE.Color().setHSL(bSide[i].color, 1, 0.75),
                 roughness: 0.5,
                 metalness: 0,
                 flatShading: true
@@ -100,9 +190,11 @@ export function init() {
 
         scene.add( new THREE.HemisphereLight( 0xaaaaaa, 0x444444 ) );
 
-        var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-        light.position.set( 1, 1, 1 );
-        scene.add( light );
+
+        //BEN turned off light for consistent colors...for now...
+        // var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+        // light.position.set( 1, 1, 1 );
+        // scene.add( light );
 
 
         ///CREATE A CANVAS///
@@ -115,13 +207,8 @@ export function init() {
         aCanvas2d.fillStyle = "white";
         aCanvas2d.font = "60pt arial bold";
 
-        var lettersA = ['&', '@', '%', '$'];
-        var textValA = lettersA[ lettersA.length * Math.random() | 0 ];
-
         // numbers are X, Y for text position
-        aCanvas2d.fillText(textValA, 34, 90);
-
-
+        aCanvas2d.fillText(aSide[i].letter, aSide[i].letterPosition , 90);
 
         ///CREATE B CANVAS///
 
@@ -133,11 +220,8 @@ export function init() {
         bCanvas2d.fillStyle = "white";
         bCanvas2d.font = "60pt arial bold";
 
-        var lettersB = ['&', '@', '%', '$'];
-        var textValB = lettersB[lettersB.length * Math.random() | 0];
-
         // numbers are X, Y for text position
-        bCanvas2d.fillText(textValB, 34, 90);
+        bCanvas2d.fillText(bSide[i].letter, bSide[i].letterPosition, 90);
 
 
        
