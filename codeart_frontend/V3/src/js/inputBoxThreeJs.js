@@ -346,7 +346,7 @@ export function render() {
         //camera.aspect = width / height; // not changing in this example
         //camera.updateProjectionMatrix();
 
-        //scene.userData.controls.update();
+        // scene.userData.controls.update();
 
         renderer.render( scene, camera );
 
