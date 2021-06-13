@@ -60,7 +60,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	// Set to true to enable damping (inertia)
 	// If damping is enabled, you must call controls.update() in your animation loop
-	this.enableDamping = true;
+	this.enableDamping = false;
 	this.dampingFactor = 0.05;
 
 	// This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
@@ -70,7 +70,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	// Set to false to disable rotating
 	this.enableRotate = true;
-	this.rotateSpeed = .25;
+	this.rotateSpeed = .20;
 
 	// Set to false to disable panning
 	this.enablePan = true;
@@ -164,37 +164,47 @@ var OrbitControls = function ( object, domElement ) {
 
 			//START BEN EDITS
 
-				if(position.x > 1.999 && position.x < 2.001 && sideARotate){					
-					this.enableRotate = false;
-					setTimeout(() => {
-						 this.enableRotate = true; 
-						 sideARotate = false;
-						 sideBRotate = true;
-						 sideXRotate = true;
-					}, 500);
-					console.log(scope.domElement.id, 'SIDE A');
-				}
-				else if(position.x < -1.999 && position.x > -2.001 && sideBRotate){
-					this.enableRotate = false;
-					setTimeout(() => { 
-						this.enableRotate = true;
-						sideARotate = true;
-						sideBRotate = false;
-						sideXRotate = true; 
-					}, 500);
-					console.log(scope.domElement.id, 'SIDE B');
+		
+			if(position.x > 1.999 && position.x < 2.001 && sideARotate){					
+				// this.enableRotate = false;
+				this.rotateSpeed = .001;
 
-				}
-				else if(position.x > -0.04 && position.x < 0.04 && sideXRotate){
-					this.enableRotate = false;
-					setTimeout(() => { 
-						this.enableRotate = true;
-						sideARotate = true;
-						sideBRotate = true;
-						sideXRotate = false;  
-					}, 500);
-					console.log(scope.domElement.id, 'OFF');
-				}
+				setTimeout(() => {
+					(sideARotate) ? console.log(scope.domElement.id, 'SIDE A') : null;
+					sideARotate = false;
+					sideBRotate = true;
+					sideXRotate = true;
+					this.rotateSpeed = .2;
+				}, 1000);
+				
+			}
+			else if(position.x < -1.999 && position.x > -2.001 && sideBRotate){
+				// this.enableRotate = false;
+				this.rotateSpeed = .001;
+
+				setTimeout(() => { 
+					(sideBRotate) ? console.log(scope.domElement.id, 'SIDE B') : null;
+					sideARotate = true;
+					sideBRotate = false;
+					sideXRotate = true; 
+					this.rotateSpeed = .2;
+					// console.log(scope.domElement.id, 'SIDE B');
+				}, 1000);
+
+			}
+			else if(position.x > -0.04 && position.x < 0.04 && sideXRotate){
+				// this.enableRotate = false;
+				this.rotateSpeed = .001;
+
+				setTimeout(() => { 
+					(sideXRotate) ? console.log(scope.domElement.id, 'OFF') : null;
+					sideARotate = true;
+					sideBRotate = true;
+					sideXRotate = false;
+					this.rotateSpeed = .2;  
+				}, 1000);
+				
+			}
 
 			//END BEN EDITS
 
