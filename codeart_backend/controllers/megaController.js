@@ -69,8 +69,8 @@ exports.getMegaState = () =>{
 exports.initializeMega = (io) => {
 
   const five = require("johnny-five");
-  board = new five.Board({ port: "/dev/ttyACM0" });
-
+  // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation
+  board = new five.Board(); 
   board.on("ready", function() {
 
       buttons = new five.Buttons({
