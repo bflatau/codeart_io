@@ -12,7 +12,8 @@ const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
 const buttonController = require('./controllers/buttonController');
-const megaController= require('./controllers/megaController');
+const megaController = require('./controllers/megaController');
+// const unoController = require('./controllers/unoController');
 
 /// SET UP CORS ///
 // need to call cors before setting up routes
@@ -53,6 +54,7 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 /// ARDUINO STUFF ///
 megaController.initializeMega(io);
+// unoController.initializeUno();
 
 /// WEB SOCKET STUFF ///
 io.on('connection', socket => {
