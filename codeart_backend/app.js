@@ -66,6 +66,8 @@ io.on('connection', socket => {
     megaController.getMegaButtonState().forEach(button =>{
       io.to(socket.id).emit('button down', button)
     });
+
+    //send updated board state here!
   } 
 
   /// When a user disconnects, console log and then update the clients with the user count

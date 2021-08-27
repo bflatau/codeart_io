@@ -72,10 +72,13 @@ const gameWinningGameCondition = [
   [18, 19, 20, 21, 22]
 ]
 
-exports.getGameBoardState = (currentGame, activeButtons) => {
+exports.updateGameBoardState = (currentGame, activeButtons) => {
 
+  //first check how many active buttons are mapped to the gameWinningCondition
 
-return 'hello';
+  //for every button that isn't in the winning condition, do something else
+
+return 'this is gameboard state';
 }
 
 exports.getMegaButtonState = () =>{ //returns active button state
