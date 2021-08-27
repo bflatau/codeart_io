@@ -1,4 +1,4 @@
-const buttonMap = {
+const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   /// GREEN WIRES ///
   '54': 0,
   '55': 1,
@@ -60,9 +60,25 @@ const buttonMap = {
   '22': 49
 };
 
-const activeButtons = [];
+const activeButtons = []; // array of boxes that are turned on
 
-exports.getMegaState = () =>{
+let currentGame = 1;  // number of current game
+
+const gameWinningGameCondition = [ 
+  [1 ,2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16, 17],
+  [18, 19, 20, 21, 22]
+]
+
+exports.getGameBoardState = (currentGame, activeButtons) => {
+
+
+return 'hello';
+}
+
+exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
 }
 
@@ -95,6 +111,37 @@ exports.initializeMega = (io) => {
       });
 
       buttons.on("down", function(button) {
+        
+        
+        //handle if button triggers a game
+        switch (button.pin) {
+          case '2': //this is the button pin value (pins), typ.
+            currentGame = 2;
+            console.log('game 2 enabled')
+            break;
+          case '3':
+            currentGame = 3;
+            console.log('game 3 enabled')
+            break;
+          case '4':
+            currentGame = 4;
+            console.log('game 4 enabled')
+            break;
+          case '5': //this is the button pin value (pins), typ.
+            currentGame = 5;
+            console.log('game 5 enabled')
+            break;
+          case '6':
+            currentGame = 6;
+            console.log('game 6 enabled')
+            break;
+
+          default:
+            console.log('No Game Selected!');
+        }
+        
+
+
         console.log(`button ${button.pin} is down`);
         // broadcast which button was pushed
         io.sockets.emit('button down', buttonMap[button.pin]);

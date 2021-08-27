@@ -13,8 +13,6 @@ const io = socketIO(server);
 /// REQUIRE CONTROLLERS ///
 const buttonController = require('./controllers/buttonController');
 const megaController = require('./controllers/megaController');
-// const megaControllerHall = require('./controllers/megaControllerHall');
-// const unoController = require('./controllers/unoController');
 
 /// SET UP CORS ///
 // need to call cors before setting up routes
@@ -55,8 +53,7 @@ app.route('/game/:gameNumber/getkeyquantity')
 
 /// ARDUINO STUFF ///
 megaController.initializeMega(io);
-// megaControllerHall.initializeMegaHall();
-// unoController.initializeUno();
+
 
 /// WEB SOCKET STUFF ///
 io.on('connection', socket => {
@@ -65,8 +62,8 @@ io.on('connection', socket => {
   io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
 
   /// get mega button state when connecting and send to newly connected user
-  if (megaController.getMegaState().length > 0){  
-    megaController.getMegaState().forEach(button =>{
+  if (megaController.getMegaButtonState().length > 0){  
+    megaController.getMegaButtonState().forEach(button =>{
       io.to(socket.id).emit('button down', button)
     });
   } 
