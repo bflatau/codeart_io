@@ -46,11 +46,18 @@ const flaps = [
     'X'
 ]
 
-const games = [
-  { gameNumber: 0, winningButtons: [ 1, 2, 3, 4] },
-  { gameNumber: 1, winningButtons: [ 5, 6, 7, 8] },
-  { gameNumber: 2, winningButtons: [ 9, 10, 11, 12 ] },
+const quotes = [
+
+
 ]
+
+
+const games = [
+    {   winningBoxes: [ 1, 2, 3, 4],
+        quoteLetters: [] ///this should use the row/column coordinates 
+    },
+  
+];
 
 
 ///SPLIT FLAP FUNCTION
