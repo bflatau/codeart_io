@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './style.css';
 import InputBoardButton from '../InputBoardButton';
-import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
+// import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
 
 
 class InputBoard extends Component {
