@@ -193,7 +193,7 @@ exports.initializeMega = (io) => {
         
 
 
-        console.log(`button ${button.pin} is down`);
+        console.log(`button ${button.pin} is down, ${activeButtons}`);
         // broadcast which button was pushed
         io.sockets.emit('button down', buttonMap[button.pin]);
         // add button to running list of active buttons (state)
@@ -201,7 +201,7 @@ exports.initializeMega = (io) => {
       });
 
       buttons.on("up", function(button) {
-        console.log(`button ${button.pin} is up`);
+        console.log(`button ${button.pin} is up, ${activeButtons}`);
         // broadcast which button was pushed
         io.sockets.emit('button up', buttonMap[button.pin])
         // find the index of the button released in the active buttons array
