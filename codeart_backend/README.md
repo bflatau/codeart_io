@@ -14,3 +14,21 @@ example docker-compose snippet that ties into the app/docker network (note the i
       dockerfile: Dockerfile
     image: IMAGENAME
     container_name: codeartnodev`
+
+
+## FIND USB PORT OF ARDUINOS ##
+
+#!/bin/bash
+for sysdevpath in $(find /sys/bus/usb/devices/usb*/ -name dev); do
+    (
+        syspath="${sysdevpath%/dev}"
+        devname="$(udevadm info -q name -p $syspath)"
+        [[ "$devname" == "bus/"* ]] && exit
+        eval "$(udevadm info -q property --export -p $syspath)"
+        [[ -z "$ID_SERIAL" ]] && exit
+        echo "/dev/$devname - $ID_SERIAL"
+    )
+done
+
+
+take off raspi-io for non raspi development 

@@ -1,41 +1,94 @@
 import React, { Component } from "react";
 import './style.css';
 import InputBoardButton from '../InputBoardButton';
-import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
+// import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
 
+const boxLayouts = [
+    {position: 0, symbol: '$', color: 'yellow'},
+    {position: 0, symbol: '*', color: 'pink'},
 
-const gameBoardSymbolsColumns = [
-    <TiStarOutline className='black'/>, <TiTimesOutline className = 'red' /> , <TiMediaStopOutline className='black' />, <TiMediaRecord className='blue' />, <TiStarOutline className='black'/> , <TiTimes className='black' /> , <TiMediaStop className = 'purple' /> , <TiMediaStopOutline className='orange' />, <TiTimesOutline className='cyan'/> , <TiMediaStopOutline className="black"/>,
-   
-    <TiTimesOutline className='black'/>, <TiTimesOutline className='red'/>, <TiMediaStop className='black'/>, <TiMediaRecord className='black'/>, <TiStar className='blue'/>, <TiMediaStopOutline className='black'/>, <TiTimes className='purple'/>, <TiMediaStopOutline className='orange'/>, <TiTimesOutline className='cyan'/>, <TiMediaRecordOutline className='black'/> ,
-    
-    <TiTimesOutline className='black'/>, <TiMediaStopOutline className='red'/>, <TiMediaRecord className='green'/>, <TiTimes className='black'/>, <TiMediaRecord className='blue'/>, <TiMediaStopOutline className='purple'/>, <TiStar className='black'/>, <TiTimes className='black'/>, <TiMediaStopOutline className='cyan'/>, <TiStarOutline className='black'/>,
-    
-    <TiTimes className='red'/>, <TiMediaStopOutline className='black'/>, <TiMediaRecordOutline className='green'/>, <TiStar className='blue'/>, <TiMediaStopOutline className='black'/>, <TiTimes className='purple'/>, <TiStarOutline className='cyan'/>, <TiStarOutline className='black'/>, <TiMediaStop className='magenta'/>, <TiTimes className='black'/>,
-    
-    <TiStarOutline className='red'/>, <TiMediaStop className='black'/>, <TiTimesOutline className='green'/>, <TiMediaRecordOutline className='yellow'/>, <TiMediaStopOutline className='blue'/>, <TiStar className='black'/>, <TiTimes className='purple'/>, <TiMediaRecordOutline className='cyan'/>, <TiStarOutline className='magenta'/>, <TiMediaStopOutline className='black'/>,
-    
-    <TiMediaRecordOutline className='red'/>, <TiMediaStop className='black'/>, <TiTimesOutline className='green'/>, <TiMediaRecordOutline className='yellow'/>, <TiMediaStopOutline className='black'/>, <TiStar className='black'/>, <TiTimesOutline className='purple'/>, <TiMediaRecord className='cyan'/>, <TiStarOutline className='black'/>, <TiMediaStopOutline className='black'/>
-];
+    {position: 1, symbol: '%', color: 'yellow'},
+    {position: 1, symbol: '!', color: 'orange'},
 
-const gameBoardSymbolsRows = [
-    <TiMediaStop className='black'/>, <TiMediaRecord className='black'/>,  <TiMediaRecord className='black'/>, <TiStarOutline className='black'/>, <TiTimesOutline className = 'blue' />, <TiMediaRecord className='black'/> , <TiMediaStopOutline className='black'/>  , <TiMediaRecordOutline className='black'/> , <TiStarOutline className='black'/> , <TiStarOutline className='black'/>, <TiTimesOutline className='black'/>, 
-    
-    <TiStarOutline className='green'/>, <TiTimesOutline className='green'/>, <TiMediaStopOutline className='green'/>, <TiMediaRecordOutline className='black'/>, <TiMediaStopOutline className='black'/>, <TiStarOutline className='black'/>, <TiStarOutline className='purple'/>, <TiStarOutline className='black'/>, <TiMediaStop className='orange'/>, <TiTimes className='orange'/>, <TiStar className='orange'/>, 
-    
-    <TiMediaRecordOutline className='black'/>, <TiMediaRecord className='red'/>, <TiStar className='black'/>, <TiMediaStopOutline className='black'/>, <TiMediaRecordOutline className='blue'/>, <TiMediaStop className='black'/>, <TiMediaRecordOutline className='black'/>, <TiMediaRecord className='cyan'/>, <TiStarOutline className='cyan'/>, <TiStar className='magenta'/>, <TiMediaRecordOutline className='magenta'/>, 
-    
-    <TiMediaStop className='yellow'/>, <TiTimesOutline className='yellow'/>, <TiTimes className='yellow'/>, <TiMediaRecord className='yellow'/>, <TiTimesOutline className='blue'/>, <TiMediaRecordOutline className='black'/>, <TiStarOutline className='purple'/>, <TiMediaStop className='cyan'/>, <TiStar className='black'/>, <TiMediaStopOutline className='black'/>, <TiTimes className='black'/>, 
-    
-    <TiStarOutline className='black'/>, <TiMediaStopOutline className='black'/>, <TiStarOutline className='black'/>, <TiMediaStopOutline className='black'/>, <TiStarOutline className='black'/>, <TiMediaRecordOutline className='black'/>, <TiMediaStopOutline className='black'/>, <TiStar className='black'/>, <TiTimesOutline className='black'/>, <TiMediaRecordOutline className='magenta'/>, <TiStarOutline className='magenta'/>, 
-];
+    {position: 2, symbol: '@', color: 'pink'},
+    {position: 2, symbol: '&', color: 'green'},
+
+    {position: 3, symbol: '#', color: 'pink'},
+    {position: 3, symbol: '?', color: 'yellow'},
+
+    {position: 4, symbol: '$', color: 'orange'},
+    {position: 4, symbol: '*', color: 'pink'},
+
+    {position: 5, symbol: '%', color: 'orange'},
+    {position: 5, symbol: '!', color: 'orange'},
+
+    {position: 6, symbol: '@', color: 'green'},
+    {position: 6, symbol: '&', color: 'green'},
+
+    {position: 7, symbol: '#', color: 'green'},
+    {position: 7, symbol: '?', color: 'yellow'},
+
+    {position: 8, symbol: '#', color: 'yellow'},
+    {position: 8, symbol: '?', color: 'yellow'},
+
+    {position: 9, symbol: '$', color: 'yellow'},
+    {position: 9, symbol: '*', color: 'green'},
+
+    {position: 10, symbol: '%', color: 'pink'},
+    {position: 10, symbol: '!', color: 'orange'},
+
+    {position: 11, symbol: '@', color: 'pink'},
+    {position: 11, symbol: '&', color: 'pink'},
+
+    {position: 12, symbol: '#', color: 'orange'},
+    {position: 12, symbol: '?', color: 'yellow'},
+
+    {position: 13, symbol: '$', color: 'orange'},
+    {position: 13, symbol: '*', color: 'green'},
+
+    {position: 14, symbol: '%', color: 'green'},
+    {position: 14, symbol: '!', color: 'orange'},
+
+    {position: 15, symbol: '@', color: 'green'},
+    {position: 15, symbol: '&', color: 'pink'},
+
+    {position: 16, symbol: '@', color: 'yellow'},
+    {position: 16, symbol: '&', color: 'pink'},
+
+    {position: 17, symbol: '#', color: 'yellow'},
+    {position: 17, symbol: '?', color: 'orange'},
+
+    {position: 18, symbol: '$', color: 'pink'},
+    {position: 18, symbol: '*', color: 'green'},
+
+    {position: 19, symbol: '%', color: 'pink'},
+    {position: 19, symbol: '!', color: 'yellow'},
+
+    {position: 20, symbol: '@', color: 'orange'},
+    {position: 20, symbol: '&', color: 'pink'},
+
+    {position: 21, symbol: '#', color: 'orange'},
+    {position: 21, symbol: '?', color: 'orange'},
+
+    {position: 22, symbol: '$', color: 'green'},
+    {position: 22, symbol: '*', color: 'green'},
+
+    {position: 23, symbol: '$', color: 'green'},
+    {position: 23, symbol: '&', color: 'pink'},
+
+    {position: 24, symbol: '%', color: 'green'},
+    {position: 24, symbol: '!', color: 'yellow'}, 
+]
+ 
+
 
 class InputBoard extends Component {
     constructor() {
         super();
         this.state = {
             numberOfUsers: 0,
-            boardInputs: Array(50).fill('O'),
+            boardSymbols: Array(24).fill('X'),
+            boardColors: Array(24).fill('black')
         };
     }
 
@@ -45,31 +98,48 @@ class InputBoard extends Component {
         })
 
         this.props.socket.on('button down', (data) => {
-            this.updateBoardArray(data);
+            console.log('socket data', data)
+            this.updateInputBoardLayout(data.buttons);
         })
 
         this.props.socket.on('button up', (data) => {
-            this.updateBoardArray(data);
+            this.updateInputBoardLayout(data.buttons);
         })
     }
 
 
-    updateBoardArray = i => {
+    updateInputBoardLayout = i => { // i = pin number
         this.setState(state => {
         //const value has to be the same as state value setState (key:value)
-          const boardInputs = state.boardInputs.map((item, j) => {
-            if (j === i && item !== 'I') {
-              return 'I';
+          const boardSymbols= state.boardSymbols.map((item, j) => {
+
+            if (j === boxLayouts[i].position && item !== boxLayouts[i].symbol) {
+              return boxLayouts[i].symbol;
             } 
-            else if(j === i && item === 'I') {
-              return 'O';
+            else if(j === boxLayouts[i].position  && item === boxLayouts[i].symbol) {
+              return 'X';
             } 
             else{
                 return item;
             }
           });
+
+          const boardColors = state.boardColors.map((item, j) => {
+
+            if (j === boxLayouts[i].position && item !== boxLayouts[i].color) {
+              return boxLayouts[i].color;
+            } 
+            else if(j === boxLayouts[i].position  && item === boxLayouts[i].color) {
+              return 'black';
+            } 
+            else{
+                return item;
+            }
+          });
+
           return {
-            boardInputs,
+            boardSymbols,
+            boardColors
           };
         });
       };
@@ -77,13 +147,14 @@ class InputBoard extends Component {
     createInputGrid = () => {
         let table = [];
 
-        for (let i = 0; i < this.state.boardInputs.length; i++) {
+        for (let i = 0; i < this.state.boardSymbols.length; i++) {
             table.push(
                 <InputBoardButton
                     key={i}
                     buttonID={i}
-                    buttonValue={this.state.boardInputs[i]}
+                    buttonValue={this.state.boardSymbols[i]}
                     socket={this.props.socket}
+                    color={this.state.boardColors[i]}
                 />
             )
         }
@@ -97,29 +168,7 @@ class InputBoard extends Component {
                   People Playing: {this.state.numberOfUsers}
                 </div>
                 <div className="input-board">
-                  
-                    <div className='column-symbol-layout-container'>
-                        <div className='column-symbol-container'>
-                            {   
-                                gameBoardSymbolsColumns.map((symbol, id)=>{
-                                    return( <div className='column-symbol' key={id}> {symbol} </div>)
-                                }) 
-                            }
-                        </div>
-                    </div>
-
-                    <div className='row-symbol-layout-container'>
-                        <div className='row-symbol-container'>
-                            {   
-                                gameBoardSymbolsRows.map((symbol, id)=>{
-                                    return( <div className='row-symbol' key={id}> {symbol} </div>)
-                                }) 
-                            }
-                        </div>
-                    </div>
-
                     {this.createInputGrid()}
-
                 </div>
             </div>
         )

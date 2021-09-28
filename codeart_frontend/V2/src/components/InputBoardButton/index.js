@@ -13,7 +13,7 @@ class InputBoardButton extends Component {
 
         return (
             <div 
-                className="input-board-button"
+                className={`input-board-button-${this.props.color}`}
                 // onClick={()=>{
                 //     this.props.socket.emit('button pressed', this.props.buttonID)                    
                 // }}

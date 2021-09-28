@@ -12,7 +12,7 @@ const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
 const buttonController = require('./controllers/buttonController');
-const megaController= require('./controllers/megaController');
+const megaController = require('./controllers/megaController');
 
 /// SET UP CORS ///
 // need to call cors before setting up routes
@@ -54,6 +54,7 @@ app.route('/game/:gameNumber/getkeyquantity')
 /// ARDUINO STUFF ///
 megaController.initializeMega(io);
 
+
 /// WEB SOCKET STUFF ///
 io.on('connection', socket => {
 
@@ -61,10 +62,12 @@ io.on('connection', socket => {
   io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
 
   /// get mega button state when connecting and send to newly connected user
-  if (megaController.getMegaState().length > 0){  
-    megaController.getMegaState().forEach(button =>{
-      io.to(socket.id).emit('button down', button)
+  if (megaController.getMegaButtonState().length > 0){  
+    megaController.getMegaButtonState().forEach(button =>{
+      io.to(socket.id).emit('button down', {buttons: button, flaps: 'ben'})
     });
+
+    //send updated board state here!
   } 
 
   /// When a user disconnects, console log and then update the clients with the user count
