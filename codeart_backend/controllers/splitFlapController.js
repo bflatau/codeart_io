@@ -320,6 +320,13 @@ export const doItAll = (gameState, action) => {
 }
 
 
+export const generateFlaps = () =>{
+
+    let flaps = 'ben'
+
+    return flaps
+}
+
 //buttons == an array of the winning buttons state
 // buttons = ["a", "off", "b", "a"]
 

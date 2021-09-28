@@ -19,7 +19,7 @@ ReactDOM.render(
     <div id='app-content'>
       <Header />
       <InputBoard socket={socket} />
-      <OutputBoard />
+      <OutputBoard socket={socket} />
       {/* <SocketTest socket={socket}/> */}
     </div>
   </React.StrictMode>,

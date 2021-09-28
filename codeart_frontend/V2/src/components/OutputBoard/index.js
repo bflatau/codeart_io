@@ -7,9 +7,28 @@ class OutputBoard extends Component {
     constructor() {
         super();
         this.state = {
-            boardOutputs: Array(108).fill('X'),
+            boardOutputs: Array(108).fill(0),
         };
     }
+
+
+    componentDidMount() {
+
+        this.props.socket.on('button down', (data) => {
+            console.log('socket data', data)
+            this.updateOutputBoardLayout(data.flaps);
+        })
+
+        this.props.socket.on('button up', (data) => {
+            this.updateOutputBoardLayout(data.flaps);
+        })
+    }
+
+
+    updateOutputBoardLayout = arr => { // i = array
+        this.setState({boardOutputs: arr})
+      };
+
 
    
     createOutputGrid = () => {
