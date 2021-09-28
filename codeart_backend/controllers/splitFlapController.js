@@ -332,6 +332,9 @@ export const doItAll = (gameState, action) => {
 
 
 // flapState = current flap state
+// is an array = [{id: 0, val: null, matters: false, isRevealed: false},{id: 1, val: null, matters: false, isRevealed: false}]
+
+
 
 
 

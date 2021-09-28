@@ -29,3 +29,6 @@ for sysdevpath in $(find /sys/bus/usb/devices/usb*/ -name dev); do
         echo "/dev/$devname - $ID_SERIAL"
     )
 done
+
+
+take off raspi-io for non raspi development 
