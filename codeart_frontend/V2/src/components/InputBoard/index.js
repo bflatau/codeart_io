@@ -4,53 +4,80 @@ import InputBoardButton from '../InputBoardButton';
 // import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
 
 const boxLayouts = [
-    {position: 0, symbol: '$', color: 'green'},
-    {position: 0, symbol: '&', color: 'pink'},
-    {position: 1, symbol: '$', color: 'green'},
-    {position: 1, symbol: '&', color: 'pink'},
-    {position: 2, symbol: '$', color: 'green'},
-    {position: 2, symbol: '&', color: 'pink'},
-    {position: 3, symbol: '$', color: 'green'},
-    {position: 3, symbol: '&', color: 'pink'},
-    {position: 4, symbol: '$', color: 'green'},
-    {position: 4, symbol: '&', color: 'pink'},
-    {position: 5, symbol: '$', color: 'green'},
-    {position: 6, symbol: '&', color: 'pink'},
-    {position: 6, symbol: '$', color: 'green'},
-    {position: 7, symbol: '&', color: 'pink'},
-    {position: 7, symbol: '$', color: 'green'},
-    {position: 8, symbol: '&', color: 'pink'},
-    {position: 8, symbol: '$', color: 'green'},
-    {position: 9, symbol: '&', color: 'pink'},
-    {position: 9, symbol: '$', color: 'green'},
-    {position: 10, symbol: '&', color: 'pink'},
-    {position: 10, symbol: '$', color: 'green'},
-    {position: 12, symbol: '&', color: 'pink'},
-    {position: 12, symbol: '$', color: 'green'},
-    {position: 13, symbol: '$', color: 'green'},
-    {position: 13, symbol: '&', color: 'pink'},
-    {position: 14, symbol: '$', color: 'green'},
-    {position: 14, symbol: '&', color: 'pink'},
-    {position: 15, symbol: '$', color: 'green'},
+    {position: 0, symbol: '$', color: 'yellow'},
+    {position: 0, symbol: '*', color: 'pink'},
+
+    {position: 1, symbol: '%', color: 'yellow'},
+    {position: 1, symbol: '!', color: 'orange'},
+
+    {position: 2, symbol: '@', color: 'pink'},
+    {position: 2, symbol: '&', color: 'green'},
+
+    {position: 3, symbol: '#', color: 'pink'},
+    {position: 3, symbol: '?', color: 'yellow'},
+
+    {position: 4, symbol: '$', color: 'orange'},
+    {position: 4, symbol: '*', color: 'pink'},
+
+    {position: 5, symbol: '%', color: 'orange'},
+    {position: 5, symbol: '!', color: 'orange'},
+
+    {position: 6, symbol: '@', color: 'green'},
+    {position: 6, symbol: '&', color: 'green'},
+
+    {position: 7, symbol: '#', color: 'green'},
+    {position: 7, symbol: '?', color: 'yellow'},
+
+    {position: 8, symbol: '#', color: 'yellow'},
+    {position: 8, symbol: '?', color: 'yellow'},
+
+    {position: 9, symbol: '$', color: 'yellow'},
+    {position: 9, symbol: '*', color: 'green'},
+
+    {position: 10, symbol: '%', color: 'pink'},
+    {position: 10, symbol: '!', color: 'orange'},
+
+    {position: 11, symbol: '@', color: 'pink'},
+    {position: 11, symbol: '&', color: 'pink'},
+
+    {position: 12, symbol: '#', color: 'orange'},
+    {position: 12, symbol: '?', color: 'yellow'},
+
+    {position: 13, symbol: '$', color: 'orange'},
+    {position: 13, symbol: '*', color: 'green'},
+
+    {position: 14, symbol: '%', color: 'green'},
+    {position: 14, symbol: '!', color: 'orange'},
+
+    {position: 15, symbol: '@', color: 'green'},
     {position: 15, symbol: '&', color: 'pink'},
-    {position: 16, symbol: '$', color: 'green'},
+
+    {position: 16, symbol: '@', color: 'yellow'},
     {position: 16, symbol: '&', color: 'pink'},
-    {position: 17, symbol: '$', color: 'green'},
-    {position: 17, symbol: '&', color: 'pink'},
-    {position: 18, symbol: '$', color: 'green'},
-    {position: 18, symbol: '&', color: 'pink'},
-    {position: 19, symbol: '$', color: 'green'},
-    {position: 19, symbol: '&', color: 'pink'},
-    {position: 20, symbol: '$', color: 'green'},
+
+    {position: 17, symbol: '#', color: 'yellow'},
+    {position: 17, symbol: '?', color: 'orange'},
+
+    {position: 18, symbol: '$', color: 'pink'},
+    {position: 18, symbol: '*', color: 'green'},
+
+    {position: 19, symbol: '%', color: 'pink'},
+    {position: 19, symbol: '!', color: 'yellow'},
+
+    {position: 20, symbol: '@', color: 'orange'},
     {position: 20, symbol: '&', color: 'pink'},
-    {position: 21, symbol: '$', color: 'green'},
-    {position: 21, symbol: '&', color: 'pink'},
+
+    {position: 21, symbol: '#', color: 'orange'},
+    {position: 21, symbol: '?', color: 'orange'},
+
     {position: 22, symbol: '$', color: 'green'},
-    {position: 22, symbol: '&', color: 'pink'},
+    {position: 22, symbol: '*', color: 'green'},
+
     {position: 23, symbol: '$', color: 'green'},
     {position: 23, symbol: '&', color: 'pink'},
-    {position: 24, symbol: '$', color: 'green'},
-    {position: 24, symbol: '$', color: 'green'}, 
+
+    {position: 24, symbol: '%', color: 'green'},
+    {position: 24, symbol: '!', color: 'yellow'}, 
 ]
  
 
@@ -71,12 +98,10 @@ class InputBoard extends Component {
         })
 
         this.props.socket.on('button down', (data) => {
-            console.log(`pin ${data} down`)
             this.updateBoardLayout(data);
         })
 
         this.props.socket.on('button up', (data) => {
-            console.log(`pin ${data} up`)
             this.updateBoardLayout(data);
         })
     }

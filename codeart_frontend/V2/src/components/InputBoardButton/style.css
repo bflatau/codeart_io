@@ -1,5 +1,5 @@
 .input-board-button-black, .input-board-button-green, .input-board-button-pink, .input-board-button-yellow, .input-board-button-orange{
-    color: white;
+    
     font-size: 40px; 
     text-align: center;
     display: inline-block;
@@ -16,22 +16,27 @@
 
 .input-board-button-black{
   background-color: black;
+  color: white;
 }
 
 .input-board-button-pink{
   background-color: pink;
+  color: black;
 }
 
 .input-board-button-orange{
   background-color: orange;
+  color: black;
 }
 
 .input-board-button-yellow{
   background-color: yellow;
+  color: black;
 }
 
 .input-board-button-green{
   background-color: green;
+  color: black;
 }
 
 /* .input-board-button:hover {
