@@ -121,10 +121,10 @@ const gameWinningGameCondition = [
 let initialFlaps = Array(108).fill(0);
 let currentFlapState = initialFlaps;
 
-const updateFlapState = () => {
+const updateFlapState = (pin) => {
 const updatedFlaps = currentFlapState.map((item, i) => {
-  if(activeButtons.includes(i)){
-    return 2
+  if(pin === i){
+    return 12
   }
   else {
     return 0
@@ -132,8 +132,8 @@ const updatedFlaps = currentFlapState.map((item, i) => {
 });
 
 currentFlapState = updatedFlaps;
+return updatedFlaps;
 }
-
 
 
 exports.getFlapState = () => {
@@ -142,20 +142,6 @@ exports.getFlapState = () => {
 
 };
 
-
-exports.updateGameBoardState = (currentGame, activeButtons) => {
-
-  //first check how many active buttons are mapped to the gameWinningCondition
-
-  //for every button that isn't in the winning condition, do something else
-
-return 'this is gameboard state';
-}
-
-
-// exports.getFlapState = () => {
-//   return testFlaps
-// }
 
 exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
@@ -193,7 +179,6 @@ exports.initializeMega = (io) => {
       });
 
       buttons.on("down", function(button) {
-        updateFlapState()
         
         //handle if button triggers a game
         switch (button.pin) {
@@ -226,16 +211,15 @@ exports.initializeMega = (io) => {
 
         console.log(`button ${button.pin} is down, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: currentFlapState});
+        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
       });
 
       buttons.on("up", function(button) {
-        updateFlapState();
         console.log(`button ${button.pin} is up, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: currentFlapState})
+        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
         // splice out the button that was released

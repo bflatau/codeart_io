@@ -2,6 +2,49 @@ import React, { Component } from "react";
 import './style.css';
 import OutputBoardFlap from '../OutputBoardFlap';
 
+const flapLayouts = [
+    {symbol: '_', color: 'black-empty'},
+    {symbol: 'J', color: 'black'},
+    {symbol: 'B', color: 'black'},
+    {symbol: 'M', color: 'black'},
+    {symbol: 'R', color: 'black'},
+    {symbol: '$', color: 'black'},
+    {symbol: 'V', color: 'black'},
+    {symbol: 'K', color: 'black'},
+    {symbol: 'A', color: 'black'},
+    {symbol: 'E', color: 'black'},
+    {symbol: 'N', color: 'black'},
+    {symbol: 'O', color: 'black'},
+    {symbol: '_', color: 'yellow'},
+    {symbol: '*', color: 'black'},
+    {symbol: '', color: 'green'},
+    {symbol: 'G', color: 'black'},
+    {symbol: 'I', color: 'black'},
+    {symbol: '%', color: 'black'},
+    {symbol: 'D', color: 'black'},
+    {symbol: 'L', color: 'black'},
+    {symbol: '&', color: 'black'},
+    {symbol: '@', color: 'black'},
+    {symbol: 'C', color: 'black'},
+    {symbol: 'W', color: 'black'},
+    {symbol: 'H', color: 'black'},
+    {symbol: 'Y', color: 'black'},
+    {symbol: '_', color: 'white'},
+    {symbol: 'Q', color: 'black'},
+    {symbol: '_', color: 'pink'},
+    {symbol: '_', color: 'orange'},
+    {symbol: '!', color: 'black'},
+    {symbol: 'T', color: 'black'},
+    {symbol: 'Z', color: 'black'},
+    {symbol: 'P', color: 'black'},
+    {symbol: 'F', color: 'black'},
+    {symbol: '?', color: 'white'},
+    {symbol: 'S', color: 'black'},
+    {symbol: '#', color: 'pink'},
+    {symbol: 'U', color: 'orange'},
+    {symbol: 'X', color: 'black'},
+]
+
 
 class OutputBoard extends Component {
     constructor() {
@@ -39,8 +82,8 @@ class OutputBoard extends Component {
                 <OutputBoardFlap
                     key={i}
                     flapID={i}
-                    flapValue={this.state.boardOutputs[i]}
-                    // socket={this.props.socket}
+                    flapValue={flapLayouts[this.state.boardOutputs[i]].symbol}
+                    color={flapLayouts[this.state.boardOutputs[i]].color}
                 />
             )
         }

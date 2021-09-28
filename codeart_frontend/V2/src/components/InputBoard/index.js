@@ -114,10 +114,10 @@ class InputBoard extends Component {
           const boardSymbols= state.boardSymbols.map((item, j) => {
             console.log(i, 'this is i')
             
-            if (i && j === boxLayouts[i].position && item !== boxLayouts[i].symbol) {
+            if (i != null && j === boxLayouts[i].position && item !== boxLayouts[i].symbol) {
               return boxLayouts[i].symbol;
             } 
-            else if(i && j === boxLayouts[i].position  && item === boxLayouts[i].symbol) {
+            else if(i != null && j === boxLayouts[i].position  && item === boxLayouts[i].symbol) {
               return 'X';
             } 
             
@@ -128,10 +128,10 @@ class InputBoard extends Component {
 
           const boardColors = state.boardColors.map((item, j) => {
            
-            if (i && j === boxLayouts[i].position && item !== boxLayouts[i].color) {
+            if (i != null && j === boxLayouts[i].position && item !== boxLayouts[i].color) {
               return boxLayouts[i].color;
             } 
-            else if(i && j === boxLayouts[i].position  && item === boxLayouts[i].color) {
+            else if(i != null && j === boxLayouts[i].position  && item === boxLayouts[i].color) {
               return 'black';
             }
             

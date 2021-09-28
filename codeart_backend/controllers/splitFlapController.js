@@ -30,7 +30,7 @@ const flaps = [
     'Y',    // 25
     26,     // WHITE
     'Q',    // 27
-    28,     // RED
+    28,     // PINK
     29,     // ORANGE
     '!',    // 30
     'T',    // 31
