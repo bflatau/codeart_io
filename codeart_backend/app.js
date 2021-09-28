@@ -64,7 +64,7 @@ io.on('connection', socket => {
   /// get mega button state when connecting and send to newly connected user
   if (megaController.getMegaButtonState().length > 0){  
     megaController.getMegaButtonState().forEach(button =>{
-      io.to(socket.id).emit('button down', button)
+      io.to(socket.id).emit('button down', {buttons: button, flaps: 'ben'})
     });
 
     //send updated board state here!

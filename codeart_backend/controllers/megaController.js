@@ -115,10 +115,7 @@ let currentGame = 1;  // number of current game
 
 const gameWinningGameCondition = [ 
   [1 ,2, 3, 4],
-  [5, 6, 7, 8],
-  [9, 10, 11, 12],
-  [13, 14, 15, 16, 17],
-  [18, 19, 20, 21, 22]
+  
 ]
 
 exports.updateGameBoardState = (currentGame, activeButtons) => {
@@ -195,7 +192,7 @@ exports.initializeMega = (io) => {
 
         console.log(`button ${button.pin} is down, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button down', buttonMap[button.pin]);
+        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: 'ben'});
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
       });
@@ -203,7 +200,7 @@ exports.initializeMega = (io) => {
       buttons.on("up", function(button) {
         console.log(`button ${button.pin} is up, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button up', buttonMap[button.pin])
+        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: 'josie'})
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
         // splice out the button that was released

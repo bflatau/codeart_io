@@ -98,16 +98,17 @@ class InputBoard extends Component {
         })
 
         this.props.socket.on('button down', (data) => {
-            this.updateBoardLayout(data);
+            console.log('socket data', data)
+            this.updateInputBoardLayout(data.buttons);
         })
 
         this.props.socket.on('button up', (data) => {
-            this.updateBoardLayout(data);
+            this.updateInputBoardLayout(data.buttons);
         })
     }
 
 
-    updateBoardLayout = i => { // i = pin number
+    updateInputBoardLayout = i => { // i = pin number
         this.setState(state => {
         //const value has to be the same as state value setState (key:value)
           const boardSymbols= state.boardSymbols.map((item, j) => {
