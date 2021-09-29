@@ -328,10 +328,10 @@ export const generateFlaps = () =>{
 }
 
 //buttons == an array of the winning buttons state
-// buttons = ["a", "off", "b", "a"]
+// buttons = ["a", "off", "b", "a"] // 24 index long
 
 //flaps == an array of the winning flap state
-// flaps = [null, "B", "E", null, "N"]
+// flaps = [null, "B", "E", 0, 12] // 108 index long
 
 /// btnState = an array of the current button state ///
 // btnState = [{id: 0, currentState: 'a', desiredState: 'a', triggered: true}, {id: 1, currentState: 'off', desiredState: 'off'}]
@@ -341,7 +341,14 @@ export const generateFlaps = () =>{
 // flapState = current flap state
 // is an array = [{id: 0, val: null, matters: false, isRevealed: false},{id: 1, val: null, matters: false, isRevealed: false}]
 
+[
+    0, 
+    12,
+    13,
+    11,
+    93,
 
+]
 
 
 
