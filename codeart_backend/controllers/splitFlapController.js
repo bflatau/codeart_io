@@ -341,29 +341,6 @@ export const generateFlaps = () =>{
 // flapState = current flap state
 // is an array = [{id: 0, val: null, matters: false, isRevealed: false},{id: 1, val: null, matters: false, isRevealed: false}]
 
-[
-    0, 
-    12,
-    13,
-    11,
-    93,
-
-]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /// OLD STUFF ///
