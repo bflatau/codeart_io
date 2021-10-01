@@ -9,8 +9,8 @@ import OutputBoard from './components/OutputBoard/';
 import 'typeface-libre-barcode-128-text';
 
 import socketIOClient from "socket.io-client";
-// const socket = socketIOClient("http://raspberrypi:8090");
-const socket = socketIOClient("http://localhost:8090");
+const socket = socketIOClient("http://raspberrypi.local:8090");
+// const socket = socketIOClient("http://localhost:8090");
 
 // import * as serviceWorker from './serviceWorker';
 

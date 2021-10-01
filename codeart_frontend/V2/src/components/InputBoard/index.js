@@ -4,80 +4,79 @@ import InputBoardButton from '../InputBoardButton';
 // import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
 
 const boxLayouts = [
-    {position: 0, symbol: '$', color: 'yellow'},
-    {position: 0, symbol: '*', color: 'pink'},
+    {position: 0, symbol: '$', color: 'yellow'},  // 0
+    {position: 0, symbol: '*', color: 'pink'},    // 1
 
-    {position: 1, symbol: '%', color: 'yellow'},
-    {position: 1, symbol: '!', color: 'orange'},
+    {position: 1, symbol: '%', color: 'yellow'},  // 2
+    {position: 1, symbol: '!', color: 'orange'},  // 3
 
-    {position: 2, symbol: '@', color: 'pink'},
-    {position: 2, symbol: '&', color: 'green'},
+    {position: 2, symbol: '@', color: 'pink'},    // 4
+    {position: 2, symbol: '&', color: 'green'},   // 5
 
-    {position: 3, symbol: '#', color: 'pink'},
-    {position: 3, symbol: '?', color: 'yellow'},
+    {position: 3, symbol: '#', color: 'pink'},    // 6
+    {position: 3, symbol: '?', color: 'yellow'},  // 7
 
-    {position: 4, symbol: '$', color: 'orange'},
-    {position: 4, symbol: '*', color: 'pink'},
+    {position: 4, symbol: '$', color: 'orange'},  // 8
+    {position: 4, symbol: '*', color: 'pink'},    // 9
 
-    {position: 5, symbol: '%', color: 'orange'},
-    {position: 5, symbol: '!', color: 'orange'},
+    {position: 5, symbol: '%', color: 'orange'},  // 10
+    {position: 5, symbol: '!', color: 'orange'},  // 11
 
-    {position: 6, symbol: '@', color: 'green'},
-    {position: 6, symbol: '&', color: 'green'},
+    {position: 6, symbol: '@', color: 'green'},   // 12
+    {position: 6, symbol: '&', color: 'green'},   // 13
 
-    {position: 7, symbol: '#', color: 'green'},
-    {position: 7, symbol: '?', color: 'yellow'},
+    {position: 7, symbol: '#', color: 'green'},   // 14
+    {position: 7, symbol: '?', color: 'yellow'},  // 15
 
-    {position: 8, symbol: '#', color: 'yellow'},
-    {position: 8, symbol: '?', color: 'yellow'},
+    {position: 8, symbol: '#', color: 'yellow'},  // 16
+    {position: 8, symbol: '?', color: 'yellow'},  // 17
 
-    {position: 9, symbol: '$', color: 'yellow'},
-    {position: 9, symbol: '*', color: 'green'},
+    {position: 9, symbol: '$', color: 'yellow'},  // 18
+    {position: 9, symbol: '*', color: 'green'},   // 19
 
-    {position: 10, symbol: '%', color: 'pink'},
-    {position: 10, symbol: '!', color: 'orange'},
+    {position: 10, symbol: '%', color: 'pink'},   // 20
+    {position: 10, symbol: '!', color: 'orange'}, // 21
 
-    {position: 11, symbol: '@', color: 'pink'},
-    {position: 11, symbol: '&', color: 'pink'},
+    {position: 11, symbol: '@', color: 'pink'},   // 22
+    {position: 11, symbol: '&', color: 'pink'},   // 23
 
-    {position: 12, symbol: '#', color: 'orange'},
-    {position: 12, symbol: '?', color: 'yellow'},
+    {position: 12, symbol: '#', color: 'orange'}, // 24
+    {position: 12, symbol: '?', color: 'yellow'}, // 25
 
-    {position: 13, symbol: '$', color: 'orange'},
-    {position: 13, symbol: '*', color: 'green'},
+    {position: 13, symbol: '$', color: 'orange'}, // 26
+    {position: 13, symbol: '*', color: 'green'},  // 27
 
-    {position: 14, symbol: '%', color: 'green'},
-    {position: 14, symbol: '!', color: 'orange'},
+    {position: 14, symbol: '%', color: 'green'},  // 28
+    {position: 14, symbol: '!', color: 'orange'}, // 29
 
-    {position: 15, symbol: '@', color: 'green'},
-    {position: 15, symbol: '&', color: 'pink'},
+    {position: 15, symbol: '@', color: 'green'},  // 30
+    {position: 15, symbol: '&', color: 'pink'},   // 31
 
-    {position: 16, symbol: '@', color: 'yellow'},
-    {position: 16, symbol: '&', color: 'pink'},
+    {position: 16, symbol: '@', color: 'yellow'}, // 32
+    {position: 16, symbol: '&', color: 'pink'},   // 33
 
-    {position: 17, symbol: '#', color: 'yellow'},
-    {position: 17, symbol: '?', color: 'orange'},
+    {position: 17, symbol: '#', color: 'yellow'}, // 34
+    {position: 17, symbol: '?', color: 'orange'}, // 35
+    
+    {position: 18, symbol: '*', color: 'green'},  // 36
+    {position: 18, symbol: '$', color: 'pink'},   // 37
 
-    {position: 18, symbol: '$', color: 'pink'},
-    {position: 18, symbol: '*', color: 'green'},
+    {position: 19, symbol: '!', color: 'yellow'}, // 38
+    {position: 19, symbol: '%', color: 'pink'},   // 39
+   
+    {position: 20, symbol: '@', color: 'orange'}, // 40
+    {position: 20, symbol: '&', color: 'pink'},   // 41
 
-    {position: 19, symbol: '%', color: 'pink'},
-    {position: 19, symbol: '!', color: 'yellow'},
+    {position: 21, symbol: '?', color: 'orange'}, // 41
+    {position: 21, symbol: '#', color: 'orange'}, // 42
+    
+    {position: 22, symbol: '$', color: 'green'},  // 43
+    {position: 22, symbol: '*', color: 'green'},  // 44
 
-    {position: 20, symbol: '@', color: 'orange'},
-    {position: 20, symbol: '&', color: 'pink'},
+    {position: 23, symbol: '!', color: 'yellow'}, // 45
+    {position: 23, symbol: '%', color: 'green'},  // 46
+    
 
-    {position: 21, symbol: '#', color: 'orange'},
-    {position: 21, symbol: '?', color: 'orange'},
-
-    {position: 22, symbol: '$', color: 'green'},
-    {position: 22, symbol: '*', color: 'green'},
-
-    {position: 23, symbol: '$', color: 'green'},
-    {position: 23, symbol: '&', color: 'pink'},
-
-    {position: 24, symbol: '%', color: 'green'},
-    {position: 24, symbol: '!', color: 'yellow'}, 
 ]
  
 
