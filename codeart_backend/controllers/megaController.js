@@ -211,20 +211,36 @@ exports.initializeMega = (io) => {
 
 
         console.log(`button ${button.pin} is down, ${activeButtons}`);
+
+        // print before
+        console.log('gameState before buttonDown', gameState);
+        // update (ONLY ONCE!)
+        gameState = buttonDown(gameState, buttonMap[button.pin]);
+        // print after
+        console.log('gameState after buttonDown', gameState);
+
         // broadcast which button was pushed
         // io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
-        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: buttonDown(gameState, buttonMap[button.pin])});
-        gameState = buttonUp(gameState, buttonMap[button.pin]);
+        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: gameState.forScott});
+
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
       });
 
       buttons.on("up", function(button) {
         console.log(`button ${button.pin} is up, ${activeButtons}`);
+
+        // print before
+        console.log('gameState before buttonUp', gameState);
+        // update (ONLY ONCE!)
+        gameState = buttonUp(gameState, buttonMap[button.pin]);
+        // print after
+        console.log('gameState after buttonUp', gameState);
+
         // broadcast which button was pushed
         // io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
-        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: buttonUp(gameState, buttonMap[button.pin])})
-        gameState = buttonUp(gameState, buttonMap[button.pin]);
+        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: gameState.forScott})
+
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
         // splice out the button that was released

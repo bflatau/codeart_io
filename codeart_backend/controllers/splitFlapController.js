@@ -5,7 +5,7 @@ const benRandomWrong = ["2","4","6","8","9","$","*","%","&","@","!","?","#"];
 const benButtonMap = {"20":48,"21":47,"22":45,"23":46,"24":44,"25":45,"26":42,"27":43,"28":40,"29":41,"30":38,"31":39,"32":36,"33":37,"34":34,"35":35,"36":32,"37":33,"38":30,"39":31,"40":28,"41":29,"42":26,"43":27,"44":24,"45":25,"46":22,"47":23,"48":20,"49":21,"50":18,"51":19,"52":16,"53":17,"54":0,"55":1,"56":2,"57":3,"58":4,"59":5,"60":6,"61":7,"62":8,"63":9,"64":10,"65":11,"66":12,"67":13,"68":14,"69":15};
 
 
-levelEditorGameObject = {"buttons":["a","a","a","a","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off"],"flaps":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"h","e","l","l","o",null,"t","h","e","r","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}
+const levelEditorGameObject = {"buttons":["a","a","a","a","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off"],"flaps":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"h","e","l","l","o",null,"t","h","e","r","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}
 
 
 
@@ -285,14 +285,24 @@ const doItAll = (gameState, action) => {
 }
 
 const buttonDown = (gameState, btnPin) => {
+    // Convert Ben's "btnPin" (0-48) to Jim's "boxId" (0-24)
     const boxId = Math.floor(btnPin / 2);
     const isEven = boxId % 2 === 0;
     const newState = isEven ? 'a' : 'b';
-    return doItAll(gameState, { id: btnPin, state: newState });
+
+    const jimAction = { id: boxId, state: newState };
+    console.log(`btnPin ${btnPin} DOWN converted to: ${jimAction}`)
+
+    return doItAll(gameState, jimAction);
 }
 const buttonUp = (gameState, btnPin) => {
+    // Convert Ben's "btnPin" (0-48) to Jim's "boxId" (0-24)
     const boxId = Math.floor(btnPin / 2);
-    return doItAll(gameState, { id: btnPin, state: 'off' });
+
+    const jimAction = { id: boxId, state: 'off' };
+    console.log(`btnPin ${btnPin} UP converted to: ${jimAction}`)
+
+    return doItAll(gameState, jimAction);
 }
 
 const initialGameStateObject = convertToState(levelEditorGameObject);
