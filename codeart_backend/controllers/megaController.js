@@ -1,3 +1,5 @@
+const { buttonDown , buttonUp, initialGameStateObject } = require( "./splitFlapController");
+
 const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   
   // BOX 1 //
@@ -106,6 +108,7 @@ const buttonMap = { //this maps the arduino mega pins with a 0-XX number
 };
 
 const activeButtons = []; // array of boxes that are turned on
+let gameState = initialGameStateObject;
 
 let currentGame = 1;  // number of current game
 
@@ -154,18 +157,20 @@ exports.initializeMega = (io) => {
 
           ////ADD THE PINS!!!
           pins: [
-            /// ANALOG ROW ///            
-            'A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A12', 'A13', 'A14', 'A15',
-            /// DIGITAL BLOCK ///
-            '53', '52', '51', '50', '49', '48', '47', '46', '45', '44', '43', '42',
-            '41', '40', '39', '38', '37', '36', '35', '34', '33', '32',
-            '31', '30', '29', '28', '27', '26', '25', '24', '23', '22',
-            /// COMM ROW ///
-            '21', '20',
+            // /// ANALOG ROW ///            
+            // 'A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A12', 'A13', 'A14', 'A15',
+            // /// DIGITAL BLOCK ///
+            // '53', '52', '51', '50', '49', '48', '47', '46', '45', '44', '43', '42',
+            // '41', '40', '39', '38', '37', '36', '35', '34', '33', '32',
+            // '31', '30', '29', '28', '27', '26', '25', '24', '23', '22',
+            // /// COMM ROW ///
+            // '21', '20',
 
-            /// TX/RX ROW //
+            // /// TX/RX ROW //
 
-             '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'
+            //  '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'
+
+            '0', '1', '2', '3', '4', '5', '6', '7'
             
           ],
           // holdtime: 2000,
@@ -207,7 +212,9 @@ exports.initializeMega = (io) => {
 
         console.log(`button ${button.pin} is down, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
+        // io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
+        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: buttonDown(gameState, buttonMap[button.pin])});
+        gameState = buttonUp(gameState, buttonMap[button.pin]);
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
       });
@@ -215,7 +222,9 @@ exports.initializeMega = (io) => {
       buttons.on("up", function(button) {
         console.log(`button ${button.pin} is up, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
+        // io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
+        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: buttonUp(gameState, buttonMap[button.pin])})
+        gameState = buttonUp(gameState, buttonMap[button.pin]);
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
         // splice out the button that was released
