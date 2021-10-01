@@ -30,7 +30,7 @@ const flaps = [
     'Y',    // 25
     26,     // WHITE
     'Q',    // 27
-    28,     // RED
+    28,     // PINK
     29,     // ORANGE
     '!',    // 30
     'T',    // 31
@@ -320,11 +320,18 @@ export const doItAll = (gameState, action) => {
 }
 
 
+export const generateFlaps = () =>{
+
+    let flaps = 'ben'
+
+    return flaps
+}
+
 //buttons == an array of the winning buttons state
-// buttons = ["a", "off", "b", "a"]
+// buttons = ["a", "off", "b", "a"] // 24 index long
 
 //flaps == an array of the winning flap state
-// flaps = [null, "B", "E", null, "N"]
+// flaps = [null, "B", "E", 0, 12] // 108 index long
 
 /// btnState = an array of the current button state ///
 // btnState = [{id: 0, currentState: 'a', desiredState: 'a', triggered: true}, {id: 1, currentState: 'off', desiredState: 'off'}]
@@ -333,22 +340,6 @@ export const doItAll = (gameState, action) => {
 
 // flapState = current flap state
 // is an array = [{id: 0, val: null, matters: false, isRevealed: false},{id: 1, val: null, matters: false, isRevealed: false}]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

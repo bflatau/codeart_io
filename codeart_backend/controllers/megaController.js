@@ -1,36 +1,36 @@
 const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   
   // BOX 1 //
-  '54': 0, // A0
-  '55': 1, // A1
+  '16': 0, // A0
+  '17': 1, // A1
 
   // BOX 2 //
-  '56': 2, // A2
-  '57': 3, // A3
+  '2': 2, // A2
+  '3': 3, // A3
 
   // BOX 3 //
-  '58': 4, // A4
-  '59': 5, // A5
+  '4': 5, // A4
+  '5': 4, // A5
 
   // BOX 4 // 
-  '60': 6, // A6
-  '61': 7, // A7
+  '6': 7, // A6
+  '7': 6, // A7
 
   // BOX 5 // 
-  '62': 8, // A8
-  '63': 9, // A9
+  '8': 9, // A8
+  '9': 8, // A9
 
   // BOX 6 // 
-  '64': 10, // A10
-  '65': 11, // A11
+  '10': 10, // A10
+  '11': 11, // A11
 
   // BOX 7 // 
-  '66': 12, // A12
-  '67': 13, // A13
+  '12': 13, // A12
+  '13': 12, // A13
 
   // BOX 8 // 
-  '68': 14, // A14
-  '69': 15, // A15
+  '14': 15, // A14
+  '15': 14, // A15
 
   // BOX 9 // 
   '52': 16, 
@@ -41,20 +41,20 @@ const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   '51': 19, 
 
   // BOX 11 // 
-  '48': 20, 
-  '49': 21, 
+  '48': 21, 
+  '49': 20, 
 
   // BOX 12 // 
   '46': 22, 
   '47': 23, 
 
   // BOX 13 // 
-  '44': 24, 
-  '45': 25, 
+  '44': 25, 
+  '45': 24, 
 
   // BOX 14 // 
-  '42': 26, 
-  '43': 27, 
+  '42': 27, 
+  '43': 26, 
 
   // BOX 15 // 
   '40': 28, 
@@ -85,28 +85,24 @@ const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   '31': 39,
 
   // BOX 20 // 
-  '28': 40, 
-  '29': 41,
+  '28': 41, 
+  '29': 40,
 
   // BOX 21 // 
-  '26': 42, 
-  '27': 43,
+  '26': 43, 
+  '27': 42,
 
   // BOX 22 // 
-  '24': 44, 
-  '25': 45,
+  '24': 45, 
+  '25': 44,
 
   // BOX 23 // 
-  '22': 45, 
-  '23': 46,
-
-  // BOX 23 // 
-  '22': 45, 
-  '23': 46,
+  '22': 46, 
+  '23': 47,
 
   // BOX 24 // 
-  '21': 47, 
-  '20': 48,
+  '21': 48, 
+  '20': 49,
 };
 
 const activeButtons = []; // array of boxes that are turned on
@@ -118,14 +114,30 @@ const gameWinningGameCondition = [
   
 ]
 
-exports.updateGameBoardState = (currentGame, activeButtons) => {
+let initialFlaps = Array(108).fill(0);
+let currentFlapState = initialFlaps;
 
-  //first check how many active buttons are mapped to the gameWinningCondition
+const updateFlapState = (pin) => {
+const updatedFlaps = currentFlapState.map((item, i) => {
+  if(pin === i){
+    return 12
+  }
+  else {
+    return 0
+  }
+});
 
-  //for every button that isn't in the winning condition, do something else
-
-return 'this is gameboard state';
+currentFlapState = updatedFlaps;
+return updatedFlaps;
 }
+
+
+exports.getFlapState = () => {
+
+  return currentFlapState
+
+};
+
 
 exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
@@ -149,7 +161,11 @@ exports.initializeMega = (io) => {
             '41', '40', '39', '38', '37', '36', '35', '34', '33', '32',
             '31', '30', '29', '28', '27', '26', '25', '24', '23', '22',
             /// COMM ROW ///
-            '21', '20'
+            '21', '20',
+
+            /// TX/RX ROW //
+
+             '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'
             
           ],
           // holdtime: 2000,
@@ -159,7 +175,6 @@ exports.initializeMega = (io) => {
       });
 
       buttons.on("down", function(button) {
-        
         
         //handle if button triggers a game
         switch (button.pin) {
@@ -192,7 +207,7 @@ exports.initializeMega = (io) => {
 
         console.log(`button ${button.pin} is down, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: 'ben'});
+        io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
       });
@@ -200,7 +215,7 @@ exports.initializeMega = (io) => {
       buttons.on("up", function(button) {
         console.log(`button ${button.pin} is up, ${activeButtons}`);
         // broadcast which button was pushed
-        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: 'josie'})
+        io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
         // splice out the button that was released
@@ -210,3 +225,41 @@ exports.initializeMega = (io) => {
       });
     });  
 }
+
+
+
+
+///// ANALOG BUTTONS ////
+
+
+  // // BOX 1 //
+  // '54': 0, // A0
+  // '55': 1, // A1
+
+  // // BOX 2 //
+  // '56': 2, // A2
+  // '57': 3, // A3
+
+  // // BOX 3 //
+  // '58': 4, // A4
+  // '59': 5, // A5
+
+  // // BOX 4 // 
+  // '60': 6, // A6
+  // '61': 7, // A7
+
+  // // BOX 5 // 
+  // '62': 8, // A8
+  // '63': 9, // A9
+
+  // // BOX 6 // 
+  // '64': 10, // A10
+  // '65': 11, // A11
+
+  // // BOX 7 // 
+  // '66': 12, // A12
+  // '67': 13, // A13
+
+  // // BOX 8 // 
+  // '68': 14, // A14
+  // '69': 15, // A15

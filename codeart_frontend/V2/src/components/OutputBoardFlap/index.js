@@ -12,7 +12,7 @@ class OutputBoardFlap extends Component {
     render() {
 
         return (
-            <div className="split-flap-button">
+            <div className={`split-flap-button-${this.props.color}`}>
                 {this.props.flapValue}
             </div> 
         )
