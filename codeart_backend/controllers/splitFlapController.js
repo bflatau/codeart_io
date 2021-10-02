@@ -248,6 +248,8 @@ const doItAll = (gameState, action) => {
     const currentMatchesDesired = gameState.btnStates[action.id].currentState === gameState.btnStates[action.id].desiredState;
     const isTurningOff = action.state === 'off';
     const isCorrect = currentMatchesDesired && !isTurningOff;
+
+    console.log('is this correct?', isCorrect)
     
     // Determine how many random things will happen
     // (currenlty it's the same whther good or bad. you can change this)
@@ -287,11 +289,11 @@ const doItAll = (gameState, action) => {
 const buttonDown = (gameState, btnPin) => {
     // Convert Ben's "btnPin" (0-48) to Jim's "boxId" (0-24)
     const boxId = Math.floor(btnPin / 2);
-    const isEven = boxId % 2 === 0;
+    const isEven = btnPin % 2 === 0;
     const newState = isEven ? 'a' : 'b';
 
     const jimAction = { id: boxId, state: newState };
-    console.log(`btnPin ${btnPin} DOWN converted to: ${jimAction}`)
+    console.log(`btnPin ${btnPin} DOWN converted to: ${JSON.stringify(jimAction)}`)
 
     return doItAll(gameState, jimAction);
 }
@@ -300,7 +302,7 @@ const buttonUp = (gameState, btnPin) => {
     const boxId = Math.floor(btnPin / 2);
 
     const jimAction = { id: boxId, state: 'off' };
-    console.log(`btnPin ${btnPin} UP converted to: ${jimAction}`)
+    console.log(`btnPin ${btnPin} UP converted to: ${JSON.stringify(jimAction)}`)
 
     return doItAll(gameState, jimAction);
 }

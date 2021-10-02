@@ -1,7 +1,8 @@
 const { buttonDown , buttonUp, initialGameStateObject } = require( "./splitFlapController");
 
 const buttonMap = { //this maps the arduino mega pins with a 0-XX number
-  
+  ///STRING ON LEFT IS ARDUINO PIN NUMBERS
+  /// NUMBER ON RIGHT IS PIN ID FOR HUMAN CONSUMPTION
   // BOX 1 //
   '16': 0, // A0
   '17': 1, // A1
@@ -202,7 +203,7 @@ exports.initializeMega = (io) => {
         
 
 
-        console.log(`button ${button.pin} is down, ${activeButtons}`);
+        // console.log(`button ${button.pin} is down, ${activeButtons}`);
 
         console.log('button map pin', buttonMap[button.pin]);
 
@@ -222,7 +223,7 @@ exports.initializeMega = (io) => {
       });
 
       buttons.on("up", function(button) {
-        console.log(`button ${button.pin} is up, ${activeButtons}`);
+        // console.log(`button ${button.pin} is up, ${activeButtons}`);
         console.log('button map pin', buttonMap[button.pin])
 
         // print before
@@ -230,7 +231,7 @@ exports.initializeMega = (io) => {
         // update (ONLY ONCE!)
         gameState = buttonUp(gameState, buttonMap[button.pin]);
         // print after
-        console.log('gameState after buttonUp', gameState);
+        // console.log('gameState after buttonUp', gameState);
 
         // broadcast which button was pushed
         // io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
