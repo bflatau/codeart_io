@@ -4,6 +4,8 @@ const express = require('express');
 const socketIO = require('socket.io');
 const bodyParser  = require("body-parser");
 const cors = require('cors');
+const SerialPort = require('serialport')
+const {Splitflap, Util} = require('splitflapjs')
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -52,7 +54,46 @@ app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity);
 
 /// ARDUINO STUFF ///
-megaController.initializeMega(io);
+const findPort = (ports, description, vendorId, productId, serialNumber) => {
+  const matchingPorts = ports.filter((portInfo) => {
+    return portInfo.vendorId === vendorId && portInfo.productId === productId && portInfo.serialNumber === serialNumber
+  })
+
+  if (matchingPorts.length < 1) {
+    console.warn(`No matching ${description} usb serial port found (vendorId=${vendorId}, productId=${productId}, serialNumber=${serialNumber}! Available ports: ${JSON.stringify(ports, undefined, 4)}`)
+    return null
+  } else if (matchingPorts.length > 1) {
+    console.warn(`Multiple ${description} usb serial ports found: ${JSON.stringify(matchingPorts, undefined, 4)}`)
+    return null
+  }
+  console.info(`Found ${description} port at ${matchingPorts[0].path}`)
+  return matchingPorts[0]
+}
+
+
+const initializeHardware = async () => {
+  const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
+
+  const splitflapPortInfo = findPort(ports, 'splitflap', '10c4', 'ea60', '02280A9E')
+
+  const splitflapPort = splitflapPortInfo !== null ? new SerialPort(splitflapPortInfo.path, {baudRate: 230400}) : null
+  const splitflap = new Splitflap(splitflapPort, (message) => {
+      if (message.payload === 'log') {
+        console.log(`SPLITFLAP LOG: ${message.log.msg}`)
+      } else if (message.payload === 'splitflapState') {
+        // TODO: publish to frontend
+      }
+  })
+
+  // TODO: use splitflap.setPositions (and Util.mapDualRowZigZagToLinear) to output to splitflap
+
+  const megaPortInfo = findPort(ports, 'mega', 'FIXME', 'FIXME', 'FIXME')
+  if (megaPortInfo !== null) {
+    megaController.initializeMega(io, megaPortInfo.path);
+  }
+}
+
+initializeHardware()
 
 
 /// WEB SOCKET STUFF ///

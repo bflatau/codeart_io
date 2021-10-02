@@ -143,11 +143,11 @@ exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
 }
 
-exports.initializeMega = (io) => {
+exports.initializeMega = (io, port) => {
 
   const five = require("johnny-five");
   // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation
-  board = new five.Board(); 
+  board = new five.Board({port}); 
   board.on("ready", function() {
 
       buttons = new five.Buttons({

@@ -20,8 +20,8 @@
     "express": "^4.17.1",
     "johnny-five": "^1.4.0",
     "onoff": "^5.0.1",
-    "raspi-io": "^11.0.0",
     "socket.io": "^2.3.0",
+    "splitflapjs": "file:../ext/splitflap/software/js/splitflapjs",
     "xlsx": "^0.17.1"
   }
 }
