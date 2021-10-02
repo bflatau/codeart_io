@@ -279,7 +279,7 @@ const doItAll = (gameState, action) => {
         forScott
     };
 
-    console.log('returning game state', newGameState);
+    // console.log('returning game state', newGameState); /// JIM STUFF
 
     return newGameState;
 }
