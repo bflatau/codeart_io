@@ -1,11 +1,11 @@
 const randomWrong = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '{', '}', '|', '[', ']', '\\', '/', ',', '.', '<', '>', '?', '`', ':', '"', '_'];
 const allLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-const benFlapsMap = {"0":0,"2":12,"4":14,"6":26,"8":28,"9":29,"j":1,"b":2,"m":3,"r":4,"$":5,"v":6,"k":7,"a":8,"e":9,"n":10,"o":11,"*":13,"g":15,"i":16,"%":17,"d":18,"l":19,"&":20,"@":21,"c":22,"w":23,"h":24,"y":25,"q":27,"!":30,"t":32,"z":32,"p":33,"f":34,"?":35,"s":36,"#":37,"u":38,"x":39};
+const benFlapsMap = {"0":0,"2":12,"4":14,"6":26,"8":28,"9":29,"j":1,"b":2,"m":3,"r":4,"$":5,"v":6,"k":7,"a":8,"e":9,"n":10,"o":11,"*":13,"g":15,"i":16,"%":17,"d":18,"l":19,"&":20,"@":21,"c":22,"w":23,"h":24,"y":25,"q":27,"!":30,"t":31,"z":32,"p":33,"f":34,"?":35,"s":36,"#":37,"u":38,"x":39};
 const benRandomWrong = ["2","4","6","8","9","$","*","%","&","@","!","?","#"];
 const benButtonMap = {"20":48,"21":47,"22":45,"23":46,"24":44,"25":45,"26":42,"27":43,"28":40,"29":41,"30":38,"31":39,"32":36,"33":37,"34":34,"35":35,"36":32,"37":33,"38":30,"39":31,"40":28,"41":29,"42":26,"43":27,"44":24,"45":25,"46":22,"47":23,"48":20,"49":21,"50":18,"51":19,"52":16,"53":17,"54":0,"55":1,"56":2,"57":3,"58":4,"59":5,"60":6,"61":7,"62":8,"63":9,"64":10,"65":11,"66":12,"67":13,"68":14,"69":15};
 
 
-const levelEditorGameObject = {"buttons":["a","a","a","a","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off"],"flaps":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"h","e","l","l","o",null,"t","h","e","r","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}
+const levelEditorGameObject = {"buttons":["a","a","a","a","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off"],"flaps":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"t","h","a","n","k","s",null,"j","i","m",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}
 
 
 
@@ -125,7 +125,9 @@ const newRandomEvil = (flapStates, numToReveal) => {
 }
 
 const hasWon = btnStates => {
-    return !btnStates.find(btnState => btnState.currentState !== btnState.desiredState);
+    const hasWon = !btnStates.find(btnState => btnState.currentState !== btnState.desiredState);
+    console.log('was the game won?', hasWon);
+    return hasWon
 }
 
 const hasReset = btnStates => !btnStates.find(bs => bs.currentState !== 'off');
@@ -217,10 +219,15 @@ const convertToWon = gameState => {
         };
     });
 
+    const forScott = gameState.flaps.map(flapLetter => {
+        return flapLetter === null ? 0 : benFlapsMap[flapLetter]
+    });
+
     return {
         ...gameState,
         btnStates: updatedBtns,
-        flapStates: updatedFlaps
+        flapStates: updatedFlaps,
+        forScott
     };
 }
 
@@ -237,7 +244,7 @@ const doItAll = (gameState, action) => {
     if (hasReset(gameState.btnStates)) {
         return convertToState(gameState);
     }
-
+    
     // Short-circuit if it's solved
     if (hasWon(gameState.btnStates)) {
         return convertToWon(gameState);
