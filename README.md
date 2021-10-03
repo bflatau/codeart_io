@@ -5,3 +5,7 @@ to run node as a sudo user:
 
 to run npm as a sudo user:
 `sudo "$(which npm)" install -g angular-cli`
+
+working with Node:
+
+v12.22.5
