@@ -17,7 +17,7 @@ const flapLayouts = [
     {symbol: 'O', color: 'black'},
     {symbol: '_', color: 'yellow'},
     {symbol: '*', color: 'black'},
-    {symbol: '', color: 'green'},
+    {symbol: '_', color: 'green'},
     {symbol: 'G', color: 'black'},
     {symbol: 'I', color: 'black'},
     {symbol: '%', color: 'black'},
