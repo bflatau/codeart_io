@@ -1,65 +1,15 @@
-// BEN NOTES //
-//the flaps are physically fixed in their position, on update, we need to tell Scott's controller what position (id in the array) to go to
-
-const flaps = [
-    0,      // BLACK
-    'J',    // 1
-    'B',    // 2
-    'M',    // 3
-    'R',    // 4
-    '$',    // 5
-    'V',    // 6
-    'K',    // 7
-    'A',    // 8
-    'E',    // 9
-    'N',    // 10
-    'O',    // 11
-    12,     // YELLOW
-    '*',    // 13
-    14,     // GREEN
-    'G',    // 15
-    'I',    // 16
-    '%',    // 17
-    'D',    // 18
-    'L',    // 19
-    '&',    // 20
-    '@',    // 21
-    'C',    // 22
-    'W',    // 23
-    'H',    // 24
-    'Y',    // 25
-    26,     // WHITE
-    'Q',    // 27
-    28,     // PINK
-    29,     // ORANGE
-    '!',    // 30
-    'T',    // 31
-    'Z',    // 32
-    'P',    // 33
-    'F',    // 34
-    '?',    // 35
-    'S',    // 36
-    '#',    // 37
-    'U',    // 38
-    'X'     // 39
-]
+const randomWrong = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '{', '}', '|', '[', ']', '\\', '/', ',', '.', '<', '>', '?', '`', ':', '"', '_'];
+const allLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+const benFlapsMap = {"0":0,"2":12,"4":14,"6":26,"8":28,"9":29,"j":1,"b":2,"m":3,"r":4,"$":5,"v":6,"k":7,"a":8,"e":9,"n":10,"o":11,"*":13,"g":15,"i":16,"%":17,"d":18,"l":19,"&":20,"@":21,"c":22,"w":23,"h":24,"y":25,"q":27,"!":30,"t":31,"z":32,"p":33,"f":34,"?":35,"s":36,"#":37,"u":38,"x":39};
+const benRandomWrong = ["2","4","6","8","9","$","*","%","&","@","!","?","#"];
+const benButtonMap = {"20":48,"21":47,"22":45,"23":46,"24":44,"25":45,"26":42,"27":43,"28":40,"29":41,"30":38,"31":39,"32":36,"33":37,"34":34,"35":35,"36":32,"37":33,"38":30,"39":31,"40":28,"41":29,"42":26,"43":27,"44":24,"45":25,"46":22,"47":23,"48":20,"49":21,"50":18,"51":19,"52":16,"53":17,"54":0,"55":1,"56":2,"57":3,"58":4,"59":5,"60":6,"61":7,"62":8,"63":9,"64":10,"65":11,"66":12,"67":13,"68":14,"69":15};
 
 
-// BEN NOTES // 
-//I converted random and correct letters to their IDs in the array, I'm keeping [0] (black) out of this for now as it's a special condition
+const levelEditorGameObject = {"buttons":["a","a","a","a","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off","off"],"flaps":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"t","h","a","n","k","s",null,"j","i","m",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}
 
-const generateAllLetters = (array) =>{
-    let filteredArray = array;
-    for(var i = randomWrong.length -1; i>=0; i--){
-        filteredArray.splice(randomWrong[i], 1);
-    }
-    return filteredArray;
-}
 
-const numberOfFlapsPerModule =  Array.from(Array(40).keys());   // 0-39 ids of all flap positions
-const randomWrong = [5, 12, 13, 14, 17, 20, 21];                // "incorrect" values
-let allLetters = generateAllLetters(numberOfFlapsPerModule);    // cull incorrect values from all ids 
-let splitFlapBoard = Array(108);
+
+
 
 const sampleAction = { 
     id: 1,            // id 
@@ -175,7 +125,9 @@ const newRandomEvil = (flapStates, numToReveal) => {
 }
 
 const hasWon = btnStates => {
-    return !btnStates.find(btnState => btnState.currentState !== btnState.desiredState);
+    const hasWon = !btnStates.find(btnState => btnState.currentState !== btnState.desiredState);
+    console.log('was the game won?', hasWon);
+    return hasWon
 }
 
 const hasReset = btnStates => !btnStates.find(bs => bs.currentState !== 'off');
@@ -189,13 +141,16 @@ const convertToState = game => {
         });
     const flapStates = game.flaps
         .map((val, id) => {
-            return { id, val, matters: val !== null, isRevealed: false }
+            return { id, val, matters: val !== null, isRevealed: false, pos: 0 }
         });
+
+    const forScott = flapStates.map(fs => 0);
 
     return {
         ...game,
         btnStates,
         flapStates,
+        forScott,
     };
 }
 
@@ -239,7 +194,8 @@ const randomItemsFromArray = (arr, numberOfItems) => {
 const randFromOneToMax = max => Math.floor(Math.random() * max) + 1;
 
 const randomWrongValue = () => {
-    return randomItemsFromArray(randomWrong, 1)[0];
+    // return randomItemsFromArray(randomWrong, 1)[0];
+    return randomItemsFromArray(benRandomWrong, 1)[0];
 }
 
 const randomLetter = () => {
@@ -263,10 +219,15 @@ const convertToWon = gameState => {
         };
     });
 
+    const forScott = gameState.flaps.map(flapLetter => {
+        return flapLetter === null ? 0 : benFlapsMap[flapLetter]
+    });
+
     return {
         ...gameState,
         btnStates: updatedBtns,
-        flapStates: updatedFlaps
+        flapStates: updatedFlaps,
+        forScott
     };
 }
 
@@ -275,7 +236,7 @@ const convertToWon = gameState => {
  *  (before user's action is applied) and then applies the user's action, updates
  *  the entire state obj accordingly and returns it.
  */
-export const doItAll = (gameState, action) => {
+const doItAll = (gameState, action) => {
     // Apply the user's action to the state obj
     gameState.btnStates[action.id].currentState = action.state;
 
@@ -283,7 +244,7 @@ export const doItAll = (gameState, action) => {
     if (hasReset(gameState.btnStates)) {
         return convertToState(gameState);
     }
-
+    
     // Short-circuit if it's solved
     if (hasWon(gameState.btnStates)) {
         return convertToWon(gameState);
@@ -294,6 +255,8 @@ export const doItAll = (gameState, action) => {
     const currentMatchesDesired = gameState.btnStates[action.id].currentState === gameState.btnStates[action.id].desiredState;
     const isTurningOff = action.state === 'off';
     const isCorrect = currentMatchesDesired && !isTurningOff;
+
+    console.log('is this correct?', isCorrect)
     
     // Determine how many random things will happen
     // (currenlty it's the same whther good or bad. you can change this)
@@ -315,145 +278,42 @@ export const doItAll = (gameState, action) => {
         gameState.flapStates = newRandomEvil(gameState.flapStates, numToReveal);     
     }
 
-    console.log('returning gameState', gameState);
-    return gameState;
+    const forScott = gameState.flapStates.map(fs => {
+        const lookupVal = fs.randomVal || (fs.isRevealed && fs.val) || 0;
+        return benFlapsMap[lookupVal];
+    });
+
+    const newGameState = {
+        ...gameState,
+        forScott
+    };
+
+    // console.log('returning game state', newGameState); /// JIM STUFF
+
+    return newGameState;
 }
 
+const buttonDown = (gameState, btnPin) => {
+    // Convert Ben's "btnPin" (0-48) to Jim's "boxId" (0-24)
+    const boxId = Math.floor(btnPin / 2);
+    const isEven = btnPin % 2 === 0;
+    const newState = isEven ? 'a' : 'b';
 
-export const generateFlaps = () =>{
+    const jimAction = { id: boxId, state: newState };
+    console.log(`btnPin ${btnPin} DOWN converted to: ${JSON.stringify(jimAction)}`)
 
-    let flaps = 'ben'
+    return doItAll(gameState, jimAction);
+}
+const buttonUp = (gameState, btnPin) => {
+    // Convert Ben's "btnPin" (0-48) to Jim's "boxId" (0-24)
+    const boxId = Math.floor(btnPin / 2);
 
-    return flaps
+    const jimAction = { id: boxId, state: 'off' };
+    console.log(`btnPin ${btnPin} UP converted to: ${JSON.stringify(jimAction)}`)
+
+    return doItAll(gameState, jimAction);
 }
 
-//buttons == an array of the winning buttons state
-// buttons = ["a", "off", "b", "a"] // 24 index long
+const initialGameStateObject = convertToState(levelEditorGameObject);
 
-//flaps == an array of the winning flap state
-// flaps = [null, "B", "E", 0, 12] // 108 index long
-
-/// btnState = an array of the current button state ///
-// btnState = [{id: 0, currentState: 'a', desiredState: 'a', triggered: true}, {id: 1, currentState: 'off', desiredState: 'off'}]
-// state can be 'a', 'b', 'off'
-
-
-// flapState = current flap state
-// is an array = [{id: 0, val: null, matters: false, isRevealed: false},{id: 1, val: null, matters: false, isRevealed: false}]
-
-
-
-/// OLD STUFF ///
-
-
-var XLSX = require('xlsx');
-// const fs = require('fs');
-
-
-// ///SETUP XLSX READER
-// var buffer = fs.readFileSync("../code_art.xlsx");
-// var workbook = XLSX.read(buffer, {type:'buffer'});
-
-
-
-// var keys = Object.keys(workbook.Sheets['game_2']);//GETS KEY VALUES OF EACH SHEET [A1, G4, E6]...etc
-// // console.log(keys)
-
-// keys.forEach((key) => {
-//     console.log(workbook.Sheets['game_2'][key].v) ///GETS VALUES ASSOCIATED WITH EACH KEY [B, E, N]...etc
-// })
-
-
-
-// // B2 - S2
-// // B3 - S3 
-// // B4 - S4 
-// // B5 - S5 
-// // B6 - S6 
-// // B7 - S7 
-
-
-// const splitFlapModules = {  
-    
-//     'B2': 1, 'C2': 2, 'D2': 3, 'E2': 0, 'F2': 0, 'G2': 0, 'H2': 0, 'I2': 0, 'J2': 0, 'K2': 0, 'L2': 0, 'M2': 0, 'N2': 0, 'O2': 0, 'P2': 0, 'Q2': 4, 'R2': 5, 'S2': 6,
-    
-
-
-// };
-
-// console.log(splitFlapModules['G2'], 'hello')
-
-// let benTest = [];
-
-// for (const value in splitFlapModules) {
-
-//     benTest.push(splitFlapModules[value])
-//   }
-
-//   console.log(benTest)
-
-// const flaps = [
-//     0, //BLACK
-//     'J',
-//     'B',
-//     'M',
-//     'R',
-//     '$',
-//     'V',
-//     'K',
-//     'A',
-//     'E',
-//     'N',
-//     'O',
-//     12, // yellow
-//     '*',
-//     14, // green
-//     'G',
-//     'I',
-//     '%',
-//     'D',
-//     'L',
-//     '&',
-//     '@',
-//     'C',
-//     'W',
-//     'H',
-//     'Y',
-//     26, // white
-//     'Q',
-//     28, // red
-//     29, // orange
-//     '!',
-//     'T',
-//     'Z',
-//     'P',
-//     'F',
-//     '?',
-//     'S',
-//     '#',
-//     'U',
-//     'X'
-// ]
-
-
-
-
-
-// var firstSheet = workbook.SheetNames[0];
-
-// console.log(firstSheet) /// outputs sheet name
-
-// console.log(workbook.Sheets['game_1'])
-
-
-// var first_sheet_name = workbook.SheetNames[0];
-// var address_of_cell = 'A1';
-
-// /* Get worksheet */
-// var worksheet = workbook.Sheets[first_sheet_name];
-
-// /* Find desired cell */
-// var desired_cell = worksheet[address_of_cell];
-
-// /* Get the value */
-// var desired_value = (desired_cell ? desired_cell.v : undefined);
+module.exports = {buttonUp, buttonDown, initialGameStateObject}
