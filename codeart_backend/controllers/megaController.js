@@ -167,9 +167,6 @@ exports.initializeMega = (io, port, splitflap) => {
     }
     lastSplitflapState = newSplitflapState
 
-    console.log(`Setting splitflap state: ${JSON.stringify(newSplitflapState, undefined, 4)}`)
-    console.log(`    diff: ${JSON.stringify(diff, undefined, 4)}`)
-    console.log(`    output: ${JSON.stringify(Util.mapDualRowZigZagToLinear(diff, true))}`)
     splitflap.setPositions(Util.mapDualRowZigZagToLinear(diff, true))
   }
 

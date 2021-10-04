@@ -145,15 +145,13 @@ const initializeHardware = async () => {
   const test = [
     '                  ',
     '                  ',
-    '  HELLO           ',
-    '         WORLD    ',
+    '                  ',
+    '                  ',
     '                  ',
     '                  ',
   ]
 
   splitflap.setPositions(Util.mapDualRowZigZagToLinear(test.map(stringToFlapIndexArray), true))
-
-  // TODO: use splitflap.setPositions (and Util.mapDualRowZigZagToLinear) to output to splitflap
 
   const megaPortInfo = findPort(ports, 'mega', '2341', '0010', '6493833393235110A1A0')
   if (megaPortInfo !== null) {
