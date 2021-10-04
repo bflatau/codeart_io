@@ -152,6 +152,26 @@ exports.initializeMega = (io, port, splitflap) => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]
 
+  const updateSplitflap = (allIndexes) => {
+    const newSplitflapState = []
+    for (let i = 0; i < 6; i++) {
+      newSplitflapState.push(gameState.forScott.slice(i*18, (i+1)*18))
+    }
+    const diff = []
+    for (let row = 0; row < 6; row++) {
+      const diffRow = []
+      for (let col = 0; col < 18; col++) {
+        diffRow.push(lastSplitflapState[row][col] == newSplitflapState[row][col] ? null : newSplitflapState[row][col])
+      }
+      diff.push(diffRow)
+    }
+    lastSplitflapState = newSplitflapState
+
+    console.log(`Setting splitflap state: ${JSON.stringify(newSplitflapState, undefined, 4)}`)
+    console.log(`    diff: ${JSON.stringify(diff, undefined, 4)}`)
+    splitflap.setPositions(Util.mapDualRowZigZagToLinear(lastSplitflapState, true))
+  }
+
   const five = require("johnny-five");
   // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation
   board = new five.Board({port}); 
@@ -227,6 +247,8 @@ exports.initializeMega = (io, port, splitflap) => {
         // broadcast which button was pushed
         // io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
         io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: gameState.forScott});
+        
+        updateSplitflap(gameState.forScott)
 
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
@@ -247,10 +269,7 @@ exports.initializeMega = (io, port, splitflap) => {
         // io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
         io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: gameState.forScott})
 
-        let newSplitflapState = []
-        for (let i = 0; i < 6; i++) {
-          newSplitflapState.push(gameState.forScott.slice(i*18, (i)))
-        }
+        updateSplitflap(gameState.forScott)
 
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
