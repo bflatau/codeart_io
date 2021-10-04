@@ -169,7 +169,8 @@ exports.initializeMega = (io, port, splitflap) => {
 
     console.log(`Setting splitflap state: ${JSON.stringify(newSplitflapState, undefined, 4)}`)
     console.log(`    diff: ${JSON.stringify(diff, undefined, 4)}`)
-    splitflap.setPositions(Util.mapDualRowZigZagToLinear(lastSplitflapState, true))
+    console.log(`    output: ${JSON.stringify(Util.mapDualRowZigZagToLinear(diff, true))}`)
+    splitflap.setPositions(Util.mapDualRowZigZagToLinear(diff, true))
   }
 
   const five = require("johnny-five");
@@ -247,7 +248,7 @@ exports.initializeMega = (io, port, splitflap) => {
         // broadcast which button was pushed
         // io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
         io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: gameState.forScott});
-        
+
         updateSplitflap(gameState.forScott)
 
         // add button to running list of active buttons (state)
