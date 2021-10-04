@@ -1,4 +1,5 @@
 const { buttonDown , buttonUp, initialGameStateObject } = require( "./splitFlapController");
+const {Util} = require('splitflapjs')
 
 const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   ///STRING ON LEFT IS ARDUINO PIN NUMBERS
@@ -140,7 +141,16 @@ exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
 }
 
-exports.initializeMega = (io, port) => {
+exports.initializeMega = (io, port, splitflap) => {
+
+  let lastSplitflapState = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]
 
   const five = require("johnny-five");
   // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation
@@ -236,6 +246,11 @@ exports.initializeMega = (io, port) => {
         // broadcast which button was pushed
         // io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
         io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: gameState.forScott})
+
+        let newSplitflapState = []
+        for (let i = 0; i < 6; i++) {
+          newSplitflapState.push(gameState.forScott.slice(i*18, (i)))
+        }
 
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);

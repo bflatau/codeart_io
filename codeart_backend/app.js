@@ -74,7 +74,7 @@ const findPort = (ports, description, vendorId, productId, serialNumber) => {
 const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
-  const splitflapPortInfo = findPort(ports, 'splitflap', '10c4', 'ea60', '02280A9E')
+  const splitflapPortInfo = findPort(ports, 'splitflap', '10c4', 'ea60', '022809A3')
 
   const splitflapPort = splitflapPortInfo !== null ? new SerialPort(splitflapPortInfo.path, {baudRate: 230400}) : null
   const splitflap = new Splitflap(splitflapPort, (message) => {
@@ -85,11 +85,79 @@ const initializeHardware = async () => {
       }
   })
 
+
+  const flaps = [
+    ' ', // BLACK
+    'J', // 1
+    'B', // 2
+    'M', // 3
+    'R', // 4
+    '$', // 5
+    'V', // 6
+    'K', // 7
+    'A', // 8
+    'E', // 9
+    'N', // 10
+    'O', // 11
+    'y', // YELLOW
+    '*', // 13
+    'g', // GREEN
+    'G', // 15
+    'I', // 16
+    '%', // 17
+    'D', // 18
+    'L', // 19
+    '&', // 20
+    '@', // 21
+    'C', // 22
+    'W', // 23
+    'H', // 24
+    'Y', // 25
+    'w', // WHITE
+    'Q', // 27
+    'p', // PINK
+    'o', // ORANGE
+    '!', // 30
+    'T', // 31
+    'Z', // 32
+    'P', // 33
+    'F', // 34
+    '?', // 35
+    'S', // 36
+    '#', // 37
+    'U', // 38
+    'X', // 39
+]
+
+  const charToFlapIndex = (c) => {
+    const i = flaps.indexOf(c)
+    if (i >= 0) {
+        return i
+    } else {
+        return null
+    }
+  }
+
+  const stringToFlapIndexArray = (str) => {
+      return str.split('').map(charToFlapIndex)
+  }
+
+  const test = [
+    '                  ',
+    '                  ',
+    '  HELLO           ',
+    '         WORLD    ',
+    '                  ',
+    '                  ',
+  ]
+
+  splitflap.setPositions(Util.mapDualRowZigZagToLinear(test.map(stringToFlapIndexArray), true))
+
   // TODO: use splitflap.setPositions (and Util.mapDualRowZigZagToLinear) to output to splitflap
 
-  const megaPortInfo = findPort(ports, 'mega', 'FIXME', 'FIXME', 'FIXME')
+  const megaPortInfo = findPort(ports, 'mega', '2341', '0010', '6493833393235110A1A0')
   if (megaPortInfo !== null) {
-    megaController.initializeMega(io, megaPortInfo.path);
+    megaController.initializeMega(io, megaPortInfo.path, splitflap);
   }
 }
 
