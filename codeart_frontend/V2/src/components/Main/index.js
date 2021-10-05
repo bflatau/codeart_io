@@ -54,7 +54,7 @@ class Main extends Component {
                 <Header />
                 <InputBoard socket={this.props.socket} />
                 <OutputBoard socket={this.props.socket} splitflapState={this.state.boardLayoutData} />
-                <OutputBoard socket={this.props.socket} splitflapState={this.state.splitflapState} />
+                <OutputBoard socket={this.props.socket} splitflapState={this.state.splitflapState} onResetModule={this.props.resetModule}/>
                 {/* <SocketTest socket={socket}/> */}
                 <SplitflapDiagnostics serverName={this.props.socket.io.uri} socket={this.props.socket} onHardResetClick={this.props.splitflapHardReset} />
             </div>

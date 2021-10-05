@@ -27,11 +27,28 @@ const splitflapHardReset = async () => {
   }
 }
 
+const resetModule = async (x, y) => {
+  try {
+    const result = await fetch(new URL('/splitflap/reset_module', backendHost), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({x, y})
+    })
+    alert(await result.text())
+  } catch (err) {
+    alert(err)
+  }
+}
+
+
 
 ReactDOM.render(
   <React.StrictMode>
     <div id='app-content'>
-      <Main socket={socket} splitflapHardReset={splitflapHardReset} />
+      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} />
     </div>
   </React.StrictMode>,
   document.getElementById('root')

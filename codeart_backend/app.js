@@ -114,6 +114,16 @@ const initializeHardware = async () => {
     await splitflap.hardReset()
     res.send('ok')
   })
+  app.post('/splitflap/reset_module', async (req, res) => {
+    console.log(req.body)
+    const resetMap = []
+    for (let row = 0; row < 6; row++) {
+      resetMap.push(new Array(18).fill(false))
+    }
+    resetMap[req.body.y][req.body.x] = true
+    splitflap.resetModules(Util.convert2dDualRowZigZagTo1dChainlink(resetMap, true))
+    res.send('ok')
+  })
   app.get('/splitflap/state', async (req, res) => {
     res.json(splitflapLatestState === null ? null : PB.SplitflapState.toObject(splitflapLatestState, {
       defaults: true,

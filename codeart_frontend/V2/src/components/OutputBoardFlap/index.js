@@ -64,6 +64,7 @@ class OutputBoardFlap extends Component {
                 className={`split-flap-button-${flapLayouts[data.flapIndex].color}`}
                 style={{border: err ? '4px solid red' : '4px solid white'}}
                 title={`State: ${data.state}\r\nMissed home: ${data.countMissedHome}\r\nUnexpected home: ${data.countUnexpectedHome}`}
+                onClick={this.props.onResetModule}
             >
                 {flapLayouts[this.props.data.flapIndex].symbol}
             </td> 

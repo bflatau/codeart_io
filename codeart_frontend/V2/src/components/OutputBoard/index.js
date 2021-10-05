@@ -11,14 +11,20 @@ class OutputBoard extends Component {
             rows.push(this.props.splitflapState.modules.slice(i, i += 18))
         }
 
-        return rows.map((row) => (
+        return rows.map((row, y) => (
             <tr>
                 {
-                    row.map((item) => (
+                    row.map((item, x) => {
+                        let p = {}
+                        if (this.props.onResetModule) {
+                            p['onResetModule'] = () => { this.props.onResetModule(x, y) }
+                        }
+                        return (
                         <OutputBoardFlap
                             data={item}
+                            {...p}
                         />
-                    ))
+                    )})
                 }
             </tr>
         ))
