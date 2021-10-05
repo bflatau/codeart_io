@@ -46,21 +46,26 @@ const flapLayouts = [
 
 
 class OutputBoardFlap extends Component {
-    // constructor() {
-    //     super();
-    //     this.state = {
-    //         buttonOn: false
-    //     };
-    // }
-
     render() {
+        const data = this.props.data
+        if (data === undefined) {
+            return (
+                <td className={`split-flap-button-black-empty`}>
+                </td>
+            )
+        }
 
-        return this.props.data !== undefined ? (
-            <td className={`split-flap-button-${flapLayouts[this.props.data.flapIndex].color}`} style={{border: this.props.data.countUnexpectedHome + this.props.data.countMissedHome > 0 ? '4px solid red' : '4px solid white'}}>
+        const err = (data.countMissedHome !== undefined && data.countMissedHome > 0)
+                || (data.countUnexpectedHome !== undefined && data.countUnexpectedHome > 0)
+                || (data.state !== undefined && data.state !== 0)
+
+        return (
+            <td
+                className={`split-flap-button-${flapLayouts[data.flapIndex].color}`}
+                style={{border: err ? '4px solid red' : '4px solid white'}}
+                title={`State: ${data.state}\r\nMissed home: ${data.countMissedHome}\r\nUnexpected home: ${data.countUnexpectedHome}`}
+            >
                 {flapLayouts[this.props.data.flapIndex].symbol}
-            </td> 
-        ) : (
-            <td className={`split-flap-button-black-empty`}>
             </td> 
         )
     }

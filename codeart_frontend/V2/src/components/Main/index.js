@@ -25,8 +25,6 @@ class Main extends Component {
                 modules: data.map((i) => {
                     return {
                         flapIndex: i,
-                        countUnexpectedHome: 0,
-                        countMissedHome: 0,
                     }
                 }),
             },
