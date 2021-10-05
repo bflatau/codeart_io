@@ -1,13 +1,41 @@
 const randomWrong = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '{', '}', '|', '[', ']', '\\', '/', ',', '.', '<', '>', '?', '`', ':', '"', '_'];
-const allLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+const allLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',"$","*","%","&","@","!","?","#"];
 const benFlapsMap = {"0":0,"2":12,"4":14,"6":26,"8":28,"9":29,"j":1,"b":2,"m":3,"r":4,"$":5,"v":6,"k":7,"a":8,"e":9,"n":10,"o":11,"*":13,"g":15,"i":16,"%":17,"d":18,"l":19,"&":20,"@":21,"c":22,"w":23,"h":24,"y":25,"q":27,"!":30,"t":31,"z":32,"p":33,"f":34,"?":35,"s":36,"#":37,"u":38,"x":39};
-const benRandomWrong = ["2","4","6","8","9","$","*","%","&","@","!","?","#"];
+const benRandomWrong = ["2","4","6","8","9"];
 const benButtonMap = {"20":48,"21":47,"22":45,"23":46,"24":44,"25":45,"26":42,"27":43,"28":40,"29":41,"30":38,"31":39,"32":36,"33":37,"34":34,"35":35,"36":32,"37":33,"38":30,"39":31,"40":28,"41":29,"42":26,"43":27,"44":24,"45":25,"46":22,"47":23,"48":20,"49":21,"50":18,"51":19,"52":16,"53":17,"54":0,"55":1,"56":2,"57":3,"58":4,"59":5,"60":6,"61":7,"62":8,"63":9,"64":10,"65":11,"66":12,"67":13,"68":14,"69":15};
 
 
 const levelEditorGameObject = {"buttons":["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"],"flaps":[null,"y","a","y",null,"i","t",null,"w","o","r","k","s",null,null,null,null,null,null,"t","h","a","n","k","s",null,"e","v","e","r","y","o","n","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"f","o","r",null,"a","l","l",null,"t","h","e",null,"h","a","r","d",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"w","o","r","k",null,null,null,null,null,null,null]}
 
+const games = [
 
+    /// FOUR COLORS | The first bud of spring sings the other seeds into joining her uprising
+    {"buttons":["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"],"flaps":[null,null,"t","h","e",null,"f","i","r","s","t",null,"b","u","d",null,null,null,null,null,null,null,null,"o","f",null,null,"s","p","r","i","n","g",null,null,null,null,null,"s","i","n","g","s",null,"t","h","e",null,"o","t","h","e","r",null,null,null,"s","e","e","d","s",null,"i","n","t","o",null,null,null,null,null,null,null,null,"j","o","i","n","i","n","g",null,"h","e","r",null,null,null,null,null,null,null,"u","p","r","i","s","i","n","g",null,null,null,null,null,null,null,null]},
+
+    // & | technology is a useful servant but a dangerous master
+    {"buttons":["off","off","b","off","off","off","b","off","off","off","off","b","off","off","off","b","b","off","off","off","b","off","off","off"],"flaps":["t","e","c","h","n","o","l","o","g","y",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"i","s",null,null,null,"a",null,"u","s","e","f","u","l",null,"s","e","r","v","a","n","t",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"b","u","t",null,null,"a",null,"d","a","n","g","e","r","o","u","s",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"m","a","s","t","e","r"]}
+
+    // !
+
+    // $
+
+    // #
+
+    // @ 
+
+    // *
+
+    // %
+
+    // ? 
+
+    // ALL B SIDES
+
+
+
+
+
+]
 
 
 
