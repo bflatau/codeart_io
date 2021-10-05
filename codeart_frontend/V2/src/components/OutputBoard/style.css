@@ -10,6 +10,6 @@
 
 .output-board {
   border-collapse: separate;
-  /* border-spacing: 5px; */
+  border-spacing: 5px;
   table-layout: fixed;
 }
