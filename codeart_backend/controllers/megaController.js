@@ -1,4 +1,5 @@
 const { buttonDown , buttonUp, initialGameStateObject } = require( "./splitFlapController");
+const {Util} = require('splitflapjs')
 
 const buttonMap = { //this maps the arduino mega pins with a 0-XX number
   ///STRING ON LEFT IS ARDUINO PIN NUMBERS
@@ -140,11 +141,38 @@ exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
 }
 
-exports.initializeMega = (io) => {
+exports.initializeMega = (io, port, splitflap) => {
+
+  let lastSplitflapState = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]
+
+  const updateSplitflap = (allIndexes) => {
+    const newSplitflapState = []
+    for (let i = 0; i < 6; i++) {
+      newSplitflapState.push(gameState.forScott.slice(i*18, (i+1)*18))
+    }
+    const diff = []
+    for (let row = 0; row < 6; row++) {
+      const diffRow = []
+      for (let col = 0; col < 18; col++) {
+        diffRow.push(lastSplitflapState[row][col] == newSplitflapState[row][col] ? null : newSplitflapState[row][col])
+      }
+      diff.push(diffRow)
+    }
+    lastSplitflapState = newSplitflapState
+
+    splitflap.setPositions(Util.mapDualRowZigZagToLinear(diff, true))
+  }
 
   const five = require("johnny-five");
   // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation
-  board = new five.Board(); 
+  board = new five.Board({port}); 
   board.on("ready", function() {
 
       buttons = new five.Buttons({
@@ -218,6 +246,8 @@ exports.initializeMega = (io) => {
         // io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: updateFlapState(buttonMap[button.pin])});
         io.sockets.emit('button down', {buttons: buttonMap[button.pin], flaps: gameState.forScott});
 
+        updateSplitflap(gameState.forScott)
+
         // add button to running list of active buttons (state)
         activeButtons.push(buttonMap[button.pin]);
       });
@@ -236,6 +266,8 @@ exports.initializeMega = (io) => {
         // broadcast which button was pushed
         // io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: initialFlaps})
         io.sockets.emit('button up', {buttons: buttonMap[button.pin], flaps: gameState.forScott})
+
+        updateSplitflap(gameState.forScott)
 
         // find the index of the button released in the active buttons array
         const upIndex = activeButtons.indexOf(buttonMap[button.pin]);
