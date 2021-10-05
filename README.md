@@ -14,3 +14,6 @@ npm install -g typescript
 
 `scott note`
 had to add this in the splitflapjs folder: npm i --save-dev @types/node
+working with Node:
+
+v12.22.5
