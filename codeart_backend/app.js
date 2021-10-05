@@ -85,15 +85,15 @@ const splitflapStateForFrontend = (splitflapStatePb) => {
 const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
-  const splitflapPortInfo = findPort(ports, 'splitflap', [['10c4', 'ea60', '022809A3'], ['10c4', 'ea60', '02280A9E']])
+  const splitflapPortInfo = findPort(ports, 'splitflap', [
+    ['10c4', 'ea60', '022809A3'], // real
+    ['10c4', 'ea60', '02280A9E'], // development
+  ])
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
       if (message.payload === 'log') {
         console.log(`SPLITFLAP LOG: ${message.log.msg}`)
       } else if (message.payload === 'splitflapState' && message.splitflapState && message.splitflapState.modules) {
-        // XXX FIXME
-        message.splitflapState.modules[15].countMissedHome = 1
-
         splitflapLatestState = PB.SplitflapState.toObject(message.splitflapState, {defaults: true})
 
         io.sockets.emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
@@ -121,7 +121,10 @@ const initializeHardware = async () => {
   })
 
 
-  const megaPortInfo = findPort(ports, 'mega', [['2341', '0010', '6493833393235110A1A0']])
+  const megaPortInfo = findPort(ports, 'mega', [
+    ['2341', '0010', '6493833393235110A1A0'], // real
+    ['2341', '0042', '5543830343935160C121'], // scott's
+  ])
   if (megaPortInfo !== null) {
     megaController.initializeMega(io, megaPortInfo.path, splitflap);
   }
