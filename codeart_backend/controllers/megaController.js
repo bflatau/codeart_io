@@ -167,7 +167,7 @@ exports.initializeMega = (io, port, splitflap) => {
     }
     lastSplitflapState = newSplitflapState
 
-    splitflap.setPositions(Util.mapDualRowZigZagToLinear(diff, true))
+    splitflap.setPositions(Util.convert2dDualRowZigZagTo1dChainlink(diff, true))
   }
 
   const five = require("johnny-five");
