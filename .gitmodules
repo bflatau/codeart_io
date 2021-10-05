@@ -1,0 +1,4 @@
+[submodule "ext/splitflap"]
+	path = ext/splitflap
+	url = https://github.com/scottbez1/splitflap.git
+	branch = dev/chainlinkBaseUpdates

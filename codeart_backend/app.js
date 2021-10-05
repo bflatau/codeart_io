@@ -4,6 +4,8 @@ const express = require('express');
 const socketIO = require('socket.io');
 const bodyParser  = require("body-parser");
 const cors = require('cors');
+const SerialPort = require('serialport')
+const {Splitflap, Util} = require('splitflapjs')
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -52,7 +54,112 @@ app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity);
 
 /// ARDUINO STUFF ///
-megaController.initializeMega(io);
+const findPort = (ports, description, vendorId, productId, serialNumber) => {
+  const matchingPorts = ports.filter((portInfo) => {
+    return portInfo.vendorId === vendorId && portInfo.productId === productId && portInfo.serialNumber === serialNumber
+  })
+
+  if (matchingPorts.length < 1) {
+    console.warn(`No matching ${description} usb serial port found (vendorId=${vendorId}, productId=${productId}, serialNumber=${serialNumber}! Available ports: ${JSON.stringify(ports, undefined, 4)}`)
+    return null
+  } else if (matchingPorts.length > 1) {
+    console.warn(`Multiple ${description} usb serial ports found: ${JSON.stringify(matchingPorts, undefined, 4)}`)
+    return null
+  }
+  console.info(`Found ${description} port at ${matchingPorts[0].path}`)
+  return matchingPorts[0]
+}
+
+
+const initializeHardware = async () => {
+  const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
+
+  const splitflapPortInfo = findPort(ports, 'splitflap', '10c4', 'ea60', '022809A3')
+
+  const splitflapPort = splitflapPortInfo !== null ? new SerialPort(splitflapPortInfo.path, {baudRate: 230400}) : null
+  const splitflap = new Splitflap(splitflapPort, (message) => {
+      if (message.payload === 'log') {
+        console.log(`SPLITFLAP LOG: ${message.log.msg}`)
+      } else if (message.payload === 'splitflapState') {
+        // TODO: publish to frontend
+      }
+  })
+
+
+  const flaps = [
+    ' ', // BLACK
+    'J', // 1
+    'B', // 2
+    'M', // 3
+    'R', // 4
+    '$', // 5
+    'V', // 6
+    'K', // 7
+    'A', // 8
+    'E', // 9
+    'N', // 10
+    'O', // 11
+    'y', // YELLOW
+    '*', // 13
+    'g', // GREEN
+    'G', // 15
+    'I', // 16
+    '%', // 17
+    'D', // 18
+    'L', // 19
+    '&', // 20
+    '@', // 21
+    'C', // 22
+    'W', // 23
+    'H', // 24
+    'Y', // 25
+    'w', // WHITE
+    'Q', // 27
+    'p', // PINK
+    'o', // ORANGE
+    '!', // 30
+    'T', // 31
+    'Z', // 32
+    'P', // 33
+    'F', // 34
+    '?', // 35
+    'S', // 36
+    '#', // 37
+    'U', // 38
+    'X', // 39
+]
+
+  const charToFlapIndex = (c) => {
+    const i = flaps.indexOf(c)
+    if (i >= 0) {
+        return i
+    } else {
+        return null
+    }
+  }
+
+  const stringToFlapIndexArray = (str) => {
+      return str.split('').map(charToFlapIndex)
+  }
+
+  const test = [
+    '                  ',
+    '                  ',
+    '                  ',
+    '                  ',
+    '                  ',
+    '                  ',
+  ]
+
+  splitflap.setPositions(Util.mapDualRowZigZagToLinear(test.map(stringToFlapIndexArray), true))
+
+  const megaPortInfo = findPort(ports, 'mega', '2341', '0010', '6493833393235110A1A0')
+  if (megaPortInfo !== null) {
+    megaController.initializeMega(io, megaPortInfo.path, splitflap);
+  }
+}
+
+initializeHardware()
 
 
 /// WEB SOCKET STUFF ///

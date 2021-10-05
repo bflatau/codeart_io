@@ -32,3 +32,6 @@ done
 
 
 take off raspi-io for non raspi development 
+
+
+ "splitflapjs": "file:../ext/splitflap/software/js/splitflapjs"
