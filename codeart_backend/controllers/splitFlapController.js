@@ -13,28 +13,31 @@ const games = [
     {"buttons":["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"],"flaps":[null,null,"t","h","e",null,"f","i","r","s","t",null,"b","u","d",null,null,null,null,null,null,null,null,"o","f",null,null,"s","p","r","i","n","g",null,null,null,null,null,"s","i","n","g","s",null,"t","h","e",null,"o","t","h","e","r",null,null,null,"s","e","e","d","s",null,"i","n","t","o",null,null,null,null,null,null,null,null,"j","o","i","n","i","n","g",null,"h","e","r",null,null,null,null,null,null,null,"u","p","r","i","s","i","n","g",null,null,null,null,null,null,null,null]},
 
     // & | technology is a useful servant but a dangerous master
-    {"buttons":["off","off","b","off","off","off","b","off","off","off","off","b","off","off","off","b","b","off","off","off","b","off","off","off"],"flaps":["t","e","c","h","n","o","l","o","g","y",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"i","s",null,null,null,"a",null,"u","s","e","f","u","l",null,"s","e","r","v","a","n","t",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"b","u","t",null,null,"a",null,"d","a","n","g","e","r","o","u","s",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"m","a","s","t","e","r"]}
+    {"buttons":["off","off","b","off","off","off","b","off","off","off","off","b","off","off","off","b","b","off","off","off","b","off","off","off"],"flaps":["t","e","c","h","n","o","l","o","g","y",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"i","s",null,null,null,"a",null,"u","s","e","f","u","l",null,"s","e","r","v","a","n","t",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"b","u","t",null,null,"a",null,"d","a","n","g","e","r","o","u","s",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"m","a","s","t","e","r"]},
 
-    // !
+    // ! | the future is here its just not widely distributed yet
+    {"buttons":["off","b","off","off","off","b","off","off","off","off","b","off","off","off","b","off","off","off","off","b","off","off","off","b"],"flaps":[null,"t","h","e",null,"f","u","t","u","r","e",null,"i","s",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"h","e","r","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"i","t","s",null,"j","u","s","t",null,"n","o","t",null,null,null,null,null,"w","i","d","e","l","y",null,null,null,null,null,null,null,null,null,null,null,null,null,"d","i","s","t","r","i","b","u","t","e","d",null,"y","e","t",null,null]},
 
-    // $
+    // $ | if you can control the meaning of words you can control the people who must use them
+    {"buttons":["a","off","off","off","a","off","off","off","off","a","off","off","off","a","off","off","off","off","a","off","off","off","a","off"],"flaps":["i","f",null,"y","o","u",null,"c","a","n",null,"c","o","n","t","r","o","l","t","h","e",null,"m","e","a","n","i","n","g",null,"o","f",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"w","o","r","d","s","y","o","u",null,"c","a","n",null,"c","o","n","t","r","o","l",null,null,null,"t","h","e",null,"p","e","o","p","l","e",null,"w","h","o",null,null,null,null,null,null,null,null,null,"m","u","s","t",null,"u","s","e",null,"t","h","e","m"]},
 
-    // #
+    // # | when you want to know how things really work study them when theyre coming apart
+    {"buttons":["off","off","off","a","off","off","off","a","a","off","off","off","a","off","off","off","off","a","off","off","off","a","off","off"],"flaps":["w","h","e","n",null,"y","o","u",null,"w","a","n","t",null,"t","o",null,null,"k","n","o","w",null,"h","o","w",null,"t","h","i","n","g","s",null,null,null,"r","e","a","l","l","y",null,"w","o","r","k",null,null,null,null,null,null,null,null,null,null,"s","t","u","d","y",null,"t","h","e","m",null,"w","h","e","n",null,null,null,"t","h","e","y","r","e",null,"c","o","m","i","n","g",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"a","p","a","r","t"]},
 
-    // @ 
+    // @ | through the machineries of greed pettiness and the abuse of power love occurs
+    {"buttons":["off","off","a","off","off","off","a","off","off","off","off","a","off","off","off","a","a","off","off","off","a","off","off","off"],"flaps":[null,"t","h","r","o","u","g","h",null,"t","h","e",null,null,null,null,null,null,"m","a","c","h","i","n","e","r","i","e","s",null,"o","f",null,null,null,null,null,null,"g","r","e","e","d",null,"p","e","t","t","i","n","e","s","s",null,null,null,"a","n","d",null,"t","h","e",null,"a","b","u","s","e",null,null,null,null,null,"o","f",null,"p","o","w","e","r",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"l","o","v","e",null,"o","c","c","u","r","s"]},
 
-    // *
+    // * | the norms and notions of what jus is isnt always justice
+    {"buttons":["b","off","off","off","b","off","off","off","off","b","off","off","off","b","off","off","off","off","b","off","off","off","b","off"],"flaps":[null,"t","h","e",null,null,"n","o","r","m","s",null,"a","n","d",null,null,null,null,null,null,null,null,null,"n","o","t","i","o","n","s",null,null,null,null,null,null,"o","f",null,null,null,"w","h","a","t",null,"j","u","s","t",null,"i","s",null,"i","s","n","t",null,"a","l","w","a","y","s",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"j","u","s","t","i","c","e"]},
+    
+    // % | language is to the mind more than light is to the eye
+    {"buttons":["off","a","off","off","off","a","off","off","off","off","a","off","off","off","a","off","off","off","off","a","off","off","off","a"],"flaps":[null,"l","a","n","g","u","a","g","e",null,"i","s",null,"t","o",null,null,null,null,null,null,"t","h","e",null,"m","i","n","d",null,"m","o","r","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"t","h","a","n",null,"l","i","g","h","t",null,"i","s",null,null,null,null,null,null,null,null,null,"t","o",null,"t","h","e",null,"e","y","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]},
 
-    // %
-
-    // ? 
-
-    // ALL B SIDES
-
-
-
-
-
+    // ? | you can tune a guitar but you cant tuna fish unless you play bass
+    {"buttons":["off","off","off","b","off","off","off","b","b","off","off","off","b","off","off","off","off","b","off","off","off","b","off","off"],"flaps":["y","o","u",null,null,"c","a","n",null,null,"t","u","n","e",null,null,"a",null,null,"g","u","i","t","a","r",null,"b","u","t",null,"y","o","u",null,null,null,"c","a","n","t",null,"t","u","n","a",null,"f","i","s","h",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"u","n","l","e","s","s",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"y","o","u",null,null,"p","l","a","y",null,"b","a","s","s"]},
+    
+    // ALL B SIDES | of all the sad words of tongue or pen the saddest are these it might have been
+    {"buttons":["b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b"],"flaps":["o","f",null,"a","l","l",null,"t","h","e",null,"s","a","d",null,null,null,null,null,"w","o","r","d","s",null,"o","f",null,"t","o","n","g","u","e",null,null,"o","r",null,"p","e","n",null,"t","h","e",null,"s","a","d","d","e","s","t",null,null,null,null,null,"a","r","e",null,"t","h","e","s","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"i","t",null,"m","i","g","h","t",null,"h","a","v","e",null,"b","e","e","n"]}
 ]
 
 
