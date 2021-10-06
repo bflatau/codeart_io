@@ -143,7 +143,7 @@ exports.getMegaButtonState = () =>{ //returns active button state
 
 exports.initializeMega = (io, port, splitflap) => {
 
-  let lastSplitflapState = [
+  let splitflapState2d = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -152,23 +152,21 @@ exports.initializeMega = (io, port, splitflap) => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]
 
+  const sendSplitflapConfig = () => {
+    splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(splitflapState2d, true))
+  }
+
   const updateSplitflap = (allIndexes) => {
     const newSplitflapState = []
     for (let i = 0; i < 6; i++) {
-      newSplitflapState.push(gameState.forScott.slice(i*18, (i+1)*18))
+      newSplitflapState.push(allIndexes.slice(i*18, (i+1)*18))
     }
-    const diff = []
-    for (let row = 0; row < 6; row++) {
-      const diffRow = []
-      for (let col = 0; col < 18; col++) {
-        diffRow.push(lastSplitflapState[row][col] == newSplitflapState[row][col] ? null : newSplitflapState[row][col])
-      }
-      diff.push(diffRow)
-    }
-    lastSplitflapState = newSplitflapState
-
-    splitflap.setPositions(Util.mapDualRowZigZagToLinear(diff, true))
+    splitflapState2d = newSplitflapState
+    sendSplitflapConfig()
   }
+
+  // Periodically sync splitflap config, e.g. in case MCU gets restarted
+  setInterval(sendSplitflapConfig, 5000);
 
   const five = require("johnny-five");
   // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation

@@ -6,6 +6,7 @@ const bodyParser  = require("body-parser");
 const cors = require('cors');
 const SerialPort = require('serialport')
 const {Splitflap, Util} = require('splitflapjs')
+const {PB} = require('splitflapjs-proto')
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -54,13 +55,15 @@ app.route('/game/:gameNumber/getkeyquantity')
   .get(buttonController.getKeyQuantity);
 
 /// ARDUINO STUFF ///
-const findPort = (ports, description, vendorId, productId, serialNumber) => {
+const findPort = (ports, description, infoList) => {
   const matchingPorts = ports.filter((portInfo) => {
-    return portInfo.vendorId === vendorId && portInfo.productId === productId && portInfo.serialNumber === serialNumber
+    return infoList.some(([vendorId, productId, serialNumber]) => {
+      return portInfo.vendorId === vendorId && portInfo.productId === productId && portInfo.serialNumber === serialNumber
+    })
   })
 
   if (matchingPorts.length < 1) {
-    console.warn(`No matching ${description} usb serial port found (vendorId=${vendorId}, productId=${productId}, serialNumber=${serialNumber}! Available ports: ${JSON.stringify(ports, undefined, 4)}`)
+    console.warn(`No matching ${description} usb serial port found (vendorId=${infoList}! Available ports: ${JSON.stringify(ports, undefined, 4)}`)
     return null
   } else if (matchingPorts.length > 1) {
     console.warn(`Multiple ${description} usb serial ports found: ${JSON.stringify(matchingPorts, undefined, 4)}`)
@@ -70,90 +73,71 @@ const findPort = (ports, description, vendorId, productId, serialNumber) => {
   return matchingPorts[0]
 }
 
+let splitflapLatestState = null
+
+const splitflapStateForFrontend = (splitflapStatePb) => {
+  const remappedTo2d = Util.convert1dChainlinkTo2dDualRowZigZag(splitflapStatePb.modules, 18, true)
+  const singleRow = [].concat(...remappedTo2d);
+  return {
+    modules: singleRow,
+  }
+}
 
 const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
-  const splitflapPortInfo = findPort(ports, 'splitflap', '10c4', 'ea60', '022809A3')
+  const splitflapPortInfo = findPort(ports, 'splitflap', [
+    ['10c4', 'ea60', '022809A3'], // real
+    ['10c4', 'ea60', '02280A9E'], // development
+  ])
 
-  const splitflapPort = splitflapPortInfo !== null ? new SerialPort(splitflapPortInfo.path, {baudRate: 230400}) : null
-  const splitflap = new Splitflap(splitflapPort, (message) => {
+  const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
       if (message.payload === 'log') {
         console.log(`SPLITFLAP LOG: ${message.log.msg}`)
-      } else if (message.payload === 'splitflapState') {
-        // TODO: publish to frontend
+      } else if (message.payload === 'splitflapState' && message.splitflapState && message.splitflapState.modules) {
+        splitflapLatestState = PB.SplitflapState.toObject(message.splitflapState, {defaults: true})
+
+        io.sockets.emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
+      } else if (message.payload === 'supervisorState' && message.supervisorState) {
+        io.sockets.emit('splitflap_supervisor_state', PB.SupervisorState.toObject(message.supervisorState))
       }
+  }, 108)
+
+  const initialPositions = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]
+  splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(initialPositions, true))
+
+  app.post('/splitflap/hard_reset', async (req, res) => {
+    await splitflap.hardReset()
+    res.send('ok')
+  })
+  app.post('/splitflap/reset_module', async (req, res) => {
+    console.log(req.body)
+    const resetMap = []
+    for (let row = 0; row < 6; row++) {
+      resetMap.push(new Array(18).fill(false))
+    }
+    resetMap[req.body.y][req.body.x] = true
+    splitflap.resetModules(Util.convert2dDualRowZigZagTo1dChainlink(resetMap, true))
+    res.send('ok')
+  })
+  app.get('/splitflap/state', async (req, res) => {
+    res.json(splitflapLatestState === null ? null : PB.SplitflapState.toObject(splitflapLatestState, {
+      defaults: true,
+    }))
   })
 
 
-  const flaps = [
-    ' ', // BLACK
-    'J', // 1
-    'B', // 2
-    'M', // 3
-    'R', // 4
-    '$', // 5
-    'V', // 6
-    'K', // 7
-    'A', // 8
-    'E', // 9
-    'N', // 10
-    'O', // 11
-    'y', // YELLOW
-    '*', // 13
-    'g', // GREEN
-    'G', // 15
-    'I', // 16
-    '%', // 17
-    'D', // 18
-    'L', // 19
-    '&', // 20
-    '@', // 21
-    'C', // 22
-    'W', // 23
-    'H', // 24
-    'Y', // 25
-    'w', // WHITE
-    'Q', // 27
-    'p', // PINK
-    'o', // ORANGE
-    '!', // 30
-    'T', // 31
-    'Z', // 32
-    'P', // 33
-    'F', // 34
-    '?', // 35
-    'S', // 36
-    '#', // 37
-    'U', // 38
-    'X', // 39
-]
-
-  const charToFlapIndex = (c) => {
-    const i = flaps.indexOf(c)
-    if (i >= 0) {
-        return i
-    } else {
-        return null
-    }
-  }
-
-  const stringToFlapIndexArray = (str) => {
-      return str.split('').map(charToFlapIndex)
-  }
-
-  const test = [
-    '                  ',
-    '                  ',
-    '                  ',
-    '                  ',
-    '                  ',
-    '                  ',
-  ]
-
-  splitflap.setPositions(Util.mapDualRowZigZagToLinear(test.map(stringToFlapIndexArray), true))
-
-  const megaPortInfo = findPort(ports, 'mega', '2341', '0010', '6493833393235110A1A0')
+  const megaPortInfo = findPort(ports, 'mega', [
+    ['2341', '0010', '6493833393235110A1A0'], // real
+    ['2341', '0042', '5543830343935160C121'], // scott's
+  ])
   if (megaPortInfo !== null) {
     megaController.initializeMega(io, megaPortInfo.path, splitflap);
   }
@@ -167,6 +151,10 @@ io.on('connection', socket => {
 
   /// On connect, console log on server, and then send number of users to client
   io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
+
+  if (splitflapLatestState !== null) {
+    io.to(socket.id).emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
+  }
 
   /// get mega button state when connecting and send to newly connected user
   if (megaController.getMegaButtonState().length > 0){  
