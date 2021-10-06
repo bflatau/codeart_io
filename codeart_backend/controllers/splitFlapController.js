@@ -7,7 +7,7 @@ const benButtonMap = {"20":48,"21":47,"22":45,"23":46,"24":44,"25":45,"26":42,"2
 
 const levelEditorGameObject = {"buttons":["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"],"flaps":[null,"y","a","y",null,"i","t",null,"w","o","r","k","s",null,null,null,null,null,null,"t","h","a","n","k","s",null,"e","v","e","r","y","o","n","e",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"f","o","r",null,"a","l","l",null,"t","h","e",null,"h","a","r","d",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"w","o","r","k",null,null,null,null,null,null,null]}
 
-const games = [
+const gamesList = [
 
     /// FOUR COLORS | The first bud of spring sings the other seeds into joining her uprising
     {"buttons":["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"],"flaps":[null,null,"t","h","e",null,"f","i","r","s","t",null,"b","u","d",null,null,null,null,null,null,null,null,"o","f",null,null,"s","p","r","i","n","g",null,null,null,null,null,"s","i","n","g","s",null,"t","h","e",null,"o","t","h","e","r",null,null,null,"s","e","e","d","s",null,"i","n","t","o",null,null,null,null,null,null,null,null,"j","o","i","n","i","n","g",null,"h","e","r",null,null,null,null,null,null,null,"u","p","r","i","s","i","n","g",null,null,null,null,null,null,null,null]},
@@ -347,4 +347,4 @@ const buttonUp = (gameState, btnPin) => {
 
 const initialGameStateObject = convertToState(levelEditorGameObject);
 
-module.exports = {buttonUp, buttonDown, initialGameStateObject}
+module.exports = {buttonUp, buttonDown, convertToState, gamesList, initialGameStateObject}

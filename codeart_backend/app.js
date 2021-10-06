@@ -45,14 +45,20 @@ app.get('/bentest', function (req, res) {
   res.send('helloooooo')
 });
 
-app.route('/game/:gameNumber/on/:buttonNumber')
-  .post(buttonController.handleKeyOn);
 
-app.route('/game/:gameNumber/off/:buttonNumber')
-  .post(buttonController.handleKeyOff);
+app.post('/game/:gameNumber',(req, res) => {
+  megaController.setGameNumber()
+  res.send('ok')
+})
 
-app.route('/game/:gameNumber/getkeyquantity')
-  .get(buttonController.getKeyQuantity);
+// app.route('/game/:gameNumber')
+//   .post(buttonController.handleKeyOn);
+
+// app.route('/game/:gameNumber/off/:buttonNumber')
+//   .post(buttonController.handleKeyOff);
+
+// app.route('/game/:gameNumber/getkeyquantity')
+//   .get(buttonController.getKeyQuantity);
 
 /// ARDUINO STUFF ///
 const findPort = (ports, description, infoList) => {

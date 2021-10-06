@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './style.css';
 import InputBoardButton from '../InputBoardButton';
+import Select from 'react-select';
+
 // import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
 
 const boxLayouts = [
@@ -78,6 +80,19 @@ const boxLayouts = [
     
 
 ]
+
+const gameDropDownList = [
+  { value: '1', label: 'Game 1' },
+  { value: '2', label: 'Game 2' },
+  { value: '3', label: 'Game 3' },
+  { value: '4', label: 'Game 4' },
+  { value: '5', label: 'Game 5' },
+  { value: '6', label: 'Game 6' },
+  { value: '7', label: 'Game 7' },
+  { value: '8', label: 'Game 8' },
+  { value: '9', label: 'Game 9' },
+  { value: '10', label: 'Game 10' },
+];
  
 
 
@@ -87,9 +102,16 @@ class InputBoard extends Component {
         this.state = {
             numberOfUsers: 0,
             boardSymbols: Array(24).fill('X'),
-            boardColors: Array(24).fill('black')
+            boardColors: Array(24).fill('black'),
+            selectedOption: null
         };
     }
+
+
+    handleDropDown= (selectedOption) => {
+      this.setState({ selectedOption });
+      console.log(`Option selected:`, selectedOption);
+    };
 
     componentDidMount() {
         this.props.socket.on('connected users', (data) => {
@@ -164,10 +186,19 @@ class InputBoard extends Component {
     }
     
     render() {
+      const { selectedOption } = this.state;
         return (
             <div className="input-board-container">
                 <div className="input-board-users">
                   People Playing: {this.state.numberOfUsers}
+                </div>
+                <div className="input-board-game-select">
+                  <Select
+                    value={selectedOption}
+                    onChange={this.handleDropDown}
+                    options={gameDropDownList}
+                    placeholder={'Select a Game'}
+                  />
                 </div>
                 <div className="input-board">
                     {this.createInputGrid()}
