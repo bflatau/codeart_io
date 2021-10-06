@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import './style.css';
 
+import {PB} from 'splitflapjs-proto'
+
 // TODO: refactor to use protobuf constants once proto generated source is separate of splitflap (& its serialport dependency that doesn't work in browser)
 const SPLITFLAP_ERROR_STATES = [
-    2, //PB.SplitflapState.ModuleState.State.SENSOR_ERROR,
-    3, //PB.SplitflapState.ModuleState.State.PANIC,
-    4, //PB.SplitflapState.ModuleState.State.STATE_DISABLED,
+    PB.SplitflapState.ModuleState.State.SENSOR_ERROR,
+    PB.SplitflapState.ModuleState.State.PANIC,
+    PB.SplitflapState.ModuleState.State.STATE_DISABLED,
 ]
 
 const flapLayouts = [
@@ -66,7 +68,7 @@ class OutputBoardFlap extends Component {
 
             const warning = (data.countMissedHome !== undefined && data.countMissedHome > 0)
                 || (data.countUnexpectedHome !== undefined && data.countUnexpectedHome > 0)
-                || (data.state !== undefined && data.state === 1 /*PB.SplitflapState.ModuleState.State.LOOK_FOR_HOME*/)
+                || (data.state !== undefined && data.state === PB.SplitflapState.ModuleState.State.LOOK_FOR_HOME)
             if (warning) {
                 classes.push('split-flap-warning')
             }
@@ -77,7 +79,7 @@ class OutputBoardFlap extends Component {
             }
 
             if (data.state !== undefined) {
-                tooltip.push(`State: ${data.state}`)
+                tooltip.push(`State: ${PB.SplitflapState.ModuleState.toObject(data, {enums: String}).state}`)
             }
             if (data.countMissedHome !== undefined) {
                 tooltip.push(`Missed home: ${data.countMissedHome}`)
@@ -85,6 +87,7 @@ class OutputBoardFlap extends Component {
             if (data.countUnexpectedHome !== undefined) {
                 tooltip.push(`Unexpected home: ${data.countUnexpectedHome}`)
             }
+            tooltip.push('(Click to reset)')
         }
 
         return (
