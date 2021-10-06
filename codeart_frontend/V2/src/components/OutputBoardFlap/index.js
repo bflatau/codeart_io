@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import './style.css';
 
+import {PB} from 'splitflapjs-proto'
+
+// TODO: refactor to use protobuf constants once proto generated source is separate of splitflap (& its serialport dependency that doesn't work in browser)
+const SPLITFLAP_ERROR_STATES = [
+    PB.SplitflapState.ModuleState.State.SENSOR_ERROR,
+    PB.SplitflapState.ModuleState.State.PANIC,
+    PB.SplitflapState.ModuleState.State.STATE_DISABLED,
+]
+
 const flapLayouts = [
     {symbol: '_', color: 'black-empty'},
     {symbol: 'J', color: 'black'},
@@ -48,25 +57,46 @@ const flapLayouts = [
 class OutputBoardFlap extends Component {
     render() {
         const data = this.props.data
-        if (data === undefined) {
-            return (
-                <td className={`split-flap-button-black-empty`}>
-                </td>
-            )
-        }
+        let text = ''
+        const classes = ['split-flap-button']
+        let tooltip = []
 
-        const err = (data.countMissedHome !== undefined && data.countMissedHome > 0)
+        if (data !== undefined) {
+            text = flapLayouts[data.flapIndex].symbol
+            classes.push(`split-flap-button-${flapLayouts[data.flapIndex].color}`)
+
+
+            const warning = (data.countMissedHome !== undefined && data.countMissedHome > 0)
                 || (data.countUnexpectedHome !== undefined && data.countUnexpectedHome > 0)
-                || (data.state !== undefined && data.state !== 0)
+                || (data.state !== undefined && data.state === PB.SplitflapState.ModuleState.State.LOOK_FOR_HOME)
+            if (warning) {
+                classes.push('split-flap-warning')
+            }
+
+            const error = data.state !== undefined && SPLITFLAP_ERROR_STATES.indexOf(data.state) !== -1
+            if (error) {
+                classes.push('split-flap-error')
+            }
+
+            if (data.state !== undefined) {
+                tooltip.push(`State: ${PB.SplitflapState.ModuleState.toObject(data, {enums: String}).state}`)
+            }
+            if (data.countMissedHome !== undefined) {
+                tooltip.push(`Missed home: ${data.countMissedHome}`)
+            }
+            if (data.countUnexpectedHome !== undefined) {
+                tooltip.push(`Unexpected home: ${data.countUnexpectedHome}`)
+            }
+            tooltip.push('(Click to reset)')
+        }
 
         return (
             <td
-                className={`split-flap-button-${flapLayouts[data.flapIndex].color}`}
-                style={{border: err ? '4px solid red' : '4px solid white'}}
-                title={`State: ${data.state}\r\nMissed home: ${data.countMissedHome}\r\nUnexpected home: ${data.countUnexpectedHome}`}
+                className={classes.join(' ')}
+                title={tooltip.join('\r\n')}
                 onClick={this.props.onResetModule}
             >
-                {flapLayouts[this.props.data.flapIndex].symbol}
+                {text}
             </td> 
         )
     }

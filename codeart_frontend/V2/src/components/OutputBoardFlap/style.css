@@ -1,24 +1,18 @@
-.split-flap-button-black,
-.split-flap-button-black-empty,
-.split-flap-button-green,
-.split-flap-button-yellow,
-.split-flap-button-orange,
-.split-flap-button-white,
-.split-flap-button-pink {
-    /* width: 4.5%; */
-    /* margin-left: .5%;
-    margin-right: .5%;
-    margin-top: .5%;
-    margin-bottom: .5%; */
-    /*padding-top: 15px;
-  
-    display: inline-block; */
-
-    width: 35px;
+.split-flap-button {
+    width: 28px;
     text-align: center;
     font-size: 25px;
     height: 50px;
     overflow: hidden;
+    border: 4px solid transparent;
+}
+
+.split-flap-warning {
+    border: 4px dotted gray;
+}
+
+.split-flap-error {
+    outline: 4px solid red;
 }
 
 .split-flap-button-black {

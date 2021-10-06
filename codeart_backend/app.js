@@ -5,7 +5,8 @@ const socketIO = require('socket.io');
 const bodyParser  = require("body-parser");
 const cors = require('cors');
 const SerialPort = require('serialport')
-const {Splitflap, Util, PB} = require('splitflapjs')
+const {Splitflap, Util} = require('splitflapjs')
+const {PB} = require('splitflapjs-proto')
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -97,8 +98,10 @@ const initializeHardware = async () => {
         splitflapLatestState = PB.SplitflapState.toObject(message.splitflapState, {defaults: true})
 
         io.sockets.emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
+      } else if (message.payload === 'supervisorState' && message.supervisorState) {
+        io.sockets.emit('splitflap_supervisor_state', PB.SupervisorState.toObject(message.supervisorState))
       }
-  })
+  }, 108)
 
   const initialPositions = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -108,7 +111,7 @@ const initializeHardware = async () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]
-  splitflap.setPositions(Util.convert2dDualRowZigZagTo1dChainlink(initialPositions, true))
+  splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(initialPositions, true))
 
   app.post('/splitflap/hard_reset', async (req, res) => {
     await splitflap.hardReset()

@@ -12,7 +12,7 @@ class OutputBoard extends Component {
         }
 
         return rows.map((row, y) => (
-            <tr>
+            <tr key={y}>
                 {
                     row.map((item, x) => {
                         let p = {}
@@ -22,6 +22,7 @@ class OutputBoard extends Component {
                         return (
                         <OutputBoardFlap
                             data={item}
+                            key={`${x}-${y}`}
                             {...p}
                         />
                     )})
@@ -34,7 +35,9 @@ class OutputBoard extends Component {
         return (
             <div className="output-board-container">
                 <table className="output-board">
-                    {this.createOutputGrid()}
+                    <tbody>
+                        {this.createOutputGrid()}
+                    </tbody>
                 </table>
             </div>
         )

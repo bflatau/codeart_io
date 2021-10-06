@@ -37,7 +37,7 @@ const resetModule = async (x, y) => {
       },
       body: JSON.stringify({x, y})
     })
-    alert(await result.text())
+    console.log(`Reset module result: ${await result.text()}`)
   } catch (err) {
     alert(err)
   }

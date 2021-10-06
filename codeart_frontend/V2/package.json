@@ -11,6 +11,7 @@
     "react-icons": "^3.9.0",
     "react-scripts": "3.4.1",
     "socket.io-client": "^2.3.0",
+    "splitflapjs-proto": "file:../../ext/splitflap/software/js/splitflapjs-proto",
     "typeface-libre-barcode-128-text": "0.0.63"
   },
   "scripts": {
