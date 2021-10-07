@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import './style.css';
 import InputBoardButton from '../InputBoardButton';
+import Select from 'react-select';
+import {apiURL} from '../../constants';
+
 // import { TiTimesOutline, TiTimes, TiStarOutline, TiStar,  TiMediaStopOutline, TiMediaStop, TiMediaRecord, TiMediaRecordOutline } from "react-icons/ti";
 
 const boxLayouts = [
@@ -78,6 +81,19 @@ const boxLayouts = [
     
 
 ]
+
+const gameDropDownList = [
+  { value: '0', label: '[ FOUR STRIPES ] The first bud of spring sings the other seeds into joining her uprising' },
+  { value: '1', label: '[ & ] technology is a useful servant but a dangerous master' },
+  { value: '2', label: '[ ! ] the future is here its just not widely distributed yet' },
+  { value: '3', label: '[ $ ] if you can control the meaning of words you can control the people who must use them' },
+  { value: '4', label: '[ GREEN ] when you want to know how things really work study them when theyre coming apart' },
+  { value: '5', label: '[ @ ] through the machineries of greed pettiness and abuse of power love occurs' },
+  { value: '6', label: '[ * ] the norms and notions of what just is isnt always justice' },
+  { value: '7', label: '[ % ] language is to the mind more than light is to the eye' },
+  { value: '8', label: '[ ? ] you can tune a guitar but you cant tuna fish unless of course you play bass' },
+  { value: '9', label: '[ ORANGE ] of all the sad words of tongue or pen the saddest are these it might have been' },
+];
  
 
 
@@ -87,9 +103,29 @@ class InputBoard extends Component {
         this.state = {
             numberOfUsers: 0,
             boardSymbols: Array(24).fill('X'),
-            boardColors: Array(24).fill('black')
+            boardColors: Array(24).fill('black'),
+            selectedOption: null
         };
     }
+
+
+    handleDropDown= (selectedOption) => {
+      this.setState({ selectedOption });
+      console.log(`Option selected:`, selectedOption.value);
+      fetch(`${apiURL}/game`, {
+     
+        // Adding method type
+        method: "POST",
+        // Adding body or contents to send
+        body: JSON.stringify({
+            game: selectedOption.value,
+        }),
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    }).then((response) => console.log(response))
+    };
 
     componentDidMount() {
         this.props.socket.on('connected users', (data) => {
@@ -111,7 +147,6 @@ class InputBoard extends Component {
         this.setState(state => {
         //const value has to be the same as state value setState (key:value)
           const boardSymbols= state.boardSymbols.map((item, j) => {
-            console.log(i, 'this is i')
             
             if (i != null && j === boxLayouts[i].position && item !== boxLayouts[i].symbol) {
               return boxLayouts[i].symbol;
@@ -164,10 +199,31 @@ class InputBoard extends Component {
     }
     
     render() {
+      const { selectedOption } = this.state;
+
+      const customStyles = {
+        menu: (provided, state) => ({
+          ...provided,
+          // backgroundColor: 'red',
+          zIndex: 999
+        }),
+      }
+
+
+
         return (
             <div className="input-board-container">
                 <div className="input-board-users">
                   People Playing: {this.state.numberOfUsers}
+                </div>
+                <div className="input-board-game-select">
+                  <Select
+                    styles={customStyles}
+                    value={selectedOption}
+                    onChange={this.handleDropDown}
+                    options={gameDropDownList}
+                    placeholder={'Select a Game'}
+                  />
                 </div>
                 <div className="input-board">
                     {this.createInputGrid()}

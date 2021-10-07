@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 // import SocketTest from './components/SocketTest/SocketTest';
 import Main from './components/Main/';
-
 import 'typeface-libre-barcode-128-text';
-
 import socketIOClient from "socket.io-client";
-
+import { apiURL } from './constants';
 //const backendHost = "http://raspberrypi:8090"
-const backendHost = "http://localhost:8090"
+const backendHost = apiURL;
 
 
 const socket = socketIOClient(backendHost);
