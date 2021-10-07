@@ -21,7 +21,6 @@ class SplitflapDiagnostics extends Component {
     }
 
     onSupervisorState(state) {
-        console.log('supervisor state', state, PB.SupervisorState.fromObject(state), PB.SupervisorState.create(state))
         this.setState({supervisorState: state})
     }
 
