@@ -15,13 +15,10 @@
     margin-bottom: 1%;
 }
 
-/* .input-board-game-select{
-  
-} */
-
-#react-select-3-listbox{
+.input-board-game-select{
     z-index: 999;
 }
+
 .input-board{
     display: inline-block;
     width: 96%;

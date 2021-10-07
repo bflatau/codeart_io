@@ -91,13 +91,13 @@ const boxLayouts = [
     ],
 
     [
-        {position: 18, symbol: '$', color: 'pink'},
         {position: 18, symbol: '*', color: 'green'},
+        {position: 18, symbol: '$', color: 'pink'},
     ],
 
     [
-        {position: 19, symbol: '%', color: 'pink'},
         {position: 19, symbol: '!', color: 'yellow'},
+        {position: 19, symbol: '%', color: 'pink'},
         
     ],
 
@@ -117,8 +117,8 @@ const boxLayouts = [
     ],
 
     [
-        {position: 23, symbol: '%', color: 'green'},
         {position: 23, symbol: '!', color: 'yellow'},
+        {position: 23, symbol: '%', color: 'green'},
     ],
 ]
 
