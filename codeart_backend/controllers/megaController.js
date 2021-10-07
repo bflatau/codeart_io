@@ -109,8 +109,9 @@ exports.getFlapState = () => {
   return gameState.forScott
 };
 
-exports.setgameNumber= (number) =>{
+exports.setGameNumber= (number) =>{
   gameState = convertToState(gamesList[number]) 
+  console.log('set to game', number)
 }
 
 exports.getMegaButtonState = () =>{ //returns active button state

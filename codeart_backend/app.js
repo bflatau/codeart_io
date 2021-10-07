@@ -38,17 +38,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 // app.use(cors(corsOptions));
 app.use(cors());
+app.use(express.static(__dirname + "/public"));
 
-
+console.log('this is dir', __dirname)
 
 /// PUBLIC API ENDPOINTS ///
-app.get('/bentest', function (req, res) {
-  res.send('helloooooo')
+app.get("/debug", (req, res) => {
+  res.sendFile(`${__dirname}/public/index.html`, (err) => {
+    if (err) {
+      console.log(err);
+      res.end(err.message);
+    }
+  });
 });
 
 
-app.post('/game/:gameNumber',(req, res) => {
-  megaController.setGameNumber()
+app.post('/game',(req, res) => {
+  megaController.setGameNumber(req.body.game)
   res.send('ok')
 })
 
