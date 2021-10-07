@@ -107,8 +107,8 @@ const boxLayouts = [
     ],
 
     [
-        {position: 21, symbol: '#', color: 'orange'},
         {position: 21, symbol: '?', color: 'orange'},   
+        {position: 21, symbol: '#', color: 'orange'},
     ],
 
     [
