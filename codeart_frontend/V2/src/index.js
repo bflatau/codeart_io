@@ -43,12 +43,37 @@ const resetModule = async (x, y) => {
   }
 }
 
+const startAnimation = async (animation) => {
+  try {
+    const result = await fetch(new URL('/splitflap/start_animation', backendHost), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({animation})
+    })
+    console.log(`Start animation result: ${await result.text()}`)
+  } catch (err) {
+    alert(err)
+  }
+}
 
+const stopAnimation = async () => {
+  try {
+    const result = await fetch(new URL('/splitflap/stop_animation', backendHost), {
+      method: 'POST',
+    })
+    console.log(`Stop animation result: ${await result.text()}`)
+  } catch (err) {
+    alert(err)
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>
     <div id='app-content'>
-      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} />
+      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} startAnimation={startAnimation} stopAnimation={stopAnimation} />
     </div>
   </React.StrictMode>,
   document.getElementById('root')
