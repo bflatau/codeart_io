@@ -117,32 +117,15 @@ exports.getMegaButtonState = () =>{ //returns active button state
   return activeButtons;
 }
 
-exports.initializeMega = (io, port, splitflap) => {
-
-  let splitflapState2d = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ]
-
-  const sendSplitflapConfig = () => {
-    splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(splitflapState2d, true))
-  }
+exports.initializeMega = (io, port, setFlaps) => {
 
   const updateSplitflap = (allIndexes) => {
     const newSplitflapState = []
     for (let i = 0; i < 6; i++) {
       newSplitflapState.push(allIndexes.slice(i*18, (i+1)*18))
     }
-    splitflapState2d = newSplitflapState
-    sendSplitflapConfig()
+    setFlaps(newSplitflapState)
   }
-
-  // Periodically sync splitflap config, e.g. in case MCU gets restarted
-  setInterval(sendSplitflapConfig, 5000);
 
   const five = require("johnny-five");
   // board = new five.Board({ port: "/dev/ttyACM0" }); //use this when utilizing multiple boards, see readme for board designation

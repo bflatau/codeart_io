@@ -21,7 +21,6 @@ class SplitflapDiagnostics extends Component {
     }
 
     onSupervisorState(state) {
-        console.log('supervisor state', state, PB.SupervisorState.fromObject(state), PB.SupervisorState.create(state))
         this.setState({supervisorState: state})
     }
 
@@ -51,6 +50,14 @@ class SplitflapDiagnostics extends Component {
                 {
                     supervisorStateObj.powerChannels.map((d, i) => (<PowerChannel data={d} key={i} />))
                 }
+                <div>
+                    <button onClick={this.props.stopAnimation}>STOP</button>
+                    {
+                        ['testAll', 'welcome', 'rain', 'spiral', 'randomFill', 'sequence1', 'wheelOfFortune'].map((a) => (
+                            <button onClick={() => this.props.startAnimation(a)} key={a}>{a}</button>
+                        ))
+                    }
+                </div>
             </div>
         )
     }

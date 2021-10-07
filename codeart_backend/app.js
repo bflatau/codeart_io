@@ -7,6 +7,7 @@ const cors = require('cors');
 const SerialPort = require('serialport')
 const {Splitflap, Util} = require('splitflapjs')
 const {PB} = require('splitflapjs-proto')
+const {welcome, randomFill, spiral, rain, testAll, sequence1, wheelOfFortune} = require('./animations')
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -89,6 +90,80 @@ const splitflapStateForFrontend = (splitflapStatePb) => {
   }
 }
 
+let splitflapConfig2d = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]
+let animationFrame2d = []
+
+
+let animationTimeout = null
+let currentAnimation = null
+
+const flaps = [
+  ' ', // BLACK
+  'J', // 1
+  'B', // 2
+  'M', // 3
+  'R', // 4
+  '$', // 5
+  'V', // 6
+  'K', // 7
+  'A', // 8
+  'E', // 9
+  'N', // 10
+  'O', // 11
+  'y', // YELLOW
+  '*', // 13
+  'g', // GREEN
+  'G', // 15
+  'I', // 16
+  '%', // 17
+  'D', // 18
+  'L', // 19
+  '&', // 20
+  '@', // 21
+  'C', // 22
+  'W', // 23
+  'H', // 24
+  'Y', // 25
+  'w', // WHITE
+  'Q', // 27
+  'p', // PINK
+  'o', // ORANGE
+  '!', // 30
+  'T', // 31
+  'Z', // 32
+  'P', // 33
+  'F', // 34
+  '?', // 35
+  'S', // 36
+  '#', // 37
+  'U', // 38
+  'X', // 39
+]
+
+const charToFlapIndex = (c) => {
+  const i = flaps.indexOf(c)
+  if (i >= 0) {
+      return i
+  } else {
+      return null
+  }
+}
+
+const stringToFlapIndexArray = (str) => {
+  return str.split('').map(charToFlapIndex)
+}
+
+const stringToMovementMask = (str) => {
+  return str.split('').map((c) => c === '1')
+}
+
 const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
@@ -109,15 +184,58 @@ const initializeHardware = async () => {
       }
   }, 108)
 
-  const initialPositions = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ]
-  splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(initialPositions, true))
+
+  const sendSplitflapConfig = () => {
+    splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(currentAnimation !== null ? animationFrame2d : splitflapConfig2d, true))
+  }
+
+  // Periodically sync splitflap config, e.g. in case MCU gets restarted
+  sendSplitflapConfig()
+  setInterval(sendSplitflapConfig, 5000)
+
+  const animationFrame = () => {
+    const current = currentAnimation.next()
+    if (!current.done) {
+      const frameData = current.value
+      console.log(frameData)
+      if (typeof frameData[1][0] === 'string') {
+        animationFrame2d = frameData[1].map(stringToFlapIndexArray)
+      } else {
+        animationFrame2d = frameData[1].map((a) => a.map(charToFlapIndex))
+      }
+      let movementMask
+      if (frameData[2]) {
+        let mask
+        if (typeof frameData[2][0] === 'string') {
+          mask = frameData[2].map(stringToMovementMask)
+        } else {
+          mask = frameData[2]
+        }
+        movementMask = Util.convert2dDualRowZigZagTo1dChainlink(mask, true)
+      }
+      splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(animationFrame2d, true), movementMask)
+      const frameTime = frameData[0]
+      animationTimeout = setTimeout(animationFrame, frameTime)
+    } else {
+      stopAnimation()
+    }
+  }
+
+  const startAnimation = (animation) => {
+    stopAnimation()
+    currentAnimation = animation
+    animationFrame()
+  }
+
+  const stopAnimation = () => {
+    if (animationTimeout) {
+      clearTimeout(animationTimeout)
+      animationTimeout = null
+    }
+    currentAnimation = null
+    sendSplitflapConfig()
+  }
+
 
   app.post('/splitflap/hard_reset', async (req, res) => {
     await splitflap.hardReset()
@@ -138,6 +256,66 @@ const initializeHardware = async () => {
       defaults: true,
     }))
   })
+  app.post('/splitflap/set_flaps', async (req, res) => {
+    const newLayout = []
+    for (let i = 0; i < 6; i++) {
+      newLayout.push(new Array(18).fill(0))
+    }
+    let row = 0;
+    let col = 0;
+    console.log(req.body)
+    for (let i = 0; i < req.body.text.length && row < 6; i++) {
+      const char = req.body.text[i]
+      if (char === '\n') {
+        col = 0
+        row++
+        continue
+      }
+
+      const flapIndex = flaps.indexOf(char)
+      newLayout[row][col] = flapIndex == -1 ? 0 : flapIndex
+      col++
+      if (col >= 18) {
+        row++
+        col = 0
+      }
+    }
+    console.log(newLayout)
+    splitflapConfig2d = newLayout
+    sendSplitflapConfig()
+    res.send('ok')
+  })
+  app.post('/splitflap/start_animation', async (req, res) => {
+    const wofGames = [
+      ['EVENT', [
+        '',
+        '  CODE ART',
+        '  PALO ALTO',
+      ]],
+      ['SONG LYRICS', [
+        '  NEVER',
+        '  GONNA GIVE',
+        '  YOU UP',
+        ''
+      ]],
+    ]
+    const wof = wofGames[Math.floor(Math.random() * wofGames.length)]
+    const animations = {
+      'welcome': welcome.values(),
+      'rain': rain('w', 'g', 6000, 6000),
+      'spiral': spiral('o', 'y', 6000, 6000),
+      'testAll': testAll(),
+      'randomFill': randomFill(' ', 'random', 6000, 6000),
+      'sequence1': sequence1(),
+      'wheelOfFortune': wheelOfFortune(wof[0], wof[1])
+    }
+    startAnimation(animations[req.body.animation])
+    res.send('ok')
+  })
+  app.post('/splitflap/stop_animation', async (req, res) => {
+    stopAnimation()
+    res.send('ok')
+  })
 
 
   const megaPortInfo = findPort(ports, 'mega', [
@@ -145,7 +323,10 @@ const initializeHardware = async () => {
     ['2341', '0042', '5543830343935160C121'], // scott's
   ])
   if (megaPortInfo !== null) {
-    megaController.initializeMega(io, megaPortInfo.path, splitflap);
+    megaController.initializeMega(io, megaPortInfo.path, (flaps2d) => {
+      splitflapConfig2d = flaps2d
+      sendSplitflapConfig()
+    })
   }
 }
 
