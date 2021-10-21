@@ -155,6 +155,15 @@ const newRandomEvil = (flapStates, numToReveal) => {
     return reassembledSorted;
 }
 
+const shuffleFlapMapping = (game) => {
+    const mapping = new Array(108)
+    for (let i = 0; i < mapping.length; i++) {
+        const buttonForFlap = Math.floor(Math.random() * 24)
+        mapping[i] = buttonForFlap
+    }
+    game.flapToButtonMapping = mapping
+}
+
 const hasWon = btnStates => {
     const hasWon = !btnStates.find(btnState => btnState.currentState !== btnState.desiredState);
     console.log('was the game won?', hasWon);
@@ -289,25 +298,53 @@ const doItAll = (gameState, action) => {
 
     console.log('is this correct?', isCorrect)
     
-    // Determine how many random things will happen
-    // (currenlty it's the same whther good or bad. you can change this)
-    const numToReveal = getNumToReveal(gameState.flapStates, gameState.btnStates);
+    // // Determine how many random things will happen
+    // // (currenlty it's the same whther good or bad. you can change this)
+    // const numToReveal = getNumToReveal(gameState.flapStates, gameState.btnStates);
 
-    if (isCorrect) {
-        if (!alreadyTriggered) {
-            gameState.btnStates[action.id].triggered = true;
+    // if (isTurningOff) {
+    //     if (currentMatchesDesired) {
+    //         // Turned off correct -- remove random correct
+    //         gameState.flapStates = removeRandomGood(gameState.flapStates, numToReveal);
+    //     } else {
+    //         // Turned off incorrect - remove random bad
+    //         gameState.flapStates = removeRandomBad(gameState.flapStates, numToReveal);
+    //     }
+    // } else {
+    //     if (currentMatchesDesired) {
+    //         // Turned on correct -- add random good
+    //         gameState.flapStates = randomGood(gameState.flapStates, numToReveal);
+    //     } else {
+    //         // Turned on incorrect -- add random bad
+    //         gameState.flapStates = newRandomEvil(gameState.flapStates, numToReveal);  
+    //     }
+    // }
+    gameState.flapStates = gameState.flapStates.map((fs) => {
+        const buttonState = gameState.btnStates[gameState.flapToButtonMapping[fs.id]]
+        
+        if (buttonState.currentState === 'off') {
+            // Button off - show blank
+            return {
+                ...fs,
+                isRevealed: false,
+                randomVal: null,
+            }
+        } else if (buttonState.currentState == buttonState.desiredState) {
+            // Button on and right - show good value
+            return {
+                ...fs,
+                isRevealed: true,
+                randomVal: allLetters.indexOf(fs.randomVal) > -1 ? fs.randomVal : randomLetter(),
+            }
+        } else {
+            // Button on and wrong - show bad value
+            return {
+                ...fs,
+                isRevealed: true,
+                randomVal: benRandomWrong.indexOf(fs.randomVal) > -1 ? fs.randomVal : randomWrongValue(),
+            }
         }
-        // random good!
-        // reveal random meaningful characters
-        gameState.flapStates = randomGood(gameState.flapStates, numToReveal);
-    } else {
-        // random evil!
-        if (alreadyTriggered) {
-            // remove random correct characters and add random bad ones
-            gameState.flapStates = removeRandomGood(gameState.flapStates, numToReveal);
-        }
-        gameState.flapStates = newRandomEvil(gameState.flapStates, numToReveal);     
-    }
+    })
 
     const forScott = gameState.flapStates.map(fs => {
         const lookupVal = fs.randomVal || (fs.isRevealed && fs.val) || 0;
@@ -347,4 +384,4 @@ const buttonUp = (gameState, btnPin) => {
 
 const initialGameStateObject = convertToState(levelEditorGameObject);
 
-module.exports = {buttonUp, buttonDown, convertToState, gamesList, initialGameStateObject}
+module.exports = {buttonUp, buttonDown, convertToState, gamesList, initialGameStateObject, shuffleFlapMapping}

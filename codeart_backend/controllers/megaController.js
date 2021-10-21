@@ -1,4 +1,4 @@
-const { buttonDown , buttonUp, convertToState, gamesList, initialGameStateObject } = require( "./splitFlapController");
+const { buttonDown , buttonUp, convertToState, gamesList, shuffleFlapMapping, initialGameStateObject } = require( "./splitFlapController");
 const {Util} = require('splitflapjs')
 
 const buttonMap = { //this maps the arduino mega pins with a 0-XX number
@@ -104,13 +104,15 @@ const buttonMap = { //this maps the arduino mega pins with a 0-XX number
 
 const activeButtons = []; // array of boxes that are turned on
 let gameState = convertToState(gamesList[0]) ;
+shuffleFlapMapping(gameState)
 
 exports.getFlapState = () => {
   return gameState.forScott
 };
 
 exports.setGameNumber= (number) =>{
-  gameState = convertToState(gamesList[number]) 
+  gameState = convertToState(gamesList[number])
+  shuffleFlapMapping(gameState)
   console.log('set to game', number)
 }
 
