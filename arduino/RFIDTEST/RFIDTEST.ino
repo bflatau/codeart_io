@@ -10,8 +10,8 @@
 #include <SPI.h>
 #include <MFRC522.h>
  
-#define SS_PIN 10
-#define RST_PIN 9
+#define SS_PIN 53
+#define RST_PIN 5
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
  
 void setup() 
@@ -19,7 +19,6 @@ void setup()
   Serial.begin(9600);   // Initiate a serial communication
   SPI.begin();      // Initiate  SPI bus
   mfrc522.PCD_Init();   // Initiate MFRC522
-  pinMode(7, OUTPUT);  // Set the board pin to blink
   Serial.println("Approximate your card to the reader...");
   Serial.println();
 
@@ -59,23 +58,6 @@ void loop()
  
  else   {
     Serial.println(" Access denied");
-    digitalWrite (7, HIGH);
     delay(3000);
-    digitalWrite (7, LOW);
   }
 } 
-
-
-
-//
-//
-//void setup() {
-//  pinMode(13, OUTPUT);    // sets the digital pin 13 as output
-//}
-//
-//void loop() {
-//  digitalWrite(13, HIGH); // sets the digital pin 13 on
-//  delay(1000);            // waits for a second
-//  digitalWrite(13, LOW);  // sets the digital pin 13 off
-//  delay(1000);            // waits for a second
-//}
