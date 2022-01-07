@@ -1,5 +1,5 @@
-.input-board-button{
-    color: white;
+.input-board-button-black, .input-board-button-green, .input-board-button-pink, .input-board-button-yellow, .input-board-button-orange{
+    
     font-size: 40px; 
     text-align: center;
     display: inline-block;
@@ -9,10 +9,35 @@
     margin-top: 3.5%;
     padding-top: 1%;
     padding-bottom: 1%;
-    background-color: black;
     z-index: 10;
     position: relative;
 
+}
+
+.input-board-button-black{
+  background-color: black;
+  color: white;
+}
+
+
+.input-board-button-pink{
+  background-color: #FF00CC;
+  color: black;
+}
+
+.input-board-button-orange{
+  background-color: #FF9933;
+  color: black;
+}
+
+.input-board-button-yellow{
+  background-color: #FFFF66;
+  color: black;
+}
+
+.input-board-button-green{
+  background-color: #66FF66;
+  color: black;
 }
 
 /* .input-board-button:hover {

@@ -7,3 +7,9 @@
     background-color: white;
     /* min-height: 400px; */
 }
+
+.output-board {
+  border-collapse: separate;
+  border-spacing: 5px;
+  table-layout: fixed;
+}

@@ -2,38 +2,43 @@ import React, { Component } from "react";
 import './style.css';
 import OutputBoardFlap from '../OutputBoardFlap';
 
-
 class OutputBoard extends Component {
-    constructor() {
-        super();
-        this.state = {
-            boardOutputs: Array(108).fill('X'),
-        };
-    }
-
-   
     createOutputGrid = () => {
-        let table = [];
+        let rows = []
 
-        for (let i = 0; i < this.state.boardOutputs.length; i++) {
-            table.push(
-                <OutputBoardFlap
-                    key={i}
-                    flapID={i}
-                    flapValue={this.state.boardOutputs[i]}
-                    // socket={this.props.socket}
-                />
-            )
+        let i = 0
+        while (i < this.props.splitflapState.modules.length) {
+            rows.push(this.props.splitflapState.modules.slice(i, i += 18))
         }
-        return table
+
+        return rows.map((row, y) => (
+            <tr key={y}>
+                {
+                    row.map((item, x) => {
+                        let p = {}
+                        if (this.props.onResetModule) {
+                            p['onResetModule'] = () => { this.props.onResetModule(x, y) }
+                        }
+                        return (
+                        <OutputBoardFlap
+                            data={item}
+                            key={`${x}-${y}`}
+                            {...p}
+                        />
+                    )})
+                }
+            </tr>
+        ))
     }
     
     render() {
         return (
             <div className="output-board-container">
-                <div className="output-board">
-                    {this.createOutputGrid()}
-                </div>
+                <table className="output-board">
+                    <tbody>
+                        {this.createOutputGrid()}
+                    </tbody>
+                </table>
             </div>
         )
     }

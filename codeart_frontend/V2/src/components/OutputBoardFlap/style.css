@@ -1,14 +1,51 @@
-.split-flap-button{
-    width: 4.5%;
-    margin-left: .5%;
-    margin-right: .5%;
-    margin-top: .5%;
-    margin-bottom: .5%;
-    padding-top: 15px;
-    background-color: black;
-    color: white;
-    display: inline-block;
+.split-flap-button {
+    width: 28px;
     text-align: center;
     font-size: 25px;
-    height: 40px;
+    height: 50px;
+    overflow: hidden;
+    border: 4px solid transparent;
+}
+
+.split-flap-warning {
+    border: 4px dotted gray;
+}
+
+.split-flap-error {
+    outline: 4px solid red;
+}
+
+.split-flap-button-black {
+    background-color: black;
+    color: white;
+}
+
+.split-flap-button-white {
+    background-color: white;
+    color: white;
+}
+
+.split-flap-button-black-empty {
+    background-color: black;
+    color: black;
+}
+
+.split-flap-button-green {
+    background-color: #66FF66;
+    color: #66FF66;
+}
+
+.split-flap-button-yellow {
+    background-color: #FFFF66;
+    color: #FFFF66;
+}
+
+.split-flap-button-pink {
+    background-color: #FF00CC;
+    color: #FF00CC;
+}
+
+.split-flap-button-orange {
+    background-color: #FF9933;
+    color: #FF9933;
 }

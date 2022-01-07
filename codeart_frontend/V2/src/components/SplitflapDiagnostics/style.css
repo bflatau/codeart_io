@@ -1,0 +1,40 @@
+.diagnostics{
+    margin-top: 60px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-color: white;
+    /* min-height: 400px; */
+}
+
+.power-channel {
+    display: inline-block;
+    background: black;
+    color: white;
+    padding: 5px;
+    margin: 0 5px;
+}
+
+.power-channel .status {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.power-channel .voltage {
+    text-align: right;
+    color: rgb(150, 150, 250);
+}
+
+.power-channel .current {
+    text-align: right;
+    color: rgb(120, 255, 100);
+}
+
+.power-channel .status-on-true {
+    color: white;
+}
+
+.power-channel .status-on-false {
+    color: gray;
+}

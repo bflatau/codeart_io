@@ -1,0 +1,15 @@
+.output-board-container{
+    margin-top: 60px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-color: white;
+    /* min-height: 400px; */
+}
+
+.output-board {
+  border-collapse: separate;
+  /* border-spacing: 5px; */
+  table-layout: fixed;
+}
