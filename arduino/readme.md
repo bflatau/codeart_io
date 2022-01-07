@@ -7,7 +7,7 @@ https://www.instructables.com/Interfacing-RFID-RC522-With-Arduino-MEGA-a-Simple-
 ## PINOUT FOR ARUDINOS (SEE DUMP EXAMPLE)
 
 RC522 MODULE    Uno/Nano     MEGA
-SDA             D10          D53
+SDA (SS)        D10          D53
 SCK             D13          D52
 MOSI            D11          D51
 MISO            D12          D50
