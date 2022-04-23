@@ -50,36 +50,22 @@
 
     `node app.js`
 
-
-
-
-
 ---
 
 
-# OLD NOTES
+# BACKEND NOTES
 
-to run node as a sudo user:
-`sudo "$(which node)" javascriptfile.js`
+* need to run `sudo app.js` to access serial port from linux
 
-to run npm as a sudo user:
-`sudo "$(which npm)" install -g angular-cli`
+# BACKEND API NOTES
 
-`to pull submodule `
-git submodule update --init --recursive
+* manually entering text looks like this:
 
-`install typescript globally (as root)`
-npm install -g typescript 
+POST: `0.0.0.0:8090/splitflap/set_flaps`
 
-`scott note`
-had to add this in the splitflapjs folder: npm i --save-dev @types/node
+JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 
+* **note:** It appears this has to be one big string, you can skip lines with /n, otherwise, make sure you count right!
 
-
-working with Node:
-
-v12.22.5
-
-
-Use `npm ci` to avoid any weird node issues?
+---
 

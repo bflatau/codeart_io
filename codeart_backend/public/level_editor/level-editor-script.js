@@ -194,15 +194,24 @@ const generateData = () => {
     const flapInputs = flapsContainer.children;
     const flapData = [];
     const newFlapData = [];
-    const btnData = [];
-    const invalid = [];
+    // const btnData = [];
+    // const invalid = [];
+    let flapString;
     for (let i = 0; i < flapInputs.length; i++) {
         const val = flapInputs[i].value?.trim();
+
+        if (flapInputs[i].value){
+            flapString += flapInputs[i].value.toUpperCase();
+        }
+        else{
+            flapString += "\xa0"
+        }
+
         
         // If uppercase and lowercase are equal, it's not a letter
-        if (val && val.toUpperCase() === val.toLowerCase()) {
-            invalid.push({[i]: val});
-        }
+        // if (val && val.toUpperCase() === val.toLowerCase()) {
+        //     invalid.push({[i]: val});
+        // }
         
         flapData.push(val.length && val || null);
         
@@ -213,20 +222,35 @@ const generateData = () => {
         });
     }
 
-    if (invalid.length > 0) {
-        document.getElementById('generated-data').innerHTML = JSON.stringify({ ERROR_INVALID_BOXES: invalid});
-        return;        
-    }
+    // if (invalid.length > 0) {
+    //     document.getElementById('generated-data').innerHTML = JSON.stringify({ ERROR_INVALID_BOXES: invalid});
+    //     return;        
+    // }
 
-    const allBtns = document.getElementsByClassName('btn');
-    for (let i = 0; i < allBtns.length; i++) {
-        btnData.push(allBtns[i].dataset.btnState);
-    }
 
-    allData.buttons = btnData;
-    allData.flaps = flapData;
+    allData.text = flapString.slice(9);
 
     const data = JSON.stringify(allData);
+
+    // CALL API
+
+    fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
+    method: 'POST', // or 'PUT'
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: data,
+    })
+    .then(response => response.json())
+    .then(data => {
+    console.log('Success:', data);
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    });
+
+
+    // SHOW API TEXT IN BROWSER
     document.getElementById('generated-data').innerHTML = data;
 }
 
