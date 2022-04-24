@@ -17,15 +17,50 @@ const io = socketIO(server);
 /// REQUIRE CONTROLLERS ///
 
 
+/// SETUP CORS ///
+
+// need to call cors before setting up routes
+// Set up a whitelist and check against it:
+
+// const whitelist = ['http://0.0.0.0:3000/dalle-playground']
+// const corsOptions = {
+//     origin: function (origin, callback) {
+//         if (whitelist.indexOf(origin) !== -1) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error('Not allowed by CORS'))
+//         }
+//     }
+// }
+
+
+
 /// USE MIDDLEWARE ///
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false})); //BEN NOTE: note sure what this does, was false
 // app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/public/level_editor"));
 
-console.log('this is dir', __dirname)
+// console.log('this is dir', __dirname)
+
+
+/// ENABLE ALL CORS STUFF ///
+
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+// app.all('*', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   next();
+// });
+
 
 /// PUBLIC API ENDPOINTS ///
 app.get("/debug", (req, res) => {
@@ -245,6 +280,8 @@ const initializeHardware = async () => {
     }))
   })
   app.post('/splitflap/set_flaps', async (req, res) => {
+
+    console.log(req.body, 'this is req')
     const newLayout = []
     for (let i = 0; i < 6; i++) {
       newLayout.push(new Array(18).fill(0))
