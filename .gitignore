@@ -3,3 +3,5 @@ splitflap
 splitflap/**
 ext
 ext/**
+
+.env

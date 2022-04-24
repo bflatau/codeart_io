@@ -1,4 +1,6 @@
 /// SETUP DEPENDENCIES ///
+require('dotenv').config();
+
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
@@ -15,7 +17,13 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
+const openaiController = require('./controllers/openaiController');
 
+
+
+app.get('/openai', (req, res) => { 
+  openaiController.getResponse(res)
+})
 
 /// SETUP CORS ///
 
