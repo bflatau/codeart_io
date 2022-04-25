@@ -1,4 +1,6 @@
 /// SETUP DEPENDENCIES ///
+require('dotenv').config();
+
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
@@ -15,14 +17,20 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
-const buttonController = require('./controllers/buttonController');
-const megaController = require('./controllers/megaController');
+const openaiController = require('./controllers/openaiController');
 
-/// SET UP CORS ///
+
+
+app.get('/openai', (req, res) => { 
+  openaiController.getResponse(res)
+})
+
+/// SETUP CORS ///
+
 // need to call cors before setting up routes
 // Set up a whitelist and check against it:
 
-// const whitelist = ['http://codeart.benflatau.com']
+// const whitelist = ['http://0.0.0.0:3000/dalle-playground']
 // const corsOptions = {
 //     origin: function (origin, callback) {
 //         if (whitelist.indexOf(origin) !== -1) {
@@ -33,14 +41,34 @@ const megaController = require('./controllers/megaController');
 //     }
 // }
 
+
+
 /// USE MIDDLEWARE ///
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false})); //BEN NOTE: note sure what this does, was false
 // app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public/level_editor"));
 
-console.log('this is dir', __dirname)
+// console.log('this is dir', __dirname)
+
+
+/// ENABLE ALL CORS STUFF ///
+
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+// app.all('*', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   next();
+// });
+
 
 /// PUBLIC API ENDPOINTS ///
 app.get("/debug", (req, res) => {
@@ -53,19 +81,16 @@ app.get("/debug", (req, res) => {
 });
 
 
-app.post('/game',(req, res) => {
-  megaController.setGameNumber(req.body.game)
-  res.send('ok')
-})
+app.get("/text", (req, res) => {
+  res.sendFile(`${__dirname}/public/level_editor/level-editor.html`, (err) => {
+    if (err) {
+      console.log(err);
+      res.end(err.message);
+    }
+  });
+});
 
-// app.route('/game/:gameNumber')
-//   .post(buttonController.handleKeyOn);
 
-// app.route('/game/:gameNumber/off/:buttonNumber')
-//   .post(buttonController.handleKeyOff);
-
-// app.route('/game/:gameNumber/getkeyquantity')
-//   .get(buttonController.getKeyQuantity);
 
 /// ARDUINO STUFF ///
 const findPort = (ports, description, infoList) => {
@@ -263,6 +288,8 @@ const initializeHardware = async () => {
     }))
   })
   app.post('/splitflap/set_flaps', async (req, res) => {
+
+    console.log(req.body, 'this is req')
     const newLayout = []
     for (let i = 0; i < 6; i++) {
       newLayout.push(new Array(18).fill(0))
@@ -322,18 +349,6 @@ const initializeHardware = async () => {
     stopAnimation()
     res.send('ok')
   })
-
-
-  const megaPortInfo = findPort(ports, 'mega', [
-    ['2341', '0010', '6493833393235110A1A0'], // real
-    ['2341', '0042', '5543830343935160C121'], // scott's
-  ])
-  if (megaPortInfo !== null) {
-    megaController.initializeMega(io, megaPortInfo.path, (flaps2d) => {
-      splitflapConfig2d = flaps2d
-      sendSplitflapConfig()
-    })
-  }
 }
 
 initializeHardware()
@@ -350,13 +365,13 @@ io.on('connection', socket => {
   }
 
   /// get mega button state when connecting and send to newly connected user
-  if (megaController.getMegaButtonState().length > 0){  
-    megaController.getMegaButtonState().forEach(button =>{
-      io.to(socket.id).emit('button down', {buttons: button, flaps: megaController.getFlapState()})
-    });
-  } 
+  // if (megaController.getMegaButtonState().length > 0){  
+  //   megaController.getMegaButtonState().forEach(button =>{
+  //     io.to(socket.id).emit('button down', {buttons: button, flaps: megaController.getFlapState()})
+  //   });
+  // } 
 
-  else {io.to(socket.id).emit('button down', {buttons: null , flaps: megaController.getFlapState()})}
+  // else {io.to(socket.id).emit('button down', {buttons: null , flaps: megaController.getFlapState()})}
 
   /// When a user disconnects, console log and then update the clients with the user count
   socket.on('disconnect', () => {
@@ -371,58 +386,4 @@ const port = 8090;
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
 
-
-
-
-
-// /// SET SERVER CONSTANTS ///
-// const PORT = 8090;
-// const HOST = '0.0.0.0';
-
-// /// RUN SERVER ///
-// app.listen(PORT, HOST);
-// console.log(`Running on http://${HOST}:${PORT}`);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-////FILE SYSTEM STUFF ///
-
-//might need to change end points at some point to avoid file name conflicts (now functions as one big folder)
-// app.use(express.static(__dirname + "/public"));
-// app.use(express.static(__dirname + "/node_modules"));
-
-
-///CORS STUFF/////
-
-// const cors = require('cors');
-
-
-// need to call cors before setting up routes
-// // Set up a whitelist and check against it:
-// var whitelist = ['http://example1.com', 'http://example2.com']
-// var corsOptions = {
-//     origin: function (origin, callback) {
-//         if (whitelist.indexOf(origin) !== -1) {
-//             callback(null, true)
-//         } else {
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     }
-// }
-
-// // Then pass them to cors:
-// app.use(cors(corsOptions));
-
-// app.use(cors());
 
