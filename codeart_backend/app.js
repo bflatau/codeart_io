@@ -340,7 +340,12 @@ const initializeHardware = async () => {
       'testAll': testAll(),
       'randomFill': randomFill(' ', 'random', 6000, 6000),
       'sequence1': sequence1(),
-      'wheelOfFortune': wheelOfFortune(wof[0], wof[1])
+      'wheelOfFortune': wheelOfFortune([
+        '  NEVER',
+        '  GONNA GIVE',
+        '  YOU UP',
+        ''
+      ])
     }
     startAnimation(animations[req.body.animation])
     res.send('ok')
