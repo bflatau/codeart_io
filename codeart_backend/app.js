@@ -50,6 +50,7 @@ app.use(bodyParser.urlencoded({extended: false})); //BEN NOTE: note sure what th
 app.use(cors());
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/public/level_editor"));
+app.use(express.static(__dirname + "/public/text_input"));
 
 // console.log('this is dir', __dirname)
 
@@ -83,6 +84,15 @@ app.get("/debug", (req, res) => {
 
 app.get("/text", (req, res) => {
   res.sendFile(`${__dirname}/public/level_editor/level-editor.html`, (err) => {
+    if (err) {
+      console.log(err);
+      res.end(err.message);
+    }
+  });
+});
+
+app.get("/input", (req, res) => {
+  res.sendFile(`${__dirname}/public/text_input/index.html`, (err) => {
     if (err) {
       console.log(err);
       res.end(err.message);
