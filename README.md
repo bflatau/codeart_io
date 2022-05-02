@@ -46,6 +46,8 @@
 
     `npm ci`
 
+    **^^NOTE^^** if `ci` doesn't work, you may have to do `npm install` if that throws errors when running `node app.js`, then something is funky with the package-lock.json file. It should be fixed in the master branch, but if all else fails, copy and paste the contents of the V1.0 package-lock.json to the current branch.
+
 * Test the installation:
 
     `node app.js`
