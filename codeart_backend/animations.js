@@ -148,7 +148,7 @@ function* randomFill(color1, color2, before, after) {
             new Array(18).fill(false),
         ]
         mask[row][col] = true
-        yield [100, state, mask]
+        yield [100, state, mask] 
     }
     yield [after, state]
 }
@@ -299,20 +299,20 @@ function* sequence1() {
 }
 exports.sequence1 = sequence1
 
-function* wheelOfFortune(category, solution) {
-    const state = [
-        '   gggggggggggg   ',
-        '  gggggggggggggg  ',
-        '  gggggggggggggg  ',
-        '   gggggggggggg   ',
+function* wheelOfFortune(solution) {
+    const state = [ ///was wheel of fortune with 'g' fields
+        '                  ',
+        '                  ',
+        '                  ',
+        '                  ',
         '                  ',
         '                  ',
     ]
     yield [6000, state]
     
-    state[5] = (' '.repeat(Math.floor((18 - category.length) / 2)) + category).padEnd(18)
+    // state[5] = (' '.repeat(Math.floor((18 - category.length) / 2)) + category).padEnd(18)
 
-    yield [4000, state]
+    // yield [4000, state]
 
     for (let row = 0; row < solution.length; row++) {
         state[row] = state[row].split('').map((v, i) => {
@@ -351,7 +351,7 @@ function* wheelOfFortune(category, solution) {
             }).join('')
             empty += state[row].split('w').length - 1
         }
-        yield [empty > 10 ? 8000 : 5000, state]
+        yield [empty > 10 ? 3000 : 5000, state] //was 8000, now 3000
     }
     yield [5000, state]
 }

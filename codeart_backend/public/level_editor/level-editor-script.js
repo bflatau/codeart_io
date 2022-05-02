@@ -1,160 +1,160 @@
-const boxLayouts = [
+// const boxLayouts = [
 
-    [
-        {position: 0, symbol: '$', color: 'yellow'},
-        {position: 0, symbol: '*', color: 'pink'}
-    ],
+//     [
+//         {position: 0, symbol: '$', color: 'yellow'},
+//         {position: 0, symbol: '*', color: 'pink'}
+//     ],
     
-    [
-        {position: 1, symbol: '%', color: 'yellow'},
-        {position: 1, symbol: '!', color: 'orange'},
-    ],
+//     [
+//         {position: 1, symbol: '%', color: 'yellow'},
+//         {position: 1, symbol: '!', color: 'orange'},
+//     ],
 
-    [
-        {position: 2, symbol: '@', color: 'pink'},
-        {position: 2, symbol: '&', color: 'green'},
-    ],
+//     [
+//         {position: 2, symbol: '@', color: 'pink'},
+//         {position: 2, symbol: '&', color: 'green'},
+//     ],
    
-    [
-        {position: 3, symbol: '#', color: 'pink'},
-        {position: 3, symbol: '?', color: 'yellow'},
-    ],
+//     [
+//         {position: 3, symbol: '#', color: 'pink'},
+//         {position: 3, symbol: '?', color: 'yellow'},
+//     ],
     
-    [
-        {position: 4, symbol: '$', color: 'orange'},
-        {position: 4, symbol: '*', color: 'pink'},
-    ],
+//     [
+//         {position: 4, symbol: '$', color: 'orange'},
+//         {position: 4, symbol: '*', color: 'pink'},
+//     ],
 
-    [
-        {position: 5, symbol: '%', color: 'orange'},
-        {position: 5, symbol: '!', color: 'orange'},
-    ],
+//     [
+//         {position: 5, symbol: '%', color: 'orange'},
+//         {position: 5, symbol: '!', color: 'orange'},
+//     ],
 
-    [
-        {position: 6, symbol: '@', color: 'green'},
-        {position: 6, symbol: '&', color: 'green'},
-    ],
+//     [
+//         {position: 6, symbol: '@', color: 'green'},
+//         {position: 6, symbol: '&', color: 'green'},
+//     ],
     
-    [
-        {position: 7, symbol: '#', color: 'green'},
-        {position: 7, symbol: '?', color: 'yellow'},
-    ],
+//     [
+//         {position: 7, symbol: '#', color: 'green'},
+//         {position: 7, symbol: '?', color: 'yellow'},
+//     ],
 
-    [
-        {position: 8, symbol: '#', color: 'yellow'},
-        {position: 8, symbol: '?', color: 'yellow'},
-    ],
+//     [
+//         {position: 8, symbol: '#', color: 'yellow'},
+//         {position: 8, symbol: '?', color: 'yellow'},
+//     ],
 
-    [
-        {position: 9, symbol: '$', color: 'yellow'},
-        {position: 9, symbol: '*', color: 'green'},
-    ],
+//     [
+//         {position: 9, symbol: '$', color: 'yellow'},
+//         {position: 9, symbol: '*', color: 'green'},
+//     ],
 
-    [
-        {position: 10, symbol: '%', color: 'pink'},
-        {position: 10, symbol: '!', color: 'orange'},
-    ],
+//     [
+//         {position: 10, symbol: '%', color: 'pink'},
+//         {position: 10, symbol: '!', color: 'orange'},
+//     ],
 
-    [
-        {position: 11, symbol: '@', color: 'pink'},
-        {position: 11, symbol: '&', color: 'pink'},
-    ],
+//     [
+//         {position: 11, symbol: '@', color: 'pink'},
+//         {position: 11, symbol: '&', color: 'pink'},
+//     ],
 
-    [
-        {position: 12, symbol: '#', color: 'orange'},
-        {position: 12, symbol: '?', color: 'yellow'},
-    ],
+//     [
+//         {position: 12, symbol: '#', color: 'orange'},
+//         {position: 12, symbol: '?', color: 'yellow'},
+//     ],
     
-    [
-        {position: 13, symbol: '$', color: 'orange'},
-        {position: 13, symbol: '*', color: 'green'},
-    ],
+//     [
+//         {position: 13, symbol: '$', color: 'orange'},
+//         {position: 13, symbol: '*', color: 'green'},
+//     ],
 
-    [
-        {position: 14, symbol: '%', color: 'green'},
-        {position: 14, symbol: '!', color: 'orange'},
-    ],
+//     [
+//         {position: 14, symbol: '%', color: 'green'},
+//         {position: 14, symbol: '!', color: 'orange'},
+//     ],
     
-    [
-        {position: 15, symbol: '@', color: 'green'},
-        {position: 15, symbol: '&', color: 'pink'},
-    ],
+//     [
+//         {position: 15, symbol: '@', color: 'green'},
+//         {position: 15, symbol: '&', color: 'pink'},
+//     ],
 
-    [
-        {position: 16, symbol: '@', color: 'yellow'},
-        {position: 16, symbol: '&', color: 'pink'},
-    ],
+//     [
+//         {position: 16, symbol: '@', color: 'yellow'},
+//         {position: 16, symbol: '&', color: 'pink'},
+//     ],
 
-    [
-        {position: 17, symbol: '#', color: 'yellow'},
-        {position: 17, symbol: '?', color: 'orange'},
-    ],
+//     [
+//         {position: 17, symbol: '#', color: 'yellow'},
+//         {position: 17, symbol: '?', color: 'orange'},
+//     ],
 
-    [
-        {position: 18, symbol: '*', color: 'green'},
-        {position: 18, symbol: '$', color: 'pink'},
-    ],
+//     [
+//         {position: 18, symbol: '*', color: 'green'},
+//         {position: 18, symbol: '$', color: 'pink'},
+//     ],
 
-    [
-        {position: 19, symbol: '!', color: 'yellow'},
-        {position: 19, symbol: '%', color: 'pink'},
+//     [
+//         {position: 19, symbol: '!', color: 'yellow'},
+//         {position: 19, symbol: '%', color: 'pink'},
         
-    ],
+//     ],
 
-    [
-        {position: 20, symbol: '@', color: 'orange'},
-        {position: 20, symbol: '&', color: 'pink'},
-    ],
+//     [
+//         {position: 20, symbol: '@', color: 'orange'},
+//         {position: 20, symbol: '&', color: 'pink'},
+//     ],
 
-    [
-        {position: 21, symbol: '?', color: 'orange'},   
-        {position: 21, symbol: '#', color: 'orange'},
-    ],
+//     [
+//         {position: 21, symbol: '?', color: 'orange'},   
+//         {position: 21, symbol: '#', color: 'orange'},
+//     ],
 
-    [
-        {position: 22, symbol: '$', color: 'green'},
-        {position: 22, symbol: '*', color: 'green'},
-    ],
+//     [
+//         {position: 22, symbol: '$', color: 'green'},
+//         {position: 22, symbol: '*', color: 'green'},
+//     ],
 
-    [
-        {position: 23, symbol: '!', color: 'yellow'},
-        {position: 23, symbol: '%', color: 'green'},
-    ],
-]
+//     [
+//         {position: 23, symbol: '!', color: 'yellow'},
+//         {position: 23, symbol: '%', color: 'green'},
+//     ],
+// ]
 
 
-const btnStates = ['off', 'a', 'b'];
+// const btnStates = ['off', 'a', 'b'];
 
-const generateBtnsGrid = btnStates => {
-    const btnsContainer = document.getElementById('btns');
+// const generateBtnsGrid = btnStates => {
+//     const btnsContainer = document.getElementById('btns');
 
-    for (let i = 0; i < 24; i++) {
-        const btnDiv = document.createElement('div');
+//     for (let i = 0; i < 24; i++) {
+//         const btnDiv = document.createElement('div');
 
-        btnDiv.dataset.btnId = i;
-        btnDiv.className = 'btn btn-pressed-off'
-        btnDiv.innerHTML = 'X';
-        btnDiv.dataset.btnState = 'off';
-        btnDiv.onclick = e => {
-            clearGenerated();
-            const btn = e.currentTarget;
-            if (btn.className === 'btn btn-pressed-off') {
-                btn.className = `btn btn-pressed-a-${i}`;
-                btn.dataset.btnState = 'a';
-                btn.innerHTML = boxLayouts[i][0].symbol;
-            } else if (btn.className === `btn btn-pressed-a-${i}`) {
-                btn.className = `btn btn-pressed-b-${i}`;
-                btn.dataset.btnState = 'b';
-                btn.innerHTML = boxLayouts[i][1].symbol;
-            } else {
-                btn.className = 'btn btn-pressed-off';
-                btn.dataset.btnState = 'off';
-                btn.innerHTML = 'X'
-            }
-        }
-        btnsContainer.appendChild(btnDiv);
-    }
-}
+//         btnDiv.dataset.btnId = i;
+//         btnDiv.className = 'btn btn-pressed-off'
+//         btnDiv.innerHTML = 'X';
+//         btnDiv.dataset.btnState = 'off';
+//         btnDiv.onclick = e => {
+//             clearGenerated();
+//             const btn = e.currentTarget;
+//             if (btn.className === 'btn btn-pressed-off') {
+//                 btn.className = `btn btn-pressed-a-${i}`;
+//                 btn.dataset.btnState = 'a';
+//                 btn.innerHTML = boxLayouts[i][0].symbol;
+//             } else if (btn.className === `btn btn-pressed-a-${i}`) {
+//                 btn.className = `btn btn-pressed-b-${i}`;
+//                 btn.dataset.btnState = 'b';
+//                 btn.innerHTML = boxLayouts[i][1].symbol;
+//             } else {
+//                 btn.className = 'btn btn-pressed-off';
+//                 btn.dataset.btnState = 'off';
+//                 btn.innerHTML = 'X'
+//             }
+//         }
+//         btnsContainer.appendChild(btnDiv);
+//     }
+// }
 
 const generateFlapsGrid = flapStates => {
     const flapsContainer = document.getElementById('flaps');
@@ -188,7 +188,7 @@ const generateFlapsGrid = flapStates => {
     }
 }
 
-const generateData = () => {
+const generateData = (buttonData) => {
     const allData = {};
     const flapsContainer = document.getElementById('flaps');
     const flapInputs = flapsContainer.children;
@@ -234,20 +234,27 @@ const generateData = () => {
 
     // CALL API
 
-    fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
-    method: 'POST', // or 'PUT'
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: data,
-    })
-    .then(response => response.json())
-    .then(data => {
-    console.log('Success:', data);
-    })
-    .catch((error) => {
-    console.error('Error:', error);
-    });
+    if(buttonData){
+        console.log(buttonData)
+    }
+
+    else{
+
+        fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: data,
+        })
+        .then(response => response.json())
+        .then(data => {
+        console.log('Success:', data);
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+    }
 
 
     // SHOW API TEXT IN BROWSER
@@ -259,6 +266,6 @@ const clearGenerated = () => {
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    generateBtnsGrid();
+    // generateBtnsGrid();
     generateFlapsGrid();
 });
