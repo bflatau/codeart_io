@@ -326,6 +326,13 @@ const initializeHardware = async () => {
     console.log(newLayout)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
+
+
+    //BEN TESTS (updates UI to show flap layout)
+    const frontEndArray = newLayout[0].concat(newLayout[1],newLayout[2], newLayout[3], newLayout[4], newLayout[5])
+    io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
+
+    //END BEN TESTS
     res.send('ok')
   })
   app.post('/splitflap/start_animation', async (req, res) => {
