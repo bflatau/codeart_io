@@ -81,12 +81,6 @@ app.use(express.static(__dirname + "/public/text_input"));
 /// PUBLIC API ENDPOINTS ///
 
 
-app.post('/openai', (req, res) => { 
-  openaiController.getResponse(req, res)
-})
-
-
-
 app.get("/debug", (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`, (err) => {
     if (err) {
@@ -225,6 +219,8 @@ const stringToMovementMask = (str) => {
   return str.split('').map((c) => c === '1')
 }
 
+
+/// INITIALIZE HARDWARE ////
 const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
@@ -391,6 +387,18 @@ const initializeHardware = async () => {
     stopAnimation()
     res.send('ok')
   })
+
+
+  ///BEN ADD NEW ANIMATIONS HERE ///
+    //MAGIC FUNCTIONS BELOW 
+    // splitflapConfig2d = newLayout /// splitflapConfig2d is the array the flaps are to be set to
+    // sendSplitflapConfig() ///UPDATES FLAPS
+
+  app.post('/openai', (req, res) => { 
+    openaiController.getResponse(req, res)
+  })
+
+
 }
 
 initializeHardware()
