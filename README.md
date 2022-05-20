@@ -67,7 +67,10 @@ POST: `0.0.0.0:8090/splitflap/set_flaps`
 
 JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 
-* **note:** It appears this has to be one big string, you can skip lines with /n, otherwise, make sure you count right!
+* **NOTE:** It appears this has to be one big string, you can skip lines with /n, otherwise, make sure you count right!
+
+# ENV FILE ENTRIES
+* OPENAI_API_KEY=XXXXX  (No quotes) 
 
 ---
 

@@ -16,14 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-/// REQUIRE CONTROLLERS ///
-const openaiController = require('./controllers/openaiController');
 
-
-
-app.get('/openai', (req, res) => { 
-  openaiController.getResponse(res)
-})
 
 /// SETUP CORS ///
 
@@ -43,6 +36,20 @@ app.get('/openai', (req, res) => {
 
 
 
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
+
+/// REQUIRE CONTROLLERS ///
+const openaiController = require('./controllers/openaiController');
+
+
 /// USE MIDDLEWARE ///
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false})); //BEN NOTE: note sure what this does, was false
@@ -50,6 +57,7 @@ app.use(bodyParser.urlencoded({extended: false})); //BEN NOTE: note sure what th
 app.use(cors());
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/public/level_editor"));
+app.use(express.static(__dirname + "/public/text_input"));
 
 // console.log('this is dir', __dirname)
 
@@ -71,6 +79,14 @@ app.use(express.static(__dirname + "/public/level_editor"));
 
 
 /// PUBLIC API ENDPOINTS ///
+
+
+app.post('/openai', (req, res) => { 
+  openaiController.getResponse(req, res)
+})
+
+
+
 app.get("/debug", (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`, (err) => {
     if (err) {
@@ -88,6 +104,20 @@ app.get("/text", (req, res) => {
       res.end(err.message);
     }
   });
+});
+
+app.get("/input", (req, res) => {
+  res.sendFile(`${__dirname}/public/text_input/index.html`, (err) => {
+    if (err) {
+      console.log(err);
+      res.end(err.message);
+    }
+  });
+});
+
+
+app.get("/test", (req, res) => {
+  res.status(200).json({ result: 'sup'});
 });
 
 
@@ -316,6 +346,13 @@ const initializeHardware = async () => {
     console.log(newLayout)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
+
+
+    //BEN TESTS (updates UI to show flap layout)
+    const frontEndArray = newLayout[0].concat(newLayout[1],newLayout[2], newLayout[3], newLayout[4], newLayout[5])
+    io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
+
+    //END BEN TESTS
     res.send('ok')
   })
   app.post('/splitflap/start_animation', async (req, res) => {
