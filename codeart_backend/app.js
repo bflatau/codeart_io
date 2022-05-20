@@ -16,14 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-/// REQUIRE CONTROLLERS ///
-const openaiController = require('./controllers/openaiController');
 
-
-
-app.get('/openai', (req, res) => { 
-  openaiController.getResponse(res)
-})
 
 /// SETUP CORS ///
 
@@ -41,6 +34,20 @@ app.get('/openai', (req, res) => {
 //     }
 // }
 
+
+
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
+
+/// REQUIRE CONTROLLERS ///
+const openaiController = require('./controllers/openaiController');
 
 
 /// USE MIDDLEWARE ///
@@ -72,6 +79,14 @@ app.use(express.static(__dirname + "/public/text_input"));
 
 
 /// PUBLIC API ENDPOINTS ///
+
+
+app.post('/openai', (req, res) => { 
+  openaiController.getResponse(req, res)
+})
+
+
+
 app.get("/debug", (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`, (err) => {
     if (err) {
@@ -98,6 +113,11 @@ app.get("/input", (req, res) => {
       res.end(err.message);
     }
   });
+});
+
+
+app.get("/test", (req, res) => {
+  res.status(200).json({ result: 'sup'});
 });
 
 

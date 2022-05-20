@@ -69,5 +69,8 @@ JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 
 * **NOTE:** It appears this has to be one big string, you can skip lines with /n, otherwise, make sure you count right!
 
+# ENV FILE ENTRIES
+* OPENAI_API_KEY=XXXXX  (No quotes) 
+
 ---
 
