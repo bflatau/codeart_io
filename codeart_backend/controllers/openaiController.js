@@ -7,7 +7,7 @@ const openai = new OpenAIApi(configuration);
 
 
 async function getResponse (req, res){
-  
+
   // res.status(200).json({result: req.body.text})
 
     const response = await openai.createCompletion("text-davinci-002", {
@@ -25,7 +25,6 @@ async function getResponse (req, res){
       res.status(200).json({ result: response.data.choices[0].text});
     
 }
-
 
 module.exports = {getResponse}
 
