@@ -334,7 +334,7 @@ const initializeHardware = async () => {
     io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
 
     //END BEN TESTS
-    res.send('ok')
+    // res.send('ok')
 
   }
 
@@ -400,26 +400,32 @@ const initializeHardware = async () => {
   })
 
   app.post('/openai', async (req, res) => { 
-    const dataResponse = await openaiController.getResponse(req, res);
-    textToArrayMatrix(dataResponse, res);
+
+    const AIdataResponse = await openaiController.getResponse(req, res);  //response from OPENAI
+
+    textToArrayMatrix(AIdataResponse, res); 
+
+    textToArrayMatrix(req, res); //update flaps with AI response
+
+    setTimeout(() =>{
+      textToArrayMatrix(AIdataResponse, res); //wait X seconds and then update flaps with AI response
+
+    }, "5000")
+
+    
   })
 
 
 
   ///BEN ADD NEW ANIMATIONS HERE ///
 
+    setTimeout(()=>{
+      splitflapConfig2d = openaiController.helloMessageArray;
+      sendSplitflapConfig();
+      const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5]);
+      io.sockets.emit('button down', {buttons: '1',  flaps: frontEndArray}); // BENDO: update the splitflaplatest state so that on refresh, it's the latest state?
 
-  setTimeout(() => {
-    splitflapConfig2d = openaiController.helloMessage;
-    console.log('sup')
-    sendSplitflapConfig();
-    const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5])
-    io.sockets.emit('button down', { flaps: frontEndArray});
-  }, "1000")
-
-
-
-  
+    },'2000')
 
 
     //MAGIC FUNCTIONS BELOW 

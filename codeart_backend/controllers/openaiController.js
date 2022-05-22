@@ -37,7 +37,7 @@ async function getResponse (req, res){
 
 
 
-const helloMessage =  [
+const helloMessageArray =  [
     // Ask me a question I know lots of things
   [
       0, 0, 0, 0, 0, 0, 0,
@@ -79,6 +79,6 @@ const helloMessage =  [
 
 
 
-module.exports = {getResponse, helloMessage}
+module.exports = {getResponse, helloMessageArray}
 
 

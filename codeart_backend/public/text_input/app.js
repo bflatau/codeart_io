@@ -19,7 +19,7 @@ function handleKeyPress(event) {
 
 function pollOpenAi(inputText){
 
-    const data = JSON.stringify({text: inputText});
+    const data = JSON.stringify({text: inputText.toUpperCase()});
 
     fetch('http://0.0.0.0:8090/openai', {
         method: 'POST', // or 'PUT'
