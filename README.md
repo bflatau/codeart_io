@@ -82,3 +82,8 @@ JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 - Upload to the T-Display using the “chainlink” environment in PlatformIO
 
 * Driver for Macs `https://github.com/Xinyuan-LilyGO/CH9102_Mac_Driver`
+
+### NOTES:
+
+* had to do this in linux `sudo usermod -a -G dialout <username>`
+* Had to remove `board=` in the chainlink section
