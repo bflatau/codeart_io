@@ -225,8 +225,10 @@ const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
   const splitflapPortInfo = findPort(ports, 'splitflap', [
+    //vendor id | product id | serial number//
     ['10c4', 'ea60', '022809A3'], // real
     ['10c4', 'ea60', '02280A9E'], // development
+    // ['1a86', '55d4', '5424024039'] //ben dev
   ])
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
@@ -294,26 +296,9 @@ const initializeHardware = async () => {
   }
 
 
-  app.post('/splitflap/hard_reset', async (req, res) => {
-    await splitflap.hardReset()
-    res.send('ok')
-  })
-  app.post('/splitflap/reset_module', async (req, res) => {
-    console.log(req.body)
-    const resetMap = []
-    for (let row = 0; row < 6; row++) {
-      resetMap.push(new Array(18).fill(false))
-    }
-    resetMap[req.body.y][req.body.x] = true
-    splitflap.resetModules(Util.convert2dDualRowZigZagTo1dChainlink(resetMap, true))
-    res.send('ok')
-  })
-  app.get('/splitflap/state', async (req, res) => {
-    res.json(splitflapLatestState === null ? null : PB.SplitflapState.toObject(splitflapLatestState, {
-      defaults: true,
-    }))
-  })
-  app.post('/splitflap/set_flaps', async (req, res) => {
+  //HELPER FUNCTION
+
+  function textToArrayMatrix(req, res){
 
     console.log(req.body, 'this is req')
     const newLayout = []
@@ -339,7 +324,7 @@ const initializeHardware = async () => {
         col = 0
       }
     }
-    console.log(newLayout)
+    console.log('this is new layout', newLayout)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
 
@@ -350,6 +335,32 @@ const initializeHardware = async () => {
 
     //END BEN TESTS
     res.send('ok')
+
+  }
+
+//////API ENDPOINTS ////
+
+  app.post('/splitflap/hard_reset', async (req, res) => {
+    await splitflap.hardReset()
+    res.send('ok')
+  })
+  app.post('/splitflap/reset_module', async (req, res) => {
+    console.log(req.body)
+    const resetMap = []
+    for (let row = 0; row < 6; row++) {
+      resetMap.push(new Array(18).fill(false))
+    }
+    resetMap[req.body.y][req.body.x] = true
+    splitflap.resetModules(Util.convert2dDualRowZigZagTo1dChainlink(resetMap, true))
+    res.send('ok')
+  })
+  app.get('/splitflap/state', async (req, res) => {
+    res.json(splitflapLatestState === null ? null : PB.SplitflapState.toObject(splitflapLatestState, {
+      defaults: true,
+    }))
+  })
+  app.post('/splitflap/set_flaps', async (req, res) => {
+    textToArrayMatrix(req, res)
   })
   app.post('/splitflap/start_animation', async (req, res) => {
     const wofGames = [
@@ -388,15 +399,34 @@ const initializeHardware = async () => {
     res.send('ok')
   })
 
+  app.post('/openai', async (req, res) => { 
+    const dataResponse = await openaiController.getResponse(req, res);
+    textToArrayMatrix(dataResponse, res);
+  })
+
+
 
   ///BEN ADD NEW ANIMATIONS HERE ///
+
+
+  setTimeout(() => {
+    splitflapConfig2d = openaiController.helloMessage;
+    console.log('sup')
+    sendSplitflapConfig();
+    const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5])
+    io.sockets.emit('button down', { flaps: frontEndArray});
+  }, "1000")
+
+
+
+  
+
+
     //MAGIC FUNCTIONS BELOW 
     // splitflapConfig2d = newLayout /// splitflapConfig2d is the array the flaps are to be set to
     // sendSplitflapConfig() ///UPDATES FLAPS
 
-  app.post('/openai', (req, res) => { 
-    openaiController.getResponse(req, res)
-  })
+  
 
 
 }
