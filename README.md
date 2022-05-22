@@ -73,4 +73,12 @@ JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 * OPENAI_API_KEY=XXXXX  (No quotes) 
 
 ---
+# Splitflap simulator setup
 
+- Lilygo T-Display ESP32 [https://www.amazon.com/LILYGO-T-Display-Arduino-Development-CH9102F/dp/B099MPFJ9M](https://www.amazon.com/LILYGO-T-Display-Arduino-Development-CH9102F/dp/B099MPFJ9M)
+- Modify [splitflap firmware](https://github.com/scottbez1/splitflap):
+    - In config.h: set CHAINLINK_ENFORCE_LOOPBACKS to 0 (in arduino/splitflap/Splitflap)
+    - In splitflap_module.h: set FAKE_HOME_SENSOR to true (in arduino/splitflap/Splitflap/src)
+- Upload to the T-Display using the “chainlink” environment in PlatformIO
+
+* Driver for Macs `https://github.com/Xinyuan-LilyGO/CH9102_Mac_Driver`
