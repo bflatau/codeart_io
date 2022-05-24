@@ -3,7 +3,7 @@
     width: 50%;
     margin-left: 25%;
     margin-right:25%;
-    margin-top: 10%;
+    margin-top: 5%;
     text-align: center;
     font-size: 20px;
 }
@@ -13,4 +13,18 @@
     width: 100%;
     margin-top: 5%;
     font-size: 20px;
+}
+
+.youtube-embed{
+    width:50%;
+    height: 60%;
+    margin-left: 25%;
+    margin-right:25%;
+    margin-top: 5%;
+    text-align: center;
+}
+
+#response-helper-text{
+    font-size: 15px;
+    /* color: grey; */
 }

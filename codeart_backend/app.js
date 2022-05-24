@@ -422,9 +422,9 @@ const initializeHardware = async () => {
     setTimeout(() =>{
       textToArrayMatrix(AIdataResponse, res); //wait X seconds and then update flaps with AI response
 
-    }, "5000")
+    }, "10000")
 
-    askMessage('15000');
+    askMessage('20000');
 
     // setTimeout(()=>{
     //   splitflapConfig2d = openaiController.helloMessageArray;

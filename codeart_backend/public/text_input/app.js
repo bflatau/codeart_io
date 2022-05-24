@@ -1,4 +1,7 @@
-// const inputField = document.getElementById('input-field');
+const localURL ='http://0.0.0.0:8090/openai';
+const proxyURL = 'https://345b-2600-1700-dd90-4c80-ca61-bc23-25b9-8b00.ngrok.io/openai';
+
+
 
 function handleKeyPress(event) {
     if (event.key == 'Enter') {
@@ -21,7 +24,7 @@ function pollOpenAi(inputText){
 
     const data = JSON.stringify({text: inputText.toUpperCase()});
 
-    fetch('http://0.0.0.0:8090/openai', {
+    fetch(proxyURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
