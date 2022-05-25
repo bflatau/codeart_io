@@ -235,7 +235,7 @@ const generateData = (buttonData) => {
     // CALL API
 
     const localURL ='http://0.0.0.0:8090/splitflap/set_flaps';
-    const proxyURL = 'https://345b-2600-1700-dd90-4c80-ca61-bc23-25b9-8b00.ngrok.io/splitflap/set_flaps';
+    const proxyURL = 'https://f648-2600-1700-dd90-4c80-57f8-7fb7-f62c-c606.ngrok.io/splitflap/set_flaps';
 
     if(buttonData){
         console.log(buttonData)
@@ -243,7 +243,7 @@ const generateData = (buttonData) => {
 
     else{
 
-        fetch(proxyURL, {
+        fetch(localURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',

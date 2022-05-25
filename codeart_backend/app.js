@@ -413,18 +413,19 @@ const initializeHardware = async () => {
 
   app.post('/openai', async (req, res) => { 
 
-    const AIdataResponse = await openaiController.getResponse(req, res);  //response from OPENAI
 
-    textToArrayMatrix(AIdataResponse, res); 
+    // textToArrayMatrix(AIdataResponse, res); 
 
     textToArrayMatrix(req, res); //update flaps with AI response
 
-    setTimeout(() =>{
+    setTimeout(async () =>{
+      const AIdataResponse = await openaiController.getResponse(req, res);  //response from OPENAI
       textToArrayMatrix(AIdataResponse, res); //wait X seconds and then update flaps with AI response
+      askMessage('10000');
 
     }, "10000")
 
-    askMessage('20000');
+    
 
     // setTimeout(()=>{
     //   splitflapConfig2d = openaiController.helloMessageArray;
@@ -443,6 +444,7 @@ const initializeHardware = async () => {
 
 
     askMessage('2000')
+    console.log('running startup message')
 
     // setTimeout(()=>{
     //   splitflapConfig2d = openaiController.helloMessageArray;

@@ -1,5 +1,5 @@
 const localURL ='http://0.0.0.0:8090/openai';
-const proxyURL = 'https://345b-2600-1700-dd90-4c80-ca61-bc23-25b9-8b00.ngrok.io/openai';
+const proxyURL = 'https://ca67-2600-1700-dd90-4c80-57f8-7fb7-f62c-c606.ngrok.io/openai';
 
 
 
