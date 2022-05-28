@@ -228,7 +228,7 @@ const initializeHardware = async () => {
     //vendor id | product id | serial number//
     ['10c4', 'ea60', '022809A3'], // real
     ['10c4', 'ea60', '02280A9E'], // development
-    // ['1a86', '55d4', '5424024039'] //ben dev
+    ['1a86', '55d4', '5424024039'] //ben dev
   ])
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
