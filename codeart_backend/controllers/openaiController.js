@@ -3,14 +3,28 @@ const { Configuration, OpenAIApi } = require("openai");
 
 /// TEXT PARSING FUNCTIONS
 
-// const exampleText = `Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.`
+// const exampleText = `Was Google too busy hhhhhhhhhhhh`
+const exampleText = `Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.`
 
-const exampleText = `Was Google too busy? Hypertext Markup Language.`
 
-// const marvinPrompt = (input) =>{
+// Was Google too AAA busy? Hypertext Markup Language. The T is for try to ask better questions in the future. 18
+// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for try to ask better questions in the future. 36
+// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for try to ask better questions in the future. 54
+// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for tryAA to ask better questions in the future. 72
+// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for tryAA to ask better questions in theAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA future.
 
-const wordWrapResponse = (text, numRows, numCharacters )=> {
 
+
+
+
+
+const wordWrapResponse = (text)=> {
+
+  console.log(text.length);
+
+  const numRows = Math.round(text.length / 18);
+  console.log(numRows);
+  let numCharacters = 18;
   let formattedText = text;
 
   function addStr(str, index, stringToAdd){
@@ -20,7 +34,7 @@ const wordWrapResponse = (text, numRows, numCharacters )=> {
   function addWrapSpacing(text, spaces, insertNumber){
     let newText = text;
     for (let i = 0; i < spaces; i++) {
-      newText = addStr(newText, insertNumber, 'A');
+      newText = addStr(newText, insertNumber, ' ');
     }
     formattedText = newText;
     // console.log(formattedText)
@@ -28,18 +42,20 @@ const wordWrapResponse = (text, numRows, numCharacters )=> {
   
   
   function addWordBreak(text, searchNumber, originalSearchNumber){
-   
-    if(text[searchNumber] === ' '){
-      // console.log('break value equals', searchNumber)
-      const numberOfSpaces = originalSearchNumber - searchNumber;
-      addWrapSpacing(text, numberOfSpaces, searchNumber); 
-    }
-    else{
-      searchNumber -=1;
-      // console.log('searching at...', searchNumber)
-      addWordBreak(text, searchNumber, originalSearchNumber);
-    }
+
+    if (text[searchNumber]){
+      if(text[searchNumber] === ' ' && searchNumber !== originalSearchNumber){
+        // console.log('break value equals', searchNumber)
+        const numberOfSpaces = originalSearchNumber - searchNumber;
+        addWrapSpacing(text, numberOfSpaces, searchNumber); 
+      }
+      else{
+        searchNumber -=1;
+        // console.log('searching at...', searchNumber)
+        addWordBreak(text, searchNumber, originalSearchNumber);
+      }
   }
+}
   
   for (let i = 0; i < numRows; i++) {
     addWordBreak(formattedText, numCharacters, numCharacters)
@@ -49,7 +65,7 @@ const wordWrapResponse = (text, numRows, numCharacters )=> {
   return formattedText;
 }
 
-console.log(wordWrapResponse(exampleText, 3, 18));
+console.log(wordWrapResponse(exampleText));
 
 
 /// OPEN AI API CALL /// 
