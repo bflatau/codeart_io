@@ -1,10 +1,55 @@
 const { Configuration, OpenAIApi } = require("openai");
 
 
-/// TEXT PARSING 
+/// TEXT PARSING FUNCTIONS
 
+// const exampleText = `Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.`
 
+const exampleText = `Was Google too busy? Hypertext Markup Language.`
 
+// const marvinPrompt = (input) =>{
+
+const wordWrapResponse = (text, numRows, numCharacters )=> {
+
+  let formattedText = text;
+
+  function addStr(str, index, stringToAdd){
+    return str.substring(0, index) + stringToAdd + str.substring(index, str.length);
+  }
+  
+  function addWrapSpacing(text, spaces, insertNumber){
+    let newText = text;
+    for (let i = 0; i < spaces; i++) {
+      newText = addStr(newText, insertNumber, 'A');
+    }
+    formattedText = newText;
+    // console.log(formattedText)
+  }
+  
+  
+  function addWordBreak(text, searchNumber, originalSearchNumber){
+   
+    if(text[searchNumber] === ' '){
+      // console.log('break value equals', searchNumber)
+      const numberOfSpaces = originalSearchNumber - searchNumber;
+      addWrapSpacing(text, numberOfSpaces, searchNumber); 
+    }
+    else{
+      searchNumber -=1;
+      // console.log('searching at...', searchNumber)
+      addWordBreak(text, searchNumber, originalSearchNumber);
+    }
+  }
+  
+  for (let i = 0; i < numRows; i++) {
+    addWordBreak(formattedText, numCharacters, numCharacters)
+    numCharacters += numCharacters;
+  }
+
+  return formattedText;
+}
+
+console.log(wordWrapResponse(exampleText, 3, 18));
 
 
 /// OPEN AI API CALL /// 
@@ -31,7 +76,9 @@ async function getResponse (req, res){
       });
 
       console.log('data from AI', response.data)
-      dataResponseObject.body.text = response.data.choices[0].text.toUpperCase();
+
+      const responseData = response.data.choices[0].text.toUpperCase();
+      dataResponseObject.body.text = wordWrapResponse(responseData, 3, 18);
       return dataResponseObject;
 
       
@@ -48,7 +95,17 @@ async function getResponse (req, res){
 
 const marvinPrompt = (input) =>{
 
-  `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\nYou: How many pounds are in a kilogram?\nMarv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\nYou: What does HTML stand for?\nMarv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\nYou: When did the first airplane fly?\nMarv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\nYou: What is the meaning of life?\nMarv: I’m not sure. I’ll ask my friend Google.\nYou: ${input}\nMarv:`
+  return `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\n
+          You: How many pounds are in a kilogram?\n
+          Marv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\n
+          You: What does HTML stand for?\n
+          Marv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\n
+          You: When did the first airplane fly?\n
+          Marv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\n
+          You: What is the meaning of life?\n
+          Marv: I’m not sure. I’ll ask my friend Google.\n
+          You: ${input}\n
+          Marv:`
 
 }
 

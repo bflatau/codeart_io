@@ -24,7 +24,7 @@ function pollOpenAi(inputText){
 
     const data = JSON.stringify({text: inputText.toUpperCase()});
 
-    fetch(proxyURL, {
+    fetch(localURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
