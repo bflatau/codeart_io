@@ -412,11 +412,14 @@ const initializeHardware = async () => {
   })
 
   app.post('/openai', async (req, res) => { 
-
-
     // textToArrayMatrix(AIdataResponse, res); 
 
-    textToArrayMatrix(req, res); //update flaps with AI response
+    let requestObject = {body: {text: ''}};
+
+    requestObject.body.text = openaiController.wordWrapResponse(req.body.text)
+
+
+    textToArrayMatrix(requestObject, res); //update flaps with AI response
 
     setTimeout(async () =>{
       const AIdataResponse = await openaiController.getResponse(req, res);  //response from OPENAI
@@ -425,17 +428,6 @@ const initializeHardware = async () => {
 
     }, "10000")
 
-    
-
-    // setTimeout(()=>{
-    //   splitflapConfig2d = openaiController.helloMessageArray;
-    //   sendSplitflapConfig();
-    //   const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5]);
-    //   io.sockets.emit('button down', {buttons: '1',  flaps: frontEndArray}); // BENDO: update the splitflaplatest state so that on refresh, it's the latest state?
-
-    // },'15000')
-
-    
   })
 
 
@@ -445,22 +437,6 @@ const initializeHardware = async () => {
 
     askMessage('2000')
     console.log('running startup message')
-
-    // setTimeout(()=>{
-    //   splitflapConfig2d = openaiController.helloMessageArray;
-    //   sendSplitflapConfig();
-    //   const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5]);
-    //   io.sockets.emit('button down', {buttons: '1',  flaps: frontEndArray}); // BENDO: update the splitflaplatest state so that on refresh, it's the latest state?
-
-    // },'2000')
-
-
-    //MAGIC FUNCTIONS BELOW 
-    // splitflapConfig2d = newLayout /// splitflapConfig2d is the array the flaps are to be set to
-    // sendSplitflapConfig() ///UPDATES FLAPS
-
-  
-
 
 }
 

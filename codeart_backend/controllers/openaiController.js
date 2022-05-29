@@ -3,28 +3,18 @@ const { Configuration, OpenAIApi } = require("openai");
 
 /// TEXT PARSING FUNCTIONS
 
-// const exampleText = `Was Google too busy hhhhhhhhhhhh`
-const exampleText = `Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.`
+// const exampleText = `The Liberty Bell is located in  Philadelphia, Pennsylvania. Please ask more interesting questions.`
+
+// const exampleText = `\n\nI'm sorry, I don't know what you're talking about.`
+const exampleText = `I'm sorry, I don't know what you're talking about.`
 
 
-// Was Google too AAA busy? Hypertext Markup Language. The T is for try to ask better questions in the future. 18
-// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for try to ask better questions in the future. 36
-// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for try to ask better questions in the future. 54
-// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for tryAA to ask better questions in the future. 72
-// Was Google tooAAAA busy? HypertextAA Markup Language. The T is for tryAA to ask better questions in theAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA future.
+function wordWrapResponse(text) {
 
-
-
-
-
-
-const wordWrapResponse = (text)=> {
-
-  console.log(text.length);
-
+  console.log("text length equals:", text.length);
+  const numCharacters = 18;
+  let searchCharacter = 18;
   const numRows = Math.round(text.length / 18);
-  console.log(numRows);
-  let numCharacters = 18;
   let formattedText = text;
 
   function addStr(str, index, stringToAdd){
@@ -32,12 +22,15 @@ const wordWrapResponse = (text)=> {
   }
   
   function addWrapSpacing(text, spaces, insertNumber){
+
+    // console.log(spaces, 'this is spaces')
     let newText = text;
-    for (let i = 0; i < spaces; i++) {
+    for (let i = 0; i < (spaces - 1); i++) {
       newText = addStr(newText, insertNumber, ' ');
+      // console.log(newText);
     }
     formattedText = newText;
-    // console.log(formattedText)
+    console.log(formattedText  + ' ' + searchCharacter)
   }
   
   
@@ -45,7 +38,7 @@ const wordWrapResponse = (text)=> {
 
     if (text[searchNumber]){
       if(text[searchNumber] === ' ' && searchNumber !== originalSearchNumber){
-        // console.log('break value equals', searchNumber)
+        // console.log('break value equals', text[searchNumber])
         const numberOfSpaces = originalSearchNumber - searchNumber;
         addWrapSpacing(text, numberOfSpaces, searchNumber); 
       }
@@ -58,8 +51,9 @@ const wordWrapResponse = (text)=> {
 }
   
   for (let i = 0; i < numRows; i++) {
-    addWordBreak(formattedText, numCharacters, numCharacters)
-    numCharacters += numCharacters;
+    // console.log(numCharacters);
+    addWordBreak(formattedText, searchCharacter, searchCharacter)
+    searchCharacter += numCharacters;
   }
 
   return formattedText;
@@ -171,6 +165,6 @@ const helloMessageArray =  [
 
 
 
-module.exports = {getResponse, helloMessageArray}
+module.exports = {getResponse, helloMessageArray, wordWrapResponse }
 
 
