@@ -59,7 +59,7 @@ function wordWrapResponse(text) {
   return formattedText;
 }
 
-console.log(wordWrapResponse(exampleText));
+// console.log(wordWrapResponse(exampleText));
 
 
 /// OPEN AI API CALL /// 
@@ -87,8 +87,8 @@ async function getResponse (req, res){
 
       console.log('data from AI', response.data)
 
-      const responseData = response.data.choices[0].text.toUpperCase();
-      dataResponseObject.body.text = wordWrapResponse(responseData, 3, 18);
+      const responseData = response.data.choices[0].text.toUpperCase().trim();
+      dataResponseObject.body.text = wordWrapResponse(responseData);
       return dataResponseObject;
 
       
