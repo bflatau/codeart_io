@@ -194,6 +194,7 @@ const generateData = (buttonData) => {
     const flapInputs = flapsContainer.children;
     const flapData = [];
     const newFlapData = [];
+    const colorCodes = ['y', 'g', 'w', 'p', 'o']
     // const btnData = [];
     // const invalid = [];
     let flapString;
@@ -201,7 +202,27 @@ const generateData = (buttonData) => {
         const val = flapInputs[i].value?.trim();
 
         if (flapInputs[i].value){
-            flapString += flapInputs[i].value.toUpperCase();
+
+            switch (flapInputs[i].value) {
+                case '1':
+                    flapString += 'y'
+                    break;
+                case '2':
+                    flapString += 'g'
+                    break;
+                case '3':
+                    flapString += 'w'
+                    break;
+                case '4':
+                    flapString += 'p'
+                    break;
+                case '5':
+                    flapString += 'o'
+                    break;
+               
+                default:
+                    flapString += flapInputs[i].value.toUpperCase();
+              }    
         }
         else{
             flapString += "\xa0"
@@ -234,13 +255,16 @@ const generateData = (buttonData) => {
 
     // CALL API
 
+    const localURL ='http://0.0.0.0:8090/splitflap/set_flaps';
+    const proxyURL = 'https://8798-2600-1700-dd90-4c80-5274-f362-7378-1cb1.ngrok.io/splitflap/set_flaps';
+
     if(buttonData){
         console.log(buttonData)
     }
 
     else{
 
-        fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
+        fetch(proxyURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',

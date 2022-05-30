@@ -81,12 +81,6 @@ app.use(express.static(__dirname + "/public/text_input"));
 /// PUBLIC API ENDPOINTS ///
 
 
-app.post('/openai', (req, res) => { 
-  openaiController.getResponse(req, res)
-})
-
-
-
 app.get("/debug", (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`, (err) => {
     if (err) {
@@ -225,12 +219,16 @@ const stringToMovementMask = (str) => {
   return str.split('').map((c) => c === '1')
 }
 
+
+/// INITIALIZE HARDWARE ////
 const initializeHardware = async () => {
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
   const splitflapPortInfo = findPort(ports, 'splitflap', [
+    //vendor id | product id | serial number//
     ['10c4', 'ea60', '022809A3'], // real
     ['10c4', 'ea60', '02280A9E'], // development
+    ['1a86', '55d4', '5424024039'] //ben dev
   ])
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
@@ -298,26 +296,9 @@ const initializeHardware = async () => {
   }
 
 
-  app.post('/splitflap/hard_reset', async (req, res) => {
-    await splitflap.hardReset()
-    res.send('ok')
-  })
-  app.post('/splitflap/reset_module', async (req, res) => {
-    console.log(req.body)
-    const resetMap = []
-    for (let row = 0; row < 6; row++) {
-      resetMap.push(new Array(18).fill(false))
-    }
-    resetMap[req.body.y][req.body.x] = true
-    splitflap.resetModules(Util.convert2dDualRowZigZagTo1dChainlink(resetMap, true))
-    res.send('ok')
-  })
-  app.get('/splitflap/state', async (req, res) => {
-    res.json(splitflapLatestState === null ? null : PB.SplitflapState.toObject(splitflapLatestState, {
-      defaults: true,
-    }))
-  })
-  app.post('/splitflap/set_flaps', async (req, res) => {
+  //HELPER FUNCTIONS
+
+  function textToArrayMatrix(req, res){
 
     console.log(req.body, 'this is req')
     const newLayout = []
@@ -343,7 +324,7 @@ const initializeHardware = async () => {
         col = 0
       }
     }
-    console.log(newLayout)
+    console.log('this is new layout', newLayout)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
 
@@ -353,7 +334,45 @@ const initializeHardware = async () => {
     io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
 
     //END BEN TESTS
+    // res.send('ok')
+
+  }
+
+
+
+  function askMessage(time){
+    setTimeout(()=>{
+      splitflapConfig2d = openaiController.helloMessageArray;
+      sendSplitflapConfig();
+      const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5]);
+      io.sockets.emit('button down', {buttons: '1',  flaps: frontEndArray}); // BENDO: update the splitflaplatest state so that on refresh, it's the latest state?
+
+      },time)
+  }
+
+//////API ENDPOINTS ////
+
+  app.post('/splitflap/hard_reset', async (req, res) => {
+    await splitflap.hardReset()
     res.send('ok')
+  })
+  app.post('/splitflap/reset_module', async (req, res) => {
+    console.log(req.body)
+    const resetMap = []
+    for (let row = 0; row < 6; row++) {
+      resetMap.push(new Array(18).fill(false))
+    }
+    resetMap[req.body.y][req.body.x] = true
+    splitflap.resetModules(Util.convert2dDualRowZigZagTo1dChainlink(resetMap, true))
+    res.send('ok')
+  })
+  app.get('/splitflap/state', async (req, res) => {
+    res.json(splitflapLatestState === null ? null : PB.SplitflapState.toObject(splitflapLatestState, {
+      defaults: true,
+    }))
+  })
+  app.post('/splitflap/set_flaps', async (req, res) => {
+    textToArrayMatrix(req, res)
   })
   app.post('/splitflap/start_animation', async (req, res) => {
     const wofGames = [
@@ -391,6 +410,34 @@ const initializeHardware = async () => {
     stopAnimation()
     res.send('ok')
   })
+
+  app.post('/openai', async (req, res) => { 
+    // textToArrayMatrix(AIdataResponse, res); 
+
+    let requestObject = {body: {text: ''}};
+
+    requestObject.body.text = openaiController.wordWrapResponse(req.body.text)
+
+
+    textToArrayMatrix(requestObject, res); //update flaps with AI response
+
+    setTimeout(async () =>{
+      const AIdataResponse = await openaiController.getResponse(req, res);  //response from OPENAI
+      textToArrayMatrix(AIdataResponse, res); //wait X seconds and then update flaps with AI response
+      askMessage('10000');
+
+    }, "10000")
+
+  })
+
+
+
+  ///BEN ADD NEW ANIMATIONS HERE ///
+
+
+    askMessage('2000')
+    console.log('running startup message')
+
 }
 
 initializeHardware()
