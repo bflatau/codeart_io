@@ -76,6 +76,23 @@ async function getResponse (req, res){
 
     let dataResponseObject = {body: {text: ''}};
 
+    //BENNOTE: USE "CONTENT-FILTER_ALPHA" VS DAVINCI FOR FILTERING
+
+
+    const contentType = await openai.createCompletion("content-filter-alpha", {
+      prompt: contentFilter(req.body.text),
+      temperature: 0.0,
+      max_tokens: 1,
+      top_p: 0,
+      frequency_penalty: 0.5,
+      logprobs: 10, 
+    });
+
+
+
+
+
+    /// IF OK, run QUESTION TO OPENAI....
     const response = await openai.createCompletion("text-davinci-002", {
         prompt: marvinPrompt(req.body.text),
         temperature: 0.5,
@@ -83,9 +100,12 @@ async function getResponse (req, res){
         top_p: 0.3,
         frequency_penalty: 0.5,
         presence_penalty: 0,
+        // logprobs: 10, 
       });
 
-      console.log('data from AI', response.data)
+      console.log('data from AI', contentType.data)
+      // console.log('data from AI', response.data)
+      // console.log('data from AI', response.data.choices[0].logprobs)
 
       const responseData = response.data.choices[0].text.toUpperCase().trim();
       dataResponseObject.body.text = wordWrapResponse(responseData);
@@ -102,6 +122,12 @@ async function getResponse (req, res){
 
 
 /// OPEN AI PROMPTS ///
+
+
+const contentFilter =(input)=>{
+
+  return `"<|endoftext|>[${input}]\n--\nLabel:"`
+}
 
 const marvinPrompt = (input) =>{
 
