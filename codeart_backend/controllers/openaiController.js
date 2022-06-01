@@ -26,7 +26,8 @@ function wordWrapResponse(text) {
     let newText = text;
 
     if(spaces === 0 ){
-      formattedText = text;
+      newText = newText.slice(0, insertNumber) + newText.slice(insertNumber + 1);
+      formattedText = newText;
     }
     else{
       for (let i = 0; i < (spaces - 1); i++) {
