@@ -307,7 +307,6 @@ const initializeHardware = async () => {
     }
     let row = 0;
     let col = 0;
-    console.log(req.body)
     for (let i = 0; i < req.body.text.length && row < 6; i++) {
       const char = req.body.text[i]
       if (char === '\n') {
@@ -324,7 +323,7 @@ const initializeHardware = async () => {
         col = 0
       }
     }
-    console.log('this is new layout', newLayout)
+    // console.log('this is new layout', newLayout)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
 
@@ -412,21 +411,25 @@ const initializeHardware = async () => {
   })
 
   app.post('/openai', async (req, res) => { 
-    // textToArrayMatrix(AIdataResponse, res); 
 
-    let requestObject = {body: {text: ''}};
+    const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES')}};
+    const safeQuestion = {body:{text: openaiController.wordWrapResponse(req.body.text)}};
+    const AIdataResponse = await openaiController.getResponse(req);  //response from OPENAI
 
-    requestObject.body.text = openaiController.wordWrapResponse(req.body.text)
+    if(AIdataResponse.body.text === 'UNSAFE'){
+      textToArrayMatrix(unsafeResponse);
+      askMessage('10000'); /// REVERT TO ASK MESSAGE
+    }
 
+    else{
+      textToArrayMatrix(openaiController.wordWrapResponse(safeQuestion));
 
-    textToArrayMatrix(requestObject, res); //update flaps with AI response
+      setTimeout(() => {
+        textToArrayMatrix(AIdataResponse);
+        askMessage('15000'); 
+      }, 10000);
 
-    setTimeout(async () =>{
-      const AIdataResponse = await openaiController.getResponse(req, res);  //response from OPENAI
-      textToArrayMatrix(AIdataResponse, res); //wait X seconds and then update flaps with AI response
-      askMessage('10000');
-
-    }, "10000")
+    }
 
   })
 
@@ -434,10 +437,7 @@ const initializeHardware = async () => {
 
   ///BEN ADD NEW ANIMATIONS HERE ///
 
-
     askMessage('2000')
-    console.log('running startup message')
-
 }
 
 initializeHardware()

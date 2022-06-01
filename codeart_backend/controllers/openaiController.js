@@ -5,53 +5,54 @@ const { Configuration, OpenAIApi } = require("openai");
 
 // const exampleText = `The Liberty Bell is located in  Philadelphia, Pennsylvania. Please ask more interesting questions.`
 
-// const exampleText = `\n\nI'm sorry, I don't know what you're talking about.`
-const exampleText = `I'm sorry, I don't know what you're talking about.`
+const exampleText = `Im sorry I dont know what youre talking about`
 
+// 'PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES'
 
 function wordWrapResponse(text) {
 
-  console.log("text length equals:", text.length);
   const numCharacters = 18;
   let searchCharacter = 18;
-  const numRows = Math.round(text.length / 18);
+  const numRows = Math.round(text.length / numCharacters);
   let formattedText = text;
 
+  //adds string in a specific location
   function addStr(str, index, stringToAdd){
     return str.substring(0, index) + stringToAdd + str.substring(index, str.length);
   }
-  
-  function addWrapSpacing(text, spaces, insertNumber){
 
-    // console.log(spaces, 'this is spaces')
+  // calculates spacing and returns a new string
+  function addWrapSpacing(text, spaces, insertNumber){
     let newText = text;
-    for (let i = 0; i < (spaces - 1); i++) {
-      newText = addStr(newText, insertNumber, ' ');
-      // console.log(newText);
+
+    if(spaces === 0 ){
+      formattedText = text;
     }
-    formattedText = newText;
-    console.log(formattedText  + ' ' + searchCharacter)
+    else{
+      for (let i = 0; i < (spaces - 1); i++) {
+        newText = addStr(newText, insertNumber, ' ');
+      }
+      formattedText = newText;
+    }
   }
   
-  
+  // checks if character at position 18 is a character, if it is, it calculates the length of the word wrap and returns a new string
   function addWordBreak(text, searchNumber, originalSearchNumber){
+    // console.log(`searching at position ${searchNumber} with a value of ${text[searchNumber]}`)
 
     if (text[searchNumber]){
-      if(text[searchNumber] === ' ' && searchNumber !== originalSearchNumber){
-        // console.log('break value equals', text[searchNumber])
+      if(text[searchNumber] === ' '){
         const numberOfSpaces = originalSearchNumber - searchNumber;
         addWrapSpacing(text, numberOfSpaces, searchNumber); 
       }
       else{
         searchNumber -=1;
-        // console.log('searching at...', searchNumber)
         addWordBreak(text, searchNumber, originalSearchNumber);
       }
   }
 }
   
   for (let i = 0; i < numRows; i++) {
-    // console.log(numCharacters);
     addWordBreak(formattedText, searchCharacter, searchCharacter)
     searchCharacter += numCharacters;
   }
@@ -72,12 +73,7 @@ const openai = new OpenAIApi(configuration);
 
 async function getResponse (req, res){
 
-  // res.status(200).json({result: req.body.text})
-
     let dataResponseObject = {body: {text: ''}};
-
-    //BENNOTE: USE "CONTENT-FILTER_ALPHA" VS DAVINCI FOR FILTERING
-
 
     const contentType = await openai.createCompletion("content-filter-alpha", {
       prompt: contentFilter(req.body.text),
@@ -88,36 +84,31 @@ async function getResponse (req, res){
       logprobs: 10, 
     });
 
-
-
-
-
-    /// IF OK, run QUESTION TO OPENAI....
-    const response = await openai.createCompletion("text-davinci-002", {
+    if(contentType.data.choices[0].text === '0'){
+      /// IF OK, run QUESTION TO OPENAI....
+      const response = await openai.createCompletion("text-davinci-002", {
         prompt: marvinPrompt(req.body.text),
         temperature: 0.5,
         max_tokens: 60,
         top_p: 0.3,
         frequency_penalty: 0.5,
         presence_penalty: 0,
-        // logprobs: 10, 
       });
 
-      console.log('data from AI', contentType.data)
       // console.log('data from AI', response.data)
-      // console.log('data from AI', response.data.choices[0].logprobs)
 
       const responseData = response.data.choices[0].text.toUpperCase().trim();
-      dataResponseObject.body.text = wordWrapResponse(responseData);
+      const formattedResponseData = responseData.replace(/\n/g, " ");
+
+      dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
       return dataResponseObject;
-
-      
-      // res.status(200).json({ result: response.data.choices[0].text});
-      // res.send('ok')
-
-
+    }
 
     
+    else{
+      dataResponseObject.body.text = 'UNSAFE';
+      return dataResponseObject;
+    }
 }
 
 
@@ -194,3 +185,43 @@ const helloMessageArray =  [
 module.exports = {getResponse, helloMessageArray, wordWrapResponse }
 
 
+// const example = `I'm sorry, I don't know what you're talking about.`
+
+function padRight(text, max) {
+  return text + ' '.repeat(max - text.length);
+}
+
+function redoSpaces(text, rowLength, totalLength) {
+  const words = text.split(' ');
+  const rows = [];
+  let currRow = [];
+  let currRowLength = 0;
+
+  words.forEach(word => {
+    if ((currRowLength + word.length + 1) <= rowLength) {
+      currRowLength += word.length;
+      currRow.push(word);
+    } else {
+      rows.push(currRow);
+      currRow = [word];
+      currRowLength = word.length;
+    }
+  });
+  
+  if (currRow.length) {
+    rows.push(currRow);
+  }
+
+  const rowsWithSpaces = rows
+    .map(row => row.join(' '))
+    .map(rowAsString => padRight(rowAsString, rowLength));
+
+  const asString = rowsWithSpaces.join('');
+  
+  return padRight(asString, totalLength);
+}
+
+// const redone = redoSpaces(example, 18, 108);
+// console.log('redone length', redone.length);
+// const visual = redone.replace(/ /g, '^');
+// console.log(`-->${visual}<--`);
