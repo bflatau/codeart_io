@@ -88,7 +88,7 @@ JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 * had to do this in linux `sudo usermod -a -G dialout <username>`
 * Had to remove `board=` in the chainlink section
 
-* If USB isn't working correctly on POP_OS
+* If USB isn't working correctly on POP_OS (can uninstall brltty through app menu)
 ```
 systemctl stop brltty-udev.service
 sudo systemctl mask brltty-udev.service
