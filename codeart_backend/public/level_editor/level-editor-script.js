@@ -264,7 +264,7 @@ const generateData = (buttonData) => {
 
     else{
 
-        fetch(proxyURL, {
+        fetch(localURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',

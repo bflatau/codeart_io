@@ -76,6 +76,11 @@ async function getResponse (req, res){
 
     let dataResponseObject = {body: {text: ''}};
 
+
+    
+
+    console.log('this is body request', req.body);
+
     const contentType = await openai.createCompletion("content-filter-alpha", {
       prompt: contentFilter(req.body.text),
       temperature: 0.0,
@@ -87,14 +92,7 @@ async function getResponse (req, res){
 
     if(contentType.data.choices[0].text === '0'){
       /// IF OK, run QUESTION TO OPENAI....
-      const response = await openai.createCompletion("text-davinci-002", {
-        prompt: marvinPrompt(req.body.text),
-        temperature: 0.5,
-        max_tokens: 60,
-        top_p: 0.3,
-        frequency_penalty: 0.5,
-        presence_penalty: 0,
-      });
+      const response = await openai.createCompletion("text-davinci-002", marvinAI(req.body.text));
 
       // console.log('data from AI', response.data)
 
@@ -116,26 +114,49 @@ async function getResponse (req, res){
 /// OPEN AI PROMPTS ///
 
 
+//CONTENT FILTER
+
 const contentFilter =(input)=>{
 
   return `"<|endoftext|>[${input}]\n--\nLabel:"`
 }
 
-const marvinPrompt = (input) =>{
+// MARVIN //
 
-  return `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\n
-          You: How many pounds are in a kilogram?\n
-          Marv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\n
-          You: What does HTML stand for?\n
-          Marv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\n
-          You: When did the first airplane fly?\n
-          Marv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\n
-          You: What is the meaning of life?\n
-          Marv: I’m not sure. I’ll ask my friend Google.\n
-          You: ${input}\n
-          Marv:`
+const marvinAI = (input) =>{
 
+  return {
+    prompt:   `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\n
+              You: How many pounds are in a kilogram?\n
+              Marv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\n
+              You: What does HTML stand for?\n
+              Marv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\n
+              You: When did the first airplane fly?\n
+              Marv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\n
+              You: What is the meaning of life?\n
+              Marv: I’m not sure. I’ll ask my friend Google.\n
+              You: ${input}\n
+              Marv:`,
+
+    temperature: 0.5,
+    max_tokens: 60,
+    top_p: 0.3,
+    frequency_penalty: 0.5,
+    presence_penalty: 0,
+  }
 }
+
+
+const marvinSettings = {
+        temperature: 0.5,
+        max_tokens: 60,
+        top_p: 0.3,
+        frequency_penalty: 0.5,
+        presence_penalty: 0,
+}
+
+
+// TWO SENTENCE STORIES // 
 
 
 

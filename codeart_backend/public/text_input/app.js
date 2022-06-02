@@ -7,8 +7,11 @@ function handleKeyPress(event) {
     if (event.key == 'Enter') {
         // event.preventDefault();
         console.log('enter pressed');
-        const submittedText = document.getElementById("input-field").value 
-        pollOpenAi(submittedText);
+        const submittedText = document.getElementById("input-field").value; 
+        const aiEngine = document.getElementById("ai-games").value;
+
+        console.log(aiEngine);
+        pollOpenAi(submittedText, aiEngine);
         // document.getElementById("input-field").blur();
         document.getElementById("input-field").value = '';
         // return false;
@@ -20,11 +23,11 @@ function handleKeyPress(event) {
 
 
 
-function pollOpenAi(inputText){
+function pollOpenAi(inputText, aiEngine){
 
-    const data = JSON.stringify({text: inputText.toUpperCase()});
+    const data = JSON.stringify({text: inputText.toUpperCase(), ai: aiEngine});
 
-    fetch(proxyURL, {
+    fetch(localURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
