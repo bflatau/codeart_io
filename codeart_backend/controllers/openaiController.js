@@ -81,11 +81,6 @@ async function getResponse (req, res){
       two_sentences: marvinAI(req.body.text)
     }
 
-
-
-
-    console.log('this is body request', req.body);
-
     const contentType = await openai.createCompletion("content-filter-alpha", {
       prompt: contentFilter(req.body.text),
       temperature: 0.0,
@@ -98,9 +93,7 @@ async function getResponse (req, res){
     if(contentType.data.choices[0].text === '0'){
       /// IF OK, run QUESTION TO OPENAI....
       const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
-
       // console.log('data from AI', response.data)
-
       const responseData = response.data.choices[0].text.toUpperCase().trim();
       const formattedResponseData = responseData.replace(/\n/g, " ");
 
@@ -108,7 +101,6 @@ async function getResponse (req, res){
       return dataResponseObject;
     }
 
-    
     else{
       dataResponseObject.body.text = 'UNSAFE';
       return dataResponseObject;
@@ -150,16 +142,6 @@ const marvinAI = (input) =>{
     presence_penalty: 0,
   }
 }
-
-
-const marvinSettings = {
-        temperature: 0.5,
-        max_tokens: 60,
-        top_p: 0.3,
-        frequency_penalty: 0.5,
-        presence_penalty: 0,
-}
-
 
 // TWO SENTENCE STORIES // 
 
