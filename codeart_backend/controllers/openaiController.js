@@ -76,8 +76,13 @@ async function getResponse (req, res){
 
     let dataResponseObject = {body: {text: ''}};
 
+    const aiOptions = {
+      marvin: marvinAI(req.body.text),
+      two_sentences: marvinAI(req.body.text)
+    }
 
-    
+
+
 
     console.log('this is body request', req.body);
 
@@ -92,7 +97,7 @@ async function getResponse (req, res){
 
     if(contentType.data.choices[0].text === '0'){
       /// IF OK, run QUESTION TO OPENAI....
-      const response = await openai.createCompletion("text-davinci-002", marvinAI(req.body.text));
+      const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
 
       // console.log('data from AI', response.data)
 
