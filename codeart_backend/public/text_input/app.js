@@ -1,5 +1,5 @@
 const localURL ='http://0.0.0.0:8090/openai';
-const proxyURL = 'https://8798-2600-1700-dd90-4c80-5274-f362-7378-1cb1.ngrok.io/openai';
+const proxyURL = 'https://1abe-2600-1700-dd90-4c80-b51a-82b8-ac7b-5941.ngrok.io/openai';
 
 
 
@@ -24,7 +24,7 @@ function pollOpenAi(inputText){
 
     const data = JSON.stringify({text: inputText.toUpperCase()});
 
-    fetch(localURL, {
+    fetch(proxyURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
