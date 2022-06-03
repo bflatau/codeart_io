@@ -20,6 +20,29 @@ function handleKeyPress(event) {
     }
 }
 
+const instructionText = document.getElementById("instruction-text");
+document.getElementById("ai-games").addEventListener("click",updateInstructions);
+
+const marvinText = "Ask me a question in the text box below 👇";
+const twoSentenceText = "Name a real or fictional person or character in the text box below 👇"
+
+
+instructionText.innerText = marvinText;
+
+
+
+function updateInstructions(){
+    var e = document.getElementById("ai-games");
+    if("marvin" === e.options[e.selectedIndex].value){ 
+        instructionText.innerText = marvinText;
+    }
+    if("two_sentences" === e.options[e.selectedIndex].value){ 
+        instructionText.innerText = twoSentenceText;
+    }
+}
+
+
+
 
 
 

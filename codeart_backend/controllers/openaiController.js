@@ -72,8 +72,8 @@ async function getResponse (req, res){
     let dataResponseObject = {body: {text: ''}};
 
     const aiOptions = {
-      marvin: marvinAI(req.body.text),
-      two_sentences: marvinAI(req.body.text)
+      marvin: marvinAI(req.body.text), //note key has to equal value in HTML
+      two_sentences: twoSentenceAI(req.body.text)
     }
 
     const contentType = await openai.createCompletion("content-filter-alpha", {
@@ -162,6 +162,22 @@ const marvinAI = (input) =>{
 }
 
 // TWO SENTENCE STORIES // 
+
+const twoSentenceAI = (input) =>{
+
+  return {
+    prompt:   `Topic: Breakfast\n
+              Two-Sentence Funny Story: I ate a clock for breakfast. It was very time consuming.\n 
+              \nTopic: ${input}
+              \nTwo-Sentence Funny Story:`,
+
+    temperature: 0.8,
+    max_tokens: 60,
+    top_p: 1.0,
+    frequency_penalty: 0.5,
+    presence_penalty: 0.0,
+  }
+}
 
 
 
