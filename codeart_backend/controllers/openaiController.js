@@ -1,14 +1,9 @@
 const { Configuration, OpenAIApi } = require("openai");
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base('app5eTobFcbCN5edO');
 
 
 /// TEXT PARSING FUNCTIONS
-
-// const exampleText = `The Liberty Bell is located in  Philadelphia, Pennsylvania. Please ask more interesting questions.`
-
-const exampleText = `Im sorry I dont know what youre talking about`
-
-// 'PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES'
-
 function wordWrapResponse(text) {
 
   const numCharacters = 18;
@@ -97,11 +92,34 @@ async function getResponse (req, res){
       const responseData = response.data.choices[0].text.toUpperCase().trim();
       const formattedResponseData = responseData.replace(/\n/g, " ");
 
+      base('AI_INPUTS').create({
+        "QUESTION": req.body.text,
+        "RESPONSE": formattedResponseData
+        }, function(err, record) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        // console.log(record.getId());
+        });
+
       dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
       return dataResponseObject;
     }
 
     else{
+
+      base('AI_INPUTS').create({
+      "QUESTION": req.body.text,
+      "RESPONSE": "UNSAFE"
+      }, function(err, record) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      // console.log(record.getId());
+      });
+
       dataResponseObject.body.text = 'UNSAFE';
       return dataResponseObject;
     }

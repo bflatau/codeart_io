@@ -15,6 +15,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/bflatau/benreact_backend#readme",
   "dependencies": {
+    "airtable": "^0.11.4",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
