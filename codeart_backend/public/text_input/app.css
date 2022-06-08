@@ -25,6 +25,27 @@
 }
 
 #response-helper-text{
+    margin-top: 10px;
     font-size: 15px;
     /* color: grey; */
+}
+
+.step-instructions{
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* display: inline-block; */
+}
+
+#ai-games{
+    font-size: large;
+}
+
+.step-container{
+    height: 100px;
+    vertical-align: top;
+    display: inline-block;
+    width: 30%;
+    margin-right: 5%;
+    margin-left: 5%;
 }

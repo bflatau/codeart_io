@@ -1,14 +1,9 @@
 const { Configuration, OpenAIApi } = require("openai");
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base('app5eTobFcbCN5edO');
 
 
 /// TEXT PARSING FUNCTIONS
-
-// const exampleText = `The Liberty Bell is located in  Philadelphia, Pennsylvania. Please ask more interesting questions.`
-
-const exampleText = `Im sorry I dont know what youre talking about`
-
-// 'PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES'
-
 function wordWrapResponse(text) {
 
   const numCharacters = 18;
@@ -76,6 +71,11 @@ async function getResponse (req, res){
 
     let dataResponseObject = {body: {text: ''}};
 
+    const aiOptions = {
+      marvin: marvinAI(req.body.text), //note key has to equal value in HTML
+      two_sentences: twoSentenceAI(req.body.text)
+    }
+
     const contentType = await openai.createCompletion("content-filter-alpha", {
       prompt: contentFilter(req.body.text),
       temperature: 0.0,
@@ -87,26 +87,39 @@ async function getResponse (req, res){
 
     if(contentType.data.choices[0].text === '0'){
       /// IF OK, run QUESTION TO OPENAI....
-      const response = await openai.createCompletion("text-davinci-002", {
-        prompt: marvinPrompt(req.body.text),
-        temperature: 0.5,
-        max_tokens: 60,
-        top_p: 0.3,
-        frequency_penalty: 0.5,
-        presence_penalty: 0,
-      });
-
+      const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
       // console.log('data from AI', response.data)
-
       const responseData = response.data.choices[0].text.toUpperCase().trim();
       const formattedResponseData = responseData.replace(/\n/g, " ");
+
+      base('AI_INPUTS').create({
+        "QUESTION": req.body.text,
+        "RESPONSE": formattedResponseData
+        }, function(err, record) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        // console.log(record.getId());
+        });
 
       dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
       return dataResponseObject;
     }
 
-    
     else{
+
+      base('AI_INPUTS').create({
+      "QUESTION": req.body.text,
+      "RESPONSE": "UNSAFE"
+      }, function(err, record) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      // console.log(record.getId());
+      });
+
       dataResponseObject.body.text = 'UNSAFE';
       return dataResponseObject;
     }
@@ -116,25 +129,54 @@ async function getResponse (req, res){
 /// OPEN AI PROMPTS ///
 
 
+//CONTENT FILTER
+
 const contentFilter =(input)=>{
 
   return `"<|endoftext|>[${input}]\n--\nLabel:"`
 }
 
-const marvinPrompt = (input) =>{
+// MARVIN //
 
-  return `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\n
-          You: How many pounds are in a kilogram?\n
-          Marv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\n
-          You: What does HTML stand for?\n
-          Marv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\n
-          You: When did the first airplane fly?\n
-          Marv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\n
-          You: What is the meaning of life?\n
-          Marv: I’m not sure. I’ll ask my friend Google.\n
-          You: ${input}\n
-          Marv:`
+const marvinAI = (input) =>{
 
+  return {
+    prompt:   `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\n
+              You: How many pounds are in a kilogram?\n
+              Marv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\n
+              You: What does HTML stand for?\n
+              Marv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\n
+              You: When did the first airplane fly?\n
+              Marv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\n
+              You: What is the meaning of life?\n
+              Marv: I’m not sure. I’ll ask my friend Google.\n
+              You: ${input}\n
+              Marv:`,
+
+    temperature: 0.5,
+    max_tokens: 60,
+    top_p: 0.3,
+    frequency_penalty: 0.5,
+    presence_penalty: 0,
+  }
+}
+
+// TWO SENTENCE STORIES // 
+
+const twoSentenceAI = (input) =>{
+
+  return {
+    prompt:   `Topic: Breakfast\n
+              Two-Sentence Funny Story: I ate a clock for breakfast. It was very time consuming.\n 
+              \nTopic: ${input}
+              \nTwo-Sentence Funny Story:`,
+
+    temperature: 0.8,
+    max_tokens: 60,
+    top_p: 1.0,
+    frequency_penalty: 0.5,
+    presence_penalty: 0.0,
+  }
 }
 
 

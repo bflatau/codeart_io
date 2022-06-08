@@ -57,7 +57,7 @@
 
 # BACKEND NOTES
 
-* need to run `sudo app.js` to access serial port from linux
+* might need to run `sudo app.js` to access serial port from linux
 
 # BACKEND API NOTES
 
@@ -70,7 +70,8 @@ JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 * **NOTE:** It appears this has to be one big string, you can skip lines with /n, otherwise, make sure you count right!
 
 # ENV FILE ENTRIES
-* OPENAI_API_KEY=XXXXX  (No quotes) 
+* OPENAI_API_KEY="XXXXX"
+* AIRTABLE_API_KEY="XXXXX"
 
 ---
 # Splitflap simulator setup
@@ -95,3 +96,7 @@ sudo systemctl mask brltty-udev.service
 systemctl stop brltty.service
 systemctl disable brltty.service
 ```
+
+# TODO:
+* give different AI options
+* maybe add a user count so people don't use it all at once? Dunno...

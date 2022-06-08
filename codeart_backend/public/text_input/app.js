@@ -1,5 +1,5 @@
 const localURL ='http://0.0.0.0:8090/openai';
-const proxyURL = 'https://8798-2600-1700-dd90-4c80-5274-f362-7378-1cb1.ngrok.io/openai';
+const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/openai';
 
 
 
@@ -7,8 +7,11 @@ function handleKeyPress(event) {
     if (event.key == 'Enter') {
         // event.preventDefault();
         console.log('enter pressed');
-        const submittedText = document.getElementById("input-field").value 
-        pollOpenAi(submittedText);
+        const submittedText = document.getElementById("input-field").value; 
+        const aiEngine = document.getElementById("ai-games").value;
+
+        console.log(aiEngine);
+        pollOpenAi(submittedText, aiEngine);
         // document.getElementById("input-field").blur();
         document.getElementById("input-field").value = '';
         // return false;
@@ -17,14 +20,37 @@ function handleKeyPress(event) {
     }
 }
 
+const instructionText = document.getElementById("instruction-text");
+document.getElementById("ai-games").addEventListener("click",updateInstructions);
+
+const marvinText = "Ask me a question in the text box below 👇";
+const twoSentenceText = "Name a real or fictional person or character in the text box below 👇"
+
+
+instructionText.innerText = marvinText;
 
 
 
-function pollOpenAi(inputText){
+function updateInstructions(){
+    var e = document.getElementById("ai-games");
+    if("marvin" === e.options[e.selectedIndex].value){ 
+        instructionText.innerText = marvinText;
+    }
+    if("two_sentences" === e.options[e.selectedIndex].value){ 
+        instructionText.innerText = twoSentenceText;
+    }
+}
 
-    const data = JSON.stringify({text: inputText.toUpperCase()});
 
-    fetch(localURL, {
+
+
+
+
+function pollOpenAi(inputText, aiEngine){
+
+    const data = JSON.stringify({text: inputText.toUpperCase(), ai: aiEngine});
+
+    fetch(proxyURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
