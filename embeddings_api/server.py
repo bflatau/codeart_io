@@ -8,9 +8,21 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route("/embeddings", methods=['GET', 'POST', 'DELETE'])
+@app.route("/embedding", methods=['GET', 'POST', 'DELETE'])
 def handle_embedding():
-    data = request.body
+    data = request.get_json()
     print(data)
-    print(data['question'])
-    return "<p>Hello, World!</p>"
+    # print(data['question'])
+    return "<p>GOODBYE, World!</p>"
+
+
+
+
+
+
+
+# (pip install flask[async]).
+# @app.route("/get-data")
+# async def get_data():
+#     data = await async_db_query(...)
+#     return jsonify(data)
