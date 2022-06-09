@@ -25,9 +25,10 @@ document.getElementById("ai-games").addEventListener("click",updateInstructions)
 
 const marvinText = "Ask me a question in the text box below 👇";
 const twoSentenceText = "Name a real or fictional person or character in the text box below 👇"
+const embeddingText = "REVERSE JEOPARDY! Ask me a question and I'll give you the answer"
 
 
-instructionText.innerText = marvinText;
+instructionText.innerText = embeddingText;
 
 
 
@@ -38,6 +39,9 @@ function updateInstructions(){
     }
     if("two_sentences" === e.options[e.selectedIndex].value){ 
         instructionText.innerText = twoSentenceText;
+    }
+    if("embedding" === e.options[e.selectedIndex].value){ 
+        instructionText.innerText = embeddingText;
     }
 }
 
@@ -50,7 +54,7 @@ function pollOpenAi(inputText, aiEngine){
 
     const data = JSON.stringify({text: inputText.toUpperCase(), ai: aiEngine});
 
-    fetch(proxyURL, {
+    fetch(localURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
