@@ -1,5 +1,10 @@
 from flask import Flask
 from flask import request, jsonify
+import embeddings_search
+import json
+
+
+
 
 app = Flask(__name__)
 
@@ -8,21 +13,13 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route("/embedding", methods=['GET', 'POST', 'DELETE'])
+@app.route("/embedding", methods=['POST'])
 def handle_embedding():
-    data = request.get_json()
-    print(data)
-    # print(data['question'])
-    return "<p>GOODBYE, World!</p>"
+    json_data = request.get_json()
+    data_string = json.dumps(json_data)
+    response_data = embeddings_search.search_reviews(data_string, n=1, pprint=False).item()
+    response_data_string = str(response_data).replace('\\', '')
+    print('this is request string', data_string)
+    print('this is api result', response_data_string)
+    return jsonify(response_data_string)
 
-
-
-
-
-
-
-# (pip install flask[async]).
-# @app.route("/get-data")
-# async def get_data():
-#     data = await async_db_query(...)
-#     return jsonify(data)
