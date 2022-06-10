@@ -59,6 +59,9 @@ function wordWrapResponse(text) {
 // console.log(wordWrapResponse(exampleText));
 
 
+
+
+
 /// OPEN AI API CALL /// 
 
 const configuration = new Configuration({
@@ -87,12 +90,47 @@ async function getResponse (req, res){
 
     if(contentType.data.choices[0].text === '0'){
       /// IF OK, run QUESTION TO OPENAI....
+
+      if(req.body.ai === 'embedding'){
+
+        ///CALL PYTHON API AND DO STUFF!! ///
+
+
+
+
+        // FORMAT RESPONSE AND ADD TO AIRTABLE ///
+
+
+        // const responseData = response.data.choices[0].text.toUpperCase().trim();
+        // const formattedResponseData = responseData.replace(/\n/g, " ");
+  
+        // base('AI_INPUTS').create({  //AIRTABLE STUFF
+        //   "QUESTION": req.body.text,
+        //   "RESPONSE": formattedResponseData
+        //   }, function(err, record) {
+        //     if (err) {
+        //       console.error(err);
+        //       return;
+        //     }
+        //   // console.log(record.getId());
+        //   });
+  
+        // dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
+        // return dataResponseObject;
+
+        return {body: {text: 'WORKING ON EMBEDDINGS'}};
+
+
+      }
+
+      else{
+         
       const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
       // console.log('data from AI', response.data)
       const responseData = response.data.choices[0].text.toUpperCase().trim();
       const formattedResponseData = responseData.replace(/\n/g, " ");
 
-      base('AI_INPUTS').create({
+      base('AI_INPUTS').create({  //AIRTABLE STUFF
         "QUESTION": req.body.text,
         "RESPONSE": formattedResponseData
         }, function(err, record) {
@@ -105,11 +143,12 @@ async function getResponse (req, res){
 
       dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
       return dataResponseObject;
+      }
     }
 
     else{
 
-      base('AI_INPUTS').create({
+      base('AI_INPUTS').create({ //AIRTABLE STUFF
       "QUESTION": req.body.text,
       "RESPONSE": "UNSAFE"
       }, function(err, record) {
