@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 const { Configuration, OpenAIApi } = require("openai");
 var Airtable = require('airtable');
 var base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base('app5eTobFcbCN5edO');
@@ -95,30 +97,41 @@ async function getResponse (req, res){
 
         ///CALL PYTHON API AND DO STUFF!! ///
 
+        const embeddingValue = await fetch('http://0.0.0.0:5000/embedding', {
+          method: 'POST', // or 'PUT'
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(req.body.text),
+          })
+          .then(response => response.json())
+          .then(data => {
+            return data.toUpperCase().trim();
+          })
+          .catch((error) => {
+          console.error('Error:', error);
+          });
+    
+
+      // FORMAT RESPONSE AND ADD TO AIRTABLE ///
 
 
+      // const responseData = response.data.choices[0].text.toUpperCase().trim();
+      // const formattedResponseData = responseData.replace(/\n/g, " ");
 
-        // FORMAT RESPONSE AND ADD TO AIRTABLE ///
+      // base('AI_INPUTS').create({  //AIRTABLE STUFF
+      //   "QUESTION": req.body.text,
+      //   "RESPONSE": formattedResponseData
+      //   }, function(err, record) {
+      //     if (err) {
+      //       console.error(err);
+      //       return;
+      //     }
+      //   // console.log(record.getId());
+      //   });
 
-
-        // const responseData = response.data.choices[0].text.toUpperCase().trim();
-        // const formattedResponseData = responseData.replace(/\n/g, " ");
-  
-        // base('AI_INPUTS').create({  //AIRTABLE STUFF
-        //   "QUESTION": req.body.text,
-        //   "RESPONSE": formattedResponseData
-        //   }, function(err, record) {
-        //     if (err) {
-        //       console.error(err);
-        //       return;
-        //     }
-        //   // console.log(record.getId());
-        //   });
-  
-        // dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
-        // return dataResponseObject;
-
-        return {body: {text: 'WORKING ON EMBEDDINGS'}};
+      dataResponseObject.body.text = wordWrapResponse(embeddingValue);
+      return dataResponseObject;
 
 
       }
