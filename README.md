@@ -58,6 +58,7 @@
 # BACKEND NOTES
 
 * might need to run `sudo app.js` to access serial port from linux
+* `sudo "$(which node)" app.js`
 
 # BACKEND API NOTES
 
