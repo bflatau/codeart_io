@@ -59,14 +59,13 @@
 
 * might need to run `sudo app.js` to access serial port from linux
 * `sudo "$(which node)" app.js`
-<<<<<<< HEAD
-=======
+
+
 * ```  ln -s /usr/local/bin/node /usr/bin/node
   ln -s /usr/local/lib/node /usr/lib/node
   ln -s /usr/local/bin/npm /usr/bin/npm
   ln -s /usr/local/bin/node-waf /usr/bin/node-waf
   ```
->>>>>>> d43e986be37c80b5d0f28c737400662c99c4eb51
 
 # BACKEND API NOTES
 
