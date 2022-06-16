@@ -19,7 +19,7 @@ def search_reviews(search_phrase, n=3, pprint=True):
     embedding = get_embedding(search_phrase, engine='text-search-babbage-query-001')
     df['similarities'] = df.babbage_search.apply(lambda x: cosine_similarity(x, embedding))
 
-    res = df.sort_values('similarities', ascending=False).head(n).combined.str.replace('Question: ', '').str.replace('; Answer:', ': ')
+    res = df.sort_values('similarities', ascending=False).head(n).combined.str.replace('Question: ', '').str.replace('; Answer:', '^')
     if pprint:
         for r in res:
             print(r[:200])
