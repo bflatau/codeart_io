@@ -3,5 +3,5 @@ splitflap
 splitflap/**
 ext
 ext/**
-
+embeddings
 .env
