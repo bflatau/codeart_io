@@ -1,6 +1,6 @@
 const localURL ='http://0.0.0.0:8090/openai';
 const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/openai';
-
+const serverURL = 'http://192.168.1.130:8090/openai';
 
 
 function handleKeyPress(event) {

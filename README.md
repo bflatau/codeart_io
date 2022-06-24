@@ -61,6 +61,12 @@
 * `sudo "$(which node)" app.js`
 
 
+* ```  ln -s /usr/local/bin/node /usr/bin/node
+  ln -s /usr/local/lib/node /usr/lib/node
+  ln -s /usr/local/bin/npm /usr/bin/npm
+  ln -s /usr/local/bin/node-waf /usr/bin/node-waf
+  ```
+
 # BACKEND API NOTES
 
 * manually entering text looks like this:

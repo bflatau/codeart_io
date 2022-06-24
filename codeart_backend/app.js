@@ -422,14 +422,31 @@ const initializeHardware = async () => {
     }
 
     else{
+      if(req.body.ai === 'embedding'){
+
+        const embeddingText = AIdataResponse.body.text; 
+        const embeddingQuestion = openaiController.wordWrapResponse(embeddingText.slice(0, embeddingText.indexOf("^")));
+        const embeddingAnswer = embeddingText.slice(embeddingText.indexOf("^") + 1, embeddingText.length);
+
+        textToArrayMatrix({body: {text: embeddingQuestion}});
+
+        setTimeout(() => {
+          textToArrayMatrix({body: {text: embeddingAnswer}});
+          askMessage('15000'); 
+        }, 10000);
+
+      }
+
+      else{
       textToArrayMatrix(openaiController.wordWrapResponse(safeQuestion));
 
       setTimeout(() => {
         textToArrayMatrix(AIdataResponse);
         askMessage('15000'); 
       }, 10000);
-
     }
+
+  }
 
   })
 
