@@ -42,6 +42,7 @@
 }
 
 .step-container{
+    display: none;
     height: 100px;
     vertical-align: top;
     display: inline-block;
