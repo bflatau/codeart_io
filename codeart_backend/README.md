@@ -35,3 +35,8 @@ take off raspi-io for non raspi development
 
 
  "splitflapjs": "file:../ext/splitflap/software/js/splitflapjs"
+
+
+ # NOTES:
+
+ * https://css-tricks.com/almanac/properties/c/caret-shape/

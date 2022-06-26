@@ -1,9 +1,17 @@
+body{
+    background-color: black;
+}
+
+*:focus{
+    outline: none;
+   }
+
 .request-response-container{
     display: inline-block;
     width: 50%;
     margin-left: 25%;
     margin-right:25%;
-    margin-top: 5%;
+    margin-top: 2%;
     text-align: center;
     font-size: 20px;
 }
@@ -11,9 +19,20 @@
 
 #input-field{
     width: 100%;
-    margin-top: 5%;
-    font-size: 20px;
+    height: 100px;
+    font-size: 40px;
+    color: white;
+    text-transform: uppercase;
+    border: none;
+    background-color: black;
 }
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    /* text-align: center; */
+    opacity: .5; /* Firefox */
+  }
 
 .youtube-embed{
     width:50%;

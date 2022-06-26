@@ -413,7 +413,7 @@ const initializeHardware = async () => {
   app.post('/openai', async (req, res) => { 
 
     const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES')}};
-    const safeQuestion = {body:{text: openaiController.wordWrapResponse(req.body.text)}};
+    const safeQuestion = {body:{text: openaiController.wordWrapResponse('YOU ASKED: ' + req.body.text)}};
     const AIdataResponse = await openaiController.getResponse(req);  //response from OPENAI
 
     if(AIdataResponse.body.text === 'UNSAFE'){
@@ -422,30 +422,17 @@ const initializeHardware = async () => {
     }
 
     else{
-      if(req.body.ai === 'embedding'){
-
+      
         const embeddingText = AIdataResponse.body.text; 
         const embeddingQuestion = openaiController.wordWrapResponse(embeddingText.slice(0, embeddingText.indexOf("^")));
         const embeddingAnswer = embeddingText.slice(embeddingText.indexOf("^") + 1, embeddingText.length);
 
-        textToArrayMatrix({body: {text: embeddingQuestion}});
+        textToArrayMatrix({body: {text: embeddingQuestion}}); //send openai quesion
 
         setTimeout(() => {
-          textToArrayMatrix({body: {text: embeddingAnswer}});
+          textToArrayMatrix({body: {text: embeddingAnswer}}); //send openai answer
           askMessage('15000'); 
         }, 10000);
-
-      }
-
-      else{
-      textToArrayMatrix(openaiController.wordWrapResponse(safeQuestion));
-
-      setTimeout(() => {
-        textToArrayMatrix(AIdataResponse);
-        askMessage('15000'); 
-      }, 10000);
-    }
-
   }
 
   })

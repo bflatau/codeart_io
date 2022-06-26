@@ -91,9 +91,9 @@ async function getResponse (req, res){
     });
 
     if(contentType.data.choices[0].text === '0'){
-      /// IF OK, run QUESTION TO OPENAI....
 
-      if(req.body.ai === 'embedding'){
+      console.log('ask original question here, then send AI response!')
+      /// IF OK, run QUESTION TO OPENAI....
 
         ///CALL PYTHON API AND DO STUFF!! ///
 
@@ -134,29 +134,29 @@ async function getResponse (req, res){
       return dataResponseObject;
 
 
-      }
+      
 
-      else{
+      // else{
          
-      const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
-      // console.log('data from AI', response.data)
-      const responseData = response.data.choices[0].text.toUpperCase().trim();
-      const formattedResponseData = responseData.replace(/\n/g, " ");
+      // const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
+      // // console.log('data from AI', response.data)
+      // const responseData = response.data.choices[0].text.toUpperCase().trim();
+      // const formattedResponseData = responseData.replace(/\n/g, " ");
 
-      base('AI_INPUTS').create({  //AIRTABLE STUFF
-        "QUESTION": req.body.text,
-        "RESPONSE": formattedResponseData
-        }, function(err, record) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-        // console.log(record.getId());
-        });
+      // base('AI_INPUTS').create({  //AIRTABLE STUFF
+      //   "QUESTION": req.body.text,
+      //   "RESPONSE": formattedResponseData
+      //   }, function(err, record) {
+      //     if (err) {
+      //       console.error(err);
+      //       return;
+      //     }
+      //   // console.log(record.getId());
+      //   });
 
-      dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
-      return dataResponseObject;
-      }
+      // dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
+      // return dataResponseObject;
+      // }
     }
 
     else{

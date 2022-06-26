@@ -7,8 +7,8 @@ function handleKeyPress(event) {
     if (event.key == 'Enter') {
         // event.preventDefault();
         console.log('enter pressed');
-        const submittedText = document.getElementById("input-field").value; 
-        // const aiEngine = document.getElementById("ai-games").value;
+        const submittedText = document.getElementById("input-field").value;  
+        // const aiEngine = document.getElementById("ai-games").value; // turn back on for options
         const aiEngine = 'embedding';
 
         console.log(aiEngine);
@@ -29,7 +29,7 @@ const twoSentenceText = "Name a real or fictional person or character in the tex
 const embeddingText = "REVERSE JEOPARDY! Ask me a question and I'll give you the answer"
 
 
-instructionText.innerText = embeddingText;
+// instructionText.innerText = embeddingText; // turn back on for options
 
 
 
@@ -55,7 +55,7 @@ function pollOpenAi(inputText, aiEngine){
 
     const data = JSON.stringify({text: inputText.toUpperCase(), ai: aiEngine});
 
-    fetch(serverURL, {
+    fetch(localURL, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
