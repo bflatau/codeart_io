@@ -1,5 +1,21 @@
 body{
     background-color: black;
+    font-family: 'dos-is09'
+}
+
+/* @font-face {
+    font-family: "nec";
+    src: url("./Web437_NEC_MultiSpeed.woff") format('woff');
+} */
+
+/* @font-face {
+    font-family: "dos-jpn";
+    src: url("./Web437_DOS-V_re_JPN16.woff") format('woff');
+} */
+
+@font-face {
+    font-family: "dos-is09";
+    src: url("./Web437_IBM_DOS_ISO9.woff") format('woff');
 }
 
 *:focus{
@@ -25,6 +41,7 @@ body{
     text-transform: uppercase;
     border: none;
     background-color: black;
+    font-family: 'dos-is09';
 }
 
 
@@ -44,8 +61,16 @@ body{
 }
 
 #response-helper-text{
-    margin-top: 10px;
-    font-size: 15px;
+    margin-top: 5px;
+    font-size: 20px;
+    color: grey;
+    /* color: grey; */
+}
+
+#response-helper-text-big{
+    margin-top: 0px;
+    font-size: 30px;
+    color: grey;
     /* color: grey; */
 }
 

@@ -23,7 +23,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def search_reviews(search_phrase, n=3, pprint=True):
     df = pd.read_csv('./embeddings/embedded_season37_QA_babbage.csv', error_bad_lines=False, engine="python")  # the number of rows per chunk
     
-    df = df.sample(n=1000)
+    df = df.sample(n=5000)
     
     df['babbage_search'] = df.babbage_search.apply(eval).apply(np.array)
     embedding = get_embedding(search_phrase, engine='text-search-babbage-query-001')

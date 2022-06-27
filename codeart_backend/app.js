@@ -441,7 +441,7 @@ const initializeHardware = async () => {
         textToArrayMatrix(safeQuestion);
         setTimeout(() => {
           textToArrayMatrix({body: {text: openaiController.wordWrapResponse('HMMM LET ME THINK ABOUT THAT')}}); //send openai answer
-        }, 7000);
+        }, 12000);
         sendEmbeddings()
   }
 

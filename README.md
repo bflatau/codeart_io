@@ -106,6 +106,7 @@ systemctl disable brltty.service
 ```
 
 # TODO:
+* Make terminal text/formatting look cool
 * Make sure text formatting works
 * Handle or cull too long responses
 * Add to airtable
