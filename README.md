@@ -114,14 +114,16 @@ systemctl disable brltty.service
 
 # SETUP RASPI:
 
-### INITIAL SETUP
+## INITIAL SETUP
 
 * https://ubuntu.com/tutorials/secure-ubuntu-kiosk#1-overview
 * `snap install ubuntu-frame`
 * `snap install wpe-webkit-mir-kiosk`
 * `snap set wpe-webkit-mir-kiosk url=https://mir-server.io`
 
-### SET UP WIREGUARD
+## SET UP WIREGUARD (neither option works :(...)
+
+### SNAP 
 
 * https://snapcraft.io/install/wireguard-ammp/ubuntu
 * `sudo snap install wireguard-ammp`
@@ -131,4 +133,9 @@ With an overlay, /etc/wireguard is mapped to $SNAP_COMMON (conventionally /var/s
 `sudo wireguard-ammp.wg-quick up wg0` to bring up the interface.
 
 You may get an error Unable to modify interface: Protocol not supported due to a bug in some versions of snapd - see https://forum.snapcraft.io/t/raspberry-pi-3-ubuntu-core-18-network-control-interface-issue/14773/7 for a workaround.
-```
+
+### Classic Mode
+
+* https://askubuntu.com/questions/902905/install-applications-in-ubuntu-core
+
+* then normal instructions: https://bflatau.github.io/benwiki/docs/server/wireguard/
