@@ -329,7 +329,6 @@ const initializeHardware = async () => {
 
 
     //BEN TESTS (updates UI to show flap layout)
-    console.log(newLayout)
     const frontEndArray = newLayout[0].concat(newLayout[1],newLayout[2], newLayout[3], newLayout[4], newLayout[5])
     io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
 

@@ -106,5 +106,6 @@ systemctl disable brltty.service
 ```
 
 # TODO:
-* give different AI options
-* maybe add a user count so people don't use it all at once? Dunno...
+* Make sure text formatting works
+* Handle or cull too long responses
+* Add to airtable
