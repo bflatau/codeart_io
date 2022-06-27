@@ -414,16 +414,11 @@ const initializeHardware = async () => {
 
     const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES')}};
     const safeQuestion = {body:{text: openaiController.wordWrapResponse('YOU ASKED: ' + req.body.text)}};
-    const AIdataResponse = await openaiController.getResponse(req);  //response from OPENAI
+    const AIdataResponse = await openaiController.checkContent(req);  //response from OPENAI
 
-    if(AIdataResponse.body.text === 'UNSAFE'){
-      textToArrayMatrix(unsafeResponse);
-      askMessage('10000'); /// REVERT TO ASK MESSAGE
-    }
-
-    else{
-      
-        const embeddingText = AIdataResponse.body.text; 
+    async function sendEmbeddings(){
+        const embeddingData= await openaiController.getEmbeddingData(req);  //response from OPENAI
+        const embeddingText = embeddingData.body.text; 
         const embeddingQuestion = openaiController.wordWrapResponse(embeddingText.slice(0, embeddingText.indexOf("^")));
         const embeddingAnswer = embeddingText.slice(embeddingText.indexOf("^") + 1, embeddingText.length);
 
@@ -433,6 +428,18 @@ const initializeHardware = async () => {
           textToArrayMatrix({body: {text: embeddingAnswer}}); //send openai answer
           askMessage('15000'); 
         }, 10000);
+
+    }
+
+
+    if(AIdataResponse.body.text === 'UNSAFE'){
+      textToArrayMatrix(unsafeResponse);
+      askMessage('10000'); /// REVERT TO ASK MESSAGE
+    }
+
+    else{
+        textToArrayMatrix(safeQuestion);
+        sendEmbeddings()
   }
 
   })

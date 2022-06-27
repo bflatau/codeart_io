@@ -72,14 +72,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-async function getResponse (req, res){
+async function checkContent (req, res){
 
     let dataResponseObject = {body: {text: ''}};
 
-    const aiOptions = {
-      marvin: marvinAI(req.body.text), //note key has to equal value in HTML
-      two_sentences: twoSentenceAI(req.body.text)
-    }
 
     const contentType = await openai.createCompletion("content-filter-alpha", {
       prompt: contentFilter(req.body.text),
@@ -92,71 +88,9 @@ async function getResponse (req, res){
 
     if(contentType.data.choices[0].text === '0'){
 
-      console.log('ask original question here, then send AI response!')
-      /// IF OK, run QUESTION TO OPENAI....
-
-        ///CALL PYTHON API AND DO STUFF!! ///
-
-        const embeddingValue = await fetch('http://0.0.0.0:5000/embedding', {
-          method: 'POST', // or 'PUT'
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(req.body.text),
-          })
-          .then(response => response.json())
-          .then(data => {
-            return data.toUpperCase().trim();
-          })
-          .catch((error) => {
-          console.error('Error:', error);
-          });
-    
-
-      // FORMAT RESPONSE AND ADD TO AIRTABLE ///
-
-
-      // const responseData = response.data.choices[0].text.toUpperCase().trim();
-      // const formattedResponseData = responseData.replace(/\n/g, " ");
-
-      // base('AI_INPUTS').create({  //AIRTABLE STUFF
-      //   "QUESTION": req.body.text,
-      //   "RESPONSE": formattedResponseData
-      //   }, function(err, record) {
-      //     if (err) {
-      //       console.error(err);
-      //       return;
-      //     }
-      //   // console.log(record.getId());
-      //   });
-
-      dataResponseObject.body.text = wordWrapResponse(embeddingValue);
+      dataResponseObject.body.text = 'SAFE';
       return dataResponseObject;
 
-
-      
-
-      // else{
-         
-      // const response = await openai.createCompletion("text-davinci-002", aiOptions[req.body.ai]);
-      // // console.log('data from AI', response.data)
-      // const responseData = response.data.choices[0].text.toUpperCase().trim();
-      // const formattedResponseData = responseData.replace(/\n/g, " ");
-
-      // base('AI_INPUTS').create({  //AIRTABLE STUFF
-      //   "QUESTION": req.body.text,
-      //   "RESPONSE": formattedResponseData
-      //   }, function(err, record) {
-      //     if (err) {
-      //       console.error(err);
-      //       return;
-      //     }
-      //   // console.log(record.getId());
-      //   });
-
-      // dataResponseObject.body.text = wordWrapResponse(formattedResponseData);
-      // return dataResponseObject;
-      // }
     }
 
     else{
@@ -178,6 +112,47 @@ async function getResponse (req, res){
 }
 
 
+async function getEmbeddingData(req, res){
+
+  console.log('IM EMBEDDING FUNCTION')
+
+  let dataResponseObject = {body: {text: ''}};
+ 
+  const embeddingValue = await fetch('http://0.0.0.0:5000/embedding', {
+    method: 'POST', // or 'PUT'
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(req.body.text),
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data.toUpperCase().trim();
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    });
+
+
+      // base('AI_INPUTS').create({  //AIRTABLE STUFF
+      //   "QUESTION": req.body.text,
+      //   "RESPONSE": formattedResponseData
+      //   }, function(err, record) {
+      //     if (err) {
+      //       console.error(err);
+      //       return;
+      //     }
+      //   // console.log(record.getId());
+      //   });
+
+
+    dataResponseObject.body.text = embeddingValue;
+    return dataResponseObject;
+
+
+}
+
+
 /// OPEN AI PROMPTS ///
 
 
@@ -186,49 +161,6 @@ async function getResponse (req, res){
 const contentFilter =(input)=>{
 
   return `"<|endoftext|>[${input}]\n--\nLabel:"`
-}
-
-// MARVIN //
-
-const marvinAI = (input) =>{
-
-  return {
-    prompt:   `Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\n
-              You: How many pounds are in a kilogram?\n
-              Marv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\n
-              You: What does HTML stand for?\n
-              Marv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\n
-              You: When did the first airplane fly?\n
-              Marv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\n
-              You: What is the meaning of life?\n
-              Marv: I’m not sure. I’ll ask my friend Google.\n
-              You: ${input}\n
-              Marv:`,
-
-    temperature: 0.5,
-    max_tokens: 60,
-    top_p: 0.3,
-    frequency_penalty: 0.5,
-    presence_penalty: 0,
-  }
-}
-
-// TWO SENTENCE STORIES // 
-
-const twoSentenceAI = (input) =>{
-
-  return {
-    prompt:   `Topic: Breakfast\n
-              Two-Sentence Funny Story: I ate a clock for breakfast. It was very time consuming.\n 
-              \nTopic: ${input}
-              \nTwo-Sentence Funny Story:`,
-
-    temperature: 0.8,
-    max_tokens: 60,
-    top_p: 1.0,
-    frequency_penalty: 0.5,
-    presence_penalty: 0.0,
-  }
 }
 
 
@@ -271,13 +203,7 @@ const helloMessageArray =  [
 
 
 
-
-
-
-
-
-
-module.exports = {getResponse, helloMessageArray, wordWrapResponse }
+module.exports = {checkContent, helloMessageArray, wordWrapResponse, getEmbeddingData}
 
 
 // const example = `I'm sorry, I don't know what you're talking about.`
