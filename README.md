@@ -110,3 +110,25 @@ systemctl disable brltty.service
 * Make sure text formatting works
 * Handle or cull too long responses
 * Add to airtable
+
+
+# SETUP RASPI:
+
+### INITIAL SETUP
+
+* https://ubuntu.com/tutorials/secure-ubuntu-kiosk#1-overview
+* `snap install ubuntu-frame`
+* `snap install wpe-webkit-mir-kiosk`
+* `snap set wpe-webkit-mir-kiosk url=https://mir-server.io`
+
+### SET UP WIREGUARD
+
+* https://snapcraft.io/install/wireguard-ammp/ubuntu
+* `sudo snap install wireguard-ammp`
+* ```
+With an overlay, /etc/wireguard is mapped to $SNAP_COMMON (conventionally /var/snap/wireguard-ammp/common) - so this is where you should put configuration files such as wg0.conf. Once the config file is in place and you've connected the network-control and firewall-control interaces, run
+
+`sudo wireguard-ammp.wg-quick up wg0` to bring up the interface.
+
+You may get an error Unable to modify interface: Protocol not supported due to a bug in some versions of snapd - see https://forum.snapcraft.io/t/raspberry-pi-3-ubuntu-core-18-network-control-interface-issue/14773/7 for a workaround.
+```
