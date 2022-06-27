@@ -329,6 +329,7 @@ const initializeHardware = async () => {
 
 
     //BEN TESTS (updates UI to show flap layout)
+    console.log(newLayout)
     const frontEndArray = newLayout[0].concat(newLayout[1],newLayout[2], newLayout[3], newLayout[4], newLayout[5])
     io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
 
@@ -413,19 +414,19 @@ const initializeHardware = async () => {
   app.post('/openai', async (req, res) => { 
 
     const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES')}};
-    const safeQuestion = {body:{text: openaiController.wordWrapResponse('YOU ASKED: ' + req.body.text)}};
+    const safeQuestion = {body:{text: openaiController.wordWrapResponse('YOU ASKED\n' + req.body.text)}};
     const AIdataResponse = await openaiController.checkContent(req);  //response from OPENAI
 
     async function sendEmbeddings(){
         const embeddingData= await openaiController.getEmbeddingData(req);  //response from OPENAI
         const embeddingText = embeddingData.body.text; 
-        const embeddingQuestion = openaiController.wordWrapResponse(embeddingText.slice(0, embeddingText.indexOf("^")));
+        const embeddingQuestion = embeddingText.slice(0, embeddingText.indexOf("^"));
         const embeddingAnswer = embeddingText.slice(embeddingText.indexOf("^") + 1, embeddingText.length);
 
-        textToArrayMatrix({body: {text: embeddingQuestion}}); //send openai quesion
+        textToArrayMatrix({body: {text: openaiController.wordWrapResponse(`I FOUND A MATCH /n /n ${embeddingQuestion}`)}}); //send openai quesion
 
         setTimeout(() => {
-          textToArrayMatrix({body: {text: embeddingAnswer}}); //send openai answer
+          textToArrayMatrix({body: {text: openaiController.wordWrapResponse(embeddingAnswer)}}); //send openai answer
           askMessage('15000'); 
         }, 10000);
 
@@ -439,6 +440,9 @@ const initializeHardware = async () => {
 
     else{
         textToArrayMatrix(safeQuestion);
+        setTimeout(() => {
+          textToArrayMatrix({body: {text: openaiController.wordWrapResponse('HMMM LET ME THINK ABOUT THAT')}}); //send openai answer
+        }, 7000);
         sendEmbeddings()
   }
 
