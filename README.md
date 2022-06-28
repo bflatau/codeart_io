@@ -92,7 +92,7 @@ JSON: {"text":"  WELCOME  HI  p    WELCOME  BYE p  "}
 
 * Driver for Macs `https://github.com/Xinyuan-LilyGO/CH9102_Mac_Driver`
 
-### NOTES:
+# CHM SERVER NOTES:
 
 * had to do this in linux `sudo usermod -a -G dialout <username>`
 * Had to remove `board=` in the chainlink section
@@ -105,11 +105,17 @@ systemctl stop brltty.service
 systemctl disable brltty.service
 ```
 
-# TODO:
-* Make terminal text/formatting look cool
-* Make sure text formatting works
-* Handle or cull too long responses
-* Add to airtable
+#### Enable Reboot with lid closed:
+* https://www.reddit.com/r/linux4noobs/comments/clscyl/reboot_laptop_with_lid_closed/
+* https://linuxhint.com/laptop-close-behavior-ubuntu/
+
+Edit `/etc/systemd/logind.conf` to set:
+```
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+```
+* restart and set the changes `sudo systemctl restart systemd-logind.service`
 
 
 # SETUP RASPI:
@@ -121,34 +127,103 @@ systemctl disable brltty.service
 * `snap install wpe-webkit-mir-kiosk`
 * `snap set wpe-webkit-mir-kiosk url=https://mir-server.io`
 
-## SET UP WIREGUARD (neither option works :(...)
+## ADD USER
 
-### SNAP 
+* Create user: `sudo adduser --extrausers USERNAME`
+* create a file in `/etc/sudoers.d/` for the new user
+* should look similar to this:
+```
+# Created by snap create-user
 
-* https://snapcraft.io/install/wireguard-ammp/ubuntu
-* `sudo snap install wireguard-ammp --devmode`
-* ```
-With an overlay, /etc/wireguard is mapped to $SNAP_COMMON (conventionally /var/snap/wireguard-ammp/common) - so this is where you should put configuration files such as wg0.conf. Once the config file is in place and you've connected the network-control and firewall-control interaces, run
+# User rules for USER
+USER ALL=(ALL) NOPASSWD:ALL
 
-`sudo wireguard-ammp.wg-quick up wg0` to bring up the interface.
+```
 
-You may get an error Unable to modify interface: Protocol not supported due to a bug in some versions of snapd - see https://forum.snapcraft.io/t/raspberry-pi-3-ubuntu-core-18-network-control-interface-issue/14773/7 for a workaround.
 
-### Classic Mode
 
-* https://askubuntu.com/questions/902905/install-applications-in-ubuntu-core
+## SET UP WIREGUARD 
 
-* then normal instructions: https://bflatau.github.io/benwiki/docs/server/wireguard/
+* Reference: https://snapcraft.io/install/wireguard-ammp/ubuntu
+* `sudo snap install wireguard-ammp --devmode` (note devmode)
+* add wg0.conf file to `/var/snap/wireguard-ammp/common` (see /wireguard/config)
+* start wireguard with `sudo wireguard-ammp.wg-quick up wg0`
+* *BENNOTE* may need to do classic mode and update /etc/sysctl.conf IPV4 section??
 
+
+
+## GENERAL WIREGUARD INFO
+* Boot on Startup: https://www.ivpn.net/knowledgebase/linux/linux-autostart-wireguard-in-systemd/
+* Boot on startup (CHM Server) run in /etc/wireguard: `sudo systemctl enable wg-quick@wg0`
+
+
+* Boot on startup (raspi): install script snap: `sudo snap install script-launcher`
+* Edit `script.sh` in /var/snap/script-launcher/common
+
+### NOT WORKING!! ###
+
+```
+#!/bin/bash
+cd /var/snap/wireguard-ammp/common
+sudo wireguard-ammp.wg-quick up wg0
+
+```
+
+https://askubuntu.com/questions/1023666/editing-rc-local-for-ubuntu-core
+
+https://askubuntu.com/questions/814/how-to-run-scripts-on-start-up
+
+```
+#!/bin/bash
+
+cat <<EOF> /etc/systemd/system/myscript.service
+[Unit]
+Description=Customise Networking
+Requires=network-online.target
+After=snap.wifi-ap.management-service.service
+
+[Service]
+User=root
+Group=root
+Type=oneshot
+ExecStart=/home/myuser/scripts/myscript.sh
+
+[Install]
+WantedBy=multi-user.target
+
+EOF
+
+chmod 644 /etc/systemd/system/myscript.service
+
+systemctl enable myscript.service
+```
 
 
 ### SCOTTDO
 * Fix word wrapping
 * Python Cull Jeopardy questions
+* Auto start Node & Flask
 
 
 ### BENDO
 * reset if text after 40 seconds
 * lock terminal until split flaps are done
 * test raspi again
-* wireguard auto connect
+* ~~wireguard auto connect CHM~~
+* wireguard auto connect raspi
+* rebuild frontend debug for 10.0.0.11
+* ~~default CHM server to use node 16~~
+* Format CSS for screen
+* Add to airtable
+https://discourse.ubuntu.com/t/using-recovery-modes/20332
+
+
+### Tools to bring:
+
+* Drill
+* Impact Driver
+* Screws/bits/drills
+* paint + paintbrushes
+* glue
+* wrenches
+* mounting brackets
