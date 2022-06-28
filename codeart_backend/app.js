@@ -354,32 +354,43 @@ const initializeHardware = async () => {
 
   //HELPER FUNCTIONS
 
-  function textToArrayMatrix(req, res){
+  function logConfig2d(config2d) {
+    const text = ' ------------------ \n'
+     + config2d.map((row) => '|' + row.map((flapIndex) => flaps[flapIndex]).join('') + '|').join('\n') + '\n'
+     + ' ------------------ '
+    console.log(text)
+  }
 
-    console.log(req.body, 'this is req')
+  function showText(text){
     const newLayout = []
     for (let i = 0; i < 6; i++) {
       newLayout.push(new Array(18).fill(0))
     }
     let row = 0;
     let col = 0;
-    for (let i = 0; i < req.body.text.length && row < 6; i++) {
-      const char = req.body.text[i]
+    for (let i = 0; i < text.length && row < 6; i++) {
+      const char = text[i]
       if (char === '\n') {
         col = 0
         row++
         continue
       }
 
-      const flapIndex = flaps.indexOf(char)
-      newLayout[row][col] = flapIndex == -1 ? 0 : flapIndex
-      col++
       if (col >= 18) {
         row++
         col = 0
       }
+
+      if (row >= 6) {
+        break;
+      }
+
+      const flapIndex = flaps.indexOf(char)
+      newLayout[row][col] = flapIndex == -1 ? 0 : flapIndex
+      col++
     }
     // console.log('this is new layout', newLayout)
+    logConfig2d(newLayout)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
 
@@ -390,10 +401,87 @@ const initializeHardware = async () => {
 
     //END BEN TESTS
     // res.send('ok')
-
   }
 
+  function chunk(arr, len) {
+    var chunks = [],
+        i = 0,
+        n = arr.length;
+  
+    while (i < n) {
+      chunks.push(arr.slice(i, i += len));
+    }
+  
+    return chunks;
+  }
 
+  function wrap(text, rowLength) {
+    const rows = [];
+
+    const lines = text.split('\n')
+    for (const line of lines) {
+      let currRow = [];
+      let currRowLength = 0;
+      const words = line.split(' ')
+
+      for (const word of words) {
+        if ((currRowLength + word.length) <= rowLength) {
+          currRowLength += word.length + 1;
+          currRow.push(word);
+        } else {
+          rows.push(currRow);
+          currRow = [word];
+          currRowLength = word.length + 1;
+        }
+      };
+      
+      rows.push(currRow);
+    }
+
+    const rowsWithSpaces = rows.map(row => row.join(' '))
+
+    return rowsWithSpaces
+  }
+
+  async function wordWrapAndShowText(text) {
+    const PAGE_DELAY = 6000
+
+    text = text.replace("'", '')
+      .replace('"', '*')
+      .replace(',', '')
+
+    const rows = wrap(text, 18)
+    const fullPages = chunk(rows, 6)
+    for (const page of fullPages) {
+      showText(page.join('\n'))
+      await waitForIdle();
+      await sleep(PAGE_DELAY)
+    }
+  }
+
+  async function sleep(time) {
+    await new Promise((resolve, _) => setTimeout(resolve, time))
+  }
+
+  async function waitForIdle(timeout=8000) {
+    const start = Date.now()
+    while (Date.now() - start < timeout) {
+      await sleep(1000)
+      if (splitflapLatestState) {
+        let anyMoving = false
+        for (const module of splitflapLatestState.modules) {
+          if (module.moving) {
+            anyMoving = true
+            break
+          }
+          if (!anyMoving) {
+            return
+          }
+        }
+      }
+    }
+    console.log('waitForIdle timed out');
+  }
 
   function askMessage(time){
     setTimeout(()=>{
@@ -429,7 +517,12 @@ const initializeHardware = async () => {
     }))
   })
   app.post('/splitflap/set_flaps', async (req, res) => {
-    textToArrayMatrix(req, res)
+    showText(req.body.text)
+    res.send('ok')
+  })
+  app.post('/splitflap/text', async (req, res) => {
+    await wordWrapAndShowText(req.body.text)
+    res.send('ok')
   })
   app.post('/splitflap/start_animation', async (req, res) => {
     const wofGames = [
@@ -468,47 +561,74 @@ const initializeHardware = async () => {
     res.send('ok')
   })
 
-  app.post('/openai', async (req, res) => { 
+  const DEFAULT_PROMPT = 'ASK ME A QUESTION\n\nWHO IS wwwww?\nWHAT IS ggggg?\nWHERE IS ppppp?'
 
-    const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION')}};
-    const safeQuestion = {body:{text: openaiController.wordWrapResponse('YOU ASKED\n' + req.body.text)}};
-    const AIdataResponse = await openaiController.checkContent(req.body.text);  //response from OPENAI
-
-    async function sendEmbeddings(){
-        const embeddingData= await openaiController.getEmbeddingData(req.body.text);  //response from OPENAI
-        const embeddingQuestion = embeddingData.question
-        const embeddingAnswer = embeddingData.answer
-
-        textToArrayMatrix({body: {text: openaiController.wordWrapResponse(`I FOUND A MATCH /n /n ${embeddingQuestion}`)}}); //send openai quesion
-
-        setTimeout(() => {
-          textToArrayMatrix({body: {text: openaiController.wordWrapResponse(embeddingAnswer)}}); //send openai answer
-          askMessage('15000'); 
-        }, 10000);
-
+  let sequenceRunning = false
+  async function runOpenAiSequence(text) {
+    if (sequenceRunning) {
+      return
     }
-
-
-    if(AIdataResponse.body.text === 'UNSAFE'){
-      textToArrayMatrix(unsafeResponse);
-      askMessage('10000'); /// REVERT TO ASK MESSAGE
+    sequenceRunning = true
+    try {
+      if (await openaiController.checkContent(text) === 'UNSAFE') {
+        await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
+      } else {
+        // Start fetching embedding data
+        const embeddingPromise = await openaiController.getEmbeddingData(text)
+        await wordWrapAndShowText('YOU ASKED\n\n' + text.toUpperCase())
+        const embeddingData = await embeddingPromise
+        await wordWrapAndShowText('I FOUND A MATCH\n\n' + embeddingData.question.toUpperCase())
+        await wordWrapAndShowText(embeddingData.answer.toUpperCase())
+      }
+    } catch (e) {
+      sendDiscordError(`Error in openai sequence: ${e}`)
+    } finally {
+      await showText(DEFAULT_PROMPT)
+      sequenceRunning = false
     }
-
-    else{
-        textToArrayMatrix(safeQuestion);
-        setTimeout(() => {
-          textToArrayMatrix({body: {text: openaiController.wordWrapResponse('HMMM LET ME THINK ABOUT THAT')}}); //send openai answer
-        }, 12000);
-        sendEmbeddings()
   }
+
+  app.post('/openai', async (req, res) => { 
+    // Note: intentionally not awaiting promise so we can return immediately
+    runOpenAiSequence(req.body.text)
+    res.send('ok')
+
+    // const unsafeResponse = openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION');
+    // const safeQuestion = openaiController.wordWrapResponse('YOU ASKED\n' + req.body.text);
+    // const AIdataResponse = await openaiController.checkContent(req.body.text);  //response from OPENAI
+
+    // async function sendEmbeddings(){
+    //     const embeddingData= await openaiController.getEmbeddingData(req.body.text);  //response from OPENAI
+    //     const embeddingQuestion = embeddingData.question
+    //     const embeddingAnswer = embeddingData.answer
+
+    //     showText(openaiController.wordWrapResponse(`I FOUND A MATCH /n /n ${embeddingQuestion}`)); //send openai quesion
+
+    //     setTimeout(() => {
+    //       showText(openaiController.wordWrapResponse(embeddingAnswer)); //send openai answer
+    //       askMessage('15000'); 
+    //     }, 10000);
+
+    // }
+
+
+    // if(AIdataResponse.body.text === 'UNSAFE'){
+    //   showText(unsafeResponse);
+    //   askMessage('10000'); /// REVERT TO ASK MESSAGE
+    // } else {
+    //     showText(safeQuestion);
+    //     setTimeout(() => {
+    //       showText(openaiController.wordWrapResponse('HMMM LET ME THINK ABOUT THAT')); //send openai answer
+    //     }, 12000);
+    //     sendEmbeddings()
+    // }
 
   })
 
 
 
   ///BEN ADD NEW ANIMATIONS HERE ///
-
-    askMessage('2000')
+  setTimeout(() => showText(DEFAULT_PROMPT), 2000);
 }
 
 async function run() {
