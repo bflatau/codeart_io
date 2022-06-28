@@ -16,7 +16,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-
+const { Client, Intents } = require('discord.js');
+const DISCORD_CHANNEL_DEBUG = '990787044613705818'
+const DISCORD_CHANNEL_ERROR = '990787072950403123'
 
 /// SETUP CORS ///
 
@@ -48,6 +50,10 @@ const io = socketIO(server);
 
 /// REQUIRE CONTROLLERS ///
 const openaiController = require('./controllers/openaiController');
+
+const discord = new Client({
+  intents: [Intents.FLAGS.GUILDS]
+});
 
 
 /// USE MIDDLEWARE ///
@@ -219,9 +225,43 @@ const stringToMovementMask = (str) => {
   return str.split('').map((c) => c === '1')
 }
 
+/// DISCORD ///
+
+async function initializeDiscord() {
+  console.log('Initialize discord')
+  const ready = new Promise((resolve, reject) => {
+    discord.once("error", reject);
+    discord.once("ready", () => {
+      discord.off("error", reject);
+      resolve();
+    });
+  });
+  await discord.login(process.env.DISCORD_TOKEN)
+  await ready
+  await sendDiscordDebug('App starting')
+}
+
+async function sendDiscordDebug(message) {
+  try {
+    const channel = discord.channels.cache.get(DISCORD_CHANNEL_DEBUG);
+    channel.send(message);
+  } catch (e) {
+    console.error(e);
+  }
+}
+async function sendDiscordError(message) {
+  try {
+    const channel = discord.channels.cache.get(DISCORD_CHANNEL_ERROR);
+    channel.send(message);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 
 /// INITIALIZE HARDWARE ////
 const initializeHardware = async () => {
+  console.log('Initialize hardware')
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
   const splitflapPortInfo = findPort(ports, 'splitflap', [
@@ -230,6 +270,9 @@ const initializeHardware = async () => {
     ['10c4', 'ea60', '02280A9E'], // development
     ['1a86', '55d4', '5424024039'] //ben dev
   ])
+
+  let lastState = undefined
+  let lastDebugStatus = 0
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
       if (message.payload === 'log') {
@@ -240,6 +283,19 @@ const initializeHardware = async () => {
         io.sockets.emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
       } else if (message.payload === 'supervisorState' && message.supervisorState) {
         io.sockets.emit('splitflap_supervisor_state', PB.SupervisorState.toObject(message.supervisorState))
+        const currentState = message.supervisorState?.state
+        if (currentState !== lastState) {
+          sendDiscordDebug(`State changed: ${JSON.stringify(message.supervisorState, undefined, 4)}`)
+          if (currentState === PB.SupervisorState.State.FAULT) {
+            sendDiscordError(`FAULT! ${JSON.stringify(message.supervisorState, undefined, 4)}`)
+          }
+        }
+        lastState = currentState
+
+        if (Date.now() - lastDebugStatus > 1*60*60*1000) {
+          sendDiscordDebug(`Current state:\n${JSON.stringify(message.supervisorState)}`)
+          lastDebugStatus = Date.now()
+        }
       }
   }, 108)
 
@@ -352,10 +408,12 @@ const initializeHardware = async () => {
 //////API ENDPOINTS ////
 
   app.post('/splitflap/hard_reset', async (req, res) => {
+    await sendDiscordDebug(`Running hard reset!\nrequested by ${req.socket.remoteAddress}`)
     await splitflap.hardReset()
     res.send('ok')
   })
   app.post('/splitflap/reset_module', async (req, res) => {
+    await sendDiscordDebug(`Resetting module ${req.body.x}, ${req.body.y} requested by ${req.socket.remoteAddress}`)
     console.log(req.body)
     const resetMap = []
     for (let row = 0; row < 6; row++) {
@@ -454,7 +512,11 @@ const initializeHardware = async () => {
     askMessage('2000')
 }
 
-initializeHardware()
+async function run() {
+  await initializeDiscord()
+  await initializeHardware()
+}
+run()
 
 
 /// WEB SOCKET STUFF ///
