@@ -15,11 +15,8 @@ def hello_world():
 
 @app.route("/embedding", methods=['POST'])
 def handle_embedding():
-    json_data = request.get_json()
-    data_string = json.dumps(json_data)
-    response_data = embeddings_search.search_reviews(data_string, n=1, pprint=False).item()
-    response_data_string = str(response_data).replace('\\', '')
+    data_string = request.get_data().decode('utf-8')
+    response_data = embeddings_search.search_reviews(data_string, n=5, pprint=True)
     print('this is request string', data_string)
-    print('this is api result', response_data_string)
-    return jsonify(response_data_string)
-
+    print('this is api result', response_data)
+    return jsonify(response_data)

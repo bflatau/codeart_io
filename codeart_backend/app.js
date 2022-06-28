@@ -470,15 +470,14 @@ const initializeHardware = async () => {
 
   app.post('/openai', async (req, res) => { 
 
-    const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION RESULTS MAY BE UNSAFE FOR ALL AGES')}};
+    const unsafeResponse = {body:{text: openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION')}};
     const safeQuestion = {body:{text: openaiController.wordWrapResponse('YOU ASKED\n' + req.body.text)}};
-    const AIdataResponse = await openaiController.checkContent(req);  //response from OPENAI
+    const AIdataResponse = await openaiController.checkContent(req.body.text);  //response from OPENAI
 
     async function sendEmbeddings(){
-        const embeddingData= await openaiController.getEmbeddingData(req);  //response from OPENAI
-        const embeddingText = embeddingData.body.text; 
-        const embeddingQuestion = embeddingText.slice(0, embeddingText.indexOf("^"));
-        const embeddingAnswer = embeddingText.slice(embeddingText.indexOf("^") + 1, embeddingText.length);
+        const embeddingData= await openaiController.getEmbeddingData(req.body.text);  //response from OPENAI
+        const embeddingQuestion = embeddingData.question
+        const embeddingAnswer = embeddingData.answer
 
         textToArrayMatrix({body: {text: openaiController.wordWrapResponse(`I FOUND A MATCH /n /n ${embeddingQuestion}`)}}); //send openai quesion
 

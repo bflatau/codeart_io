@@ -72,13 +72,13 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-async function checkContent (req, res){
+async function checkContent (text, res){
 
     let dataResponseObject = {body: {text: ''}};
 
 
     const contentType = await openai.createCompletion("content-filter-alpha", {
-      prompt: contentFilter(req.body.text),
+      prompt: contentFilter(text),
       temperature: 0.0,
       max_tokens: 1,
       top_p: 0,
@@ -96,7 +96,7 @@ async function checkContent (req, res){
     else{
 
       base('AI_INPUTS').create({ //AIRTABLE STUFF
-      "QUESTION": req.body.text,
+      "QUESTION": text,
       "RESPONSE": "UNSAFE"
       }, function(err, record) {
         if (err) {
@@ -112,30 +112,25 @@ async function checkContent (req, res){
 }
 
 
-async function getEmbeddingData(req, res){
+async function getEmbeddingData(text, res){
 
-  console.log('IM EMBEDDING FUNCTION')
+  console.log('IM EMBEDDING FUNCTION', text)
 
-  let dataResponseObject = {body: {text: ''}};
- 
   const embeddingValue = await fetch('http://0.0.0.0:5000/embedding', {
     method: 'POST', // or 'PUT'
     headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify(req.body.text),
+    body: text,
     })
     .then(response => response.json())
-    .then(data => {
-      return data.toUpperCase().trim();
-    })
     .catch((error) => {
     console.error('Error:', error);
     });
 
 
       // base('AI_INPUTS').create({  //AIRTABLE STUFF
-      //   "QUESTION": req.body.text,
+      //   "QUESTION": text,
       //   "RESPONSE": formattedResponseData
       //   }, function(err, record) {
       //     if (err) {
@@ -146,10 +141,7 @@ async function getEmbeddingData(req, res){
       //   });
 
 
-    dataResponseObject.body.text = embeddingValue;
-    return dataResponseObject;
-
-
+    return embeddingValue
 }
 
 
