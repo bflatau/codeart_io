@@ -126,7 +126,7 @@ systemctl disable brltty.service
 ### SNAP 
 
 * https://snapcraft.io/install/wireguard-ammp/ubuntu
-* `sudo snap install wireguard-ammp`
+* `sudo snap install wireguard-ammp --devmode`
 * ```
 With an overlay, /etc/wireguard is mapped to $SNAP_COMMON (conventionally /var/snap/wireguard-ammp/common) - so this is where you should put configuration files such as wg0.conf. Once the config file is in place and you've connected the network-control and firewall-control interaces, run
 
@@ -139,3 +139,16 @@ You may get an error Unable to modify interface: Protocol not supported due to a
 * https://askubuntu.com/questions/902905/install-applications-in-ubuntu-core
 
 * then normal instructions: https://bflatau.github.io/benwiki/docs/server/wireguard/
+
+
+
+### SCOTTDO
+* Fix word wrapping
+* Python Cull Jeopardy questions
+
+
+### BENDO
+* reset if text after 40 seconds
+* lock terminal until split flaps are done
+* test raspi again
+* wireguard auto connect

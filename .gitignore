@@ -5,3 +5,5 @@ ext
 ext/**
 embeddings
 .env
+
+*.pyc
