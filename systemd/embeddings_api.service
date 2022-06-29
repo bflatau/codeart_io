@@ -1,0 +1,13 @@
+[Unit]
+Description=embeddings_api
+After=network.target
+
+[Service]
+Type=simple
+User=ben
+ExecStart=python3 -u app.py
+WorkingDirectory=/home/ben/Desktop/codeart_io/embeddings_api
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

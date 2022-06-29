@@ -1,0 +1,13 @@
+[Unit]
+Description=codeart_backend
+After=network.target
+
+[Service]
+Type=simple
+User=ben
+ExecStart=/home/ben/Desktop/codeart_io/codeart_backend/start.sh
+WorkingDirectory=/home/ben/Desktop/codeart_io/codeart_backend
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

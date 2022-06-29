@@ -20,3 +20,6 @@ def handle_embedding():
     print('this is request string', data_string)
     print('this is api result', response_data)
     return jsonify(response_data)
+
+if __name__ == '__main__':
+    app.run()
