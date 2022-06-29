@@ -200,9 +200,9 @@ systemctl enable myscript.service
 
 
 ### SCOTTDO
-* Fix word wrapping
-* Python Cull Jeopardy questions
-* Auto start Node & Flask
+* ~~Fix word wrapping~~
+* ~~Python Cull Jeopardy questions~~
+* ~~Auto start Node & Flask~~
 
 
 ### BENDO
@@ -210,8 +210,8 @@ systemctl enable myscript.service
 * lock terminal until split flaps are done
 * test raspi again
 * ~~wireguard auto connect CHM~~
-* wireguard auto connect raspi
-* rebuild frontend debug for 10.0.0.11
+* wireguard auto connect raspi (FAIL)
+* ~~rebuild frontend debug for 10.0.0.11~~
 * ~~default CHM server to use node 16~~
 * Format CSS for screen
 * Add to airtable

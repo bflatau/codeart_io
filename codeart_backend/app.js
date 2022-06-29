@@ -361,7 +361,8 @@ const initializeHardware = async () => {
     const text = ' ------------------ \n'
      + config2d.map((row) => '|' + row.map((flapIndex) => flaps[flapIndex]).join('') + '|').join('\n') + '\n'
      + ' ------------------ '
-    console.log(text)
+    console.log(text) ///logging split flap text here in cool boxes
+
   }
 
   function showText(text){
@@ -584,6 +585,8 @@ const initializeHardware = async () => {
     } finally {
       await showText(DEFAULT_PROMPT)
       sequenceRunning = false
+      io.sockets.emit('enable keyboard', {enableKeyboard: true});
+
     }
   }
 
@@ -658,7 +661,7 @@ io.on('connection', socket => {
 
   /// When a user disconnects, console log and then update the clients with the user count
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    // console.log('user disconnected')
     io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
 
   })
