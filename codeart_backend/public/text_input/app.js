@@ -1,4 +1,4 @@
-const localURL ='http://0.0.0.0:8090/openai';
+const localURL ='http://zerocool:8090/openai';
 const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/openai';
 const serverURL = 'http://solaire:8090/openai';
 const wireguardURL = 'http://10.0.0.11:8090/openai';
@@ -16,8 +16,8 @@ function handleKeyPress(event) {
         document.getElementById("input-field").value = '';
         document.getElementById('input-field').readOnly = true;
         document.getElementById('helper-text-container').style.display = 'none'     
-        document.getElementById('input-field').style.backgroundColor = 'black'     
-        document.getElementById('animation').style.display = 'block'     
+        document.getElementById('input-field').style.display = 'none'    
+        // document.getElementById('animation').style.display = 'block'     
         document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
         // return false;
 
@@ -60,10 +60,10 @@ function pollOpenAi(inputText, aiEngine){
 var socket = io();
 
 socket.on('enable keyboard', function(msg) {
+    document.getElementById('input-field').style.display = 'block'  
     document.getElementById("waiting-text").innerText = '';
-    document.getElementById('helper-text-container').style.display = 'block' 
-    document.getElementById('input-field').style.backgroundColor = 'grey'     
-    document.getElementById('animation').style.display = 'none' 
+    document.getElementById('helper-text-container').style.display = 'block'    
+    // document.getElementById('animation').style.display = 'none' 
     document.getElementById('input-field').readOnly = false;
     document.getElementById('input-field').focus();
   });
