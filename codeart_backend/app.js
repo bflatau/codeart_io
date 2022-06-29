@@ -357,14 +357,17 @@ const initializeHardware = async () => {
 
   //HELPER FUNCTIONS
 
-  function logConfig2d(config2d) {
+  function logConfig2d(config2d, important) {
     const text = ' ------------------ \n'
      + config2d.map((row) => '|' + row.map((flapIndex) => flaps[flapIndex]).join('') + '|').join('\n') + '\n'
      + ' ------------------ '
     console.log(text)
+    if (important) {
+      sendDiscordDebug('```' + text + '```')
+    }
   }
 
-  function showText(text){
+  function showText(text, important=true){
     const newLayout = []
     for (let i = 0; i < 6; i++) {
       newLayout.push(new Array(18).fill(0))
@@ -392,8 +395,7 @@ const initializeHardware = async () => {
       newLayout[row][col] = flapIndex == -1 ? 0 : flapIndex
       col++
     }
-    // console.log('this is new layout', newLayout)
-    logConfig2d(newLayout)
+    logConfig2d(newLayout, important)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
 
@@ -403,7 +405,6 @@ const initializeHardware = async () => {
     io.sockets.emit('button down', {buttons: '1', flaps: frontEndArray});
 
     //END BEN TESTS
-    // res.send('ok')
   }
 
   function chunk(arr, len) {
@@ -446,7 +447,7 @@ const initializeHardware = async () => {
     return rowsWithSpaces
   }
 
-  async function wordWrapAndShowText(text) {
+  async function wordWrapAndShowText(text, important=true) {
     text = text.replaceAll("'", '')
       .replaceAll('"', '*')
       .replaceAll(',', '')
@@ -564,11 +565,13 @@ const initializeHardware = async () => {
 
   let sequenceRunning = false
   async function runOpenAiSequence(text) {
-    if (sequenceRunning) {
+    if (sequenceRunning || text.length === 0) {
       return
     }
     sequenceRunning = true
     try {
+      // Start clearing the screen immediately, to be more responsive
+      showText('', false)
       if (!await openaiController.isContentSafe(text)) {
         await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
       } else {
@@ -582,7 +585,7 @@ const initializeHardware = async () => {
     } catch (e) {
       sendDiscordError(`Error in openai sequence: ${e}`)
     } finally {
-      await showText(DEFAULT_PROMPT)
+      showText(DEFAULT_PROMPT, false)
       sequenceRunning = false
     }
   }
@@ -627,7 +630,7 @@ const initializeHardware = async () => {
 
 
   ///BEN ADD NEW ANIMATIONS HERE ///
-  setTimeout(() => showText(DEFAULT_PROMPT), 2000);
+  setTimeout(() => showText(DEFAULT_PROMPT, false), 2000);
 }
 
 async function run() {
