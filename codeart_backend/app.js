@@ -561,7 +561,7 @@ const initializeHardware = async () => {
     res.send('ok')
   })
 
-  const DEFAULT_PROMPT = 'ASK ME A QUESTION\n\nWHO IS wwwww?\nWHAT IS ggggg?\nWHERE IS ppppp?'
+  const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
 
   let sequenceRunning = false
   async function runOpenAiSequence(text) {
@@ -572,15 +572,18 @@ const initializeHardware = async () => {
     try {
       // Start clearing the screen immediately, to be more responsive
       showText('', false)
-      if (!await openaiController.isContentSafe(text)) {
+      if (text.length > 80 || !await openaiController.isContentSafe(text)) {
         await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
       } else {
         // Start fetching embedding data
         const embeddingPromise = await openaiController.getEmbeddingData(text)
         await wordWrapAndShowText('YOU ASKED\n\n' + text.toUpperCase())
         const embeddingData = await embeddingPromise
-        await wordWrapAndShowText('I FOUND A MATCH\n\n' + embeddingData.question.toUpperCase())
-        await wordWrapAndShowText(embeddingData.answer.toUpperCase())
+
+        await wordWrapAndShowText('THE ANSWER I FOUND\nwwwwwwwwwwwwwwwwww\n' + embeddingData.answer.toUpperCase())
+        await wordWrapAndShowText('yyyyyyyyyyyyyyyyyy\n\n' + embeddingData.question.toUpperCase())
+        // await wordWrapAndShowText('I FOUND A MATCH\n\n' + embeddingData.question.toUpperCase())
+        // await wordWrapAndShowText(embeddingData.answer.toUpperCase())
       }
     } catch (e) {
       sendDiscordError(`Error in openai sequence: ${e}`)
