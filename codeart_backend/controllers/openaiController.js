@@ -72,10 +72,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-async function checkContent (text, res){
-
-    let dataResponseObject = {body: {text: ''}};
-
+async function isContentSafe(text){
 
     const contentType = await openai.createCompletion("content-filter-alpha", {
       prompt: contentFilter(text),
@@ -88,13 +85,8 @@ async function checkContent (text, res){
     console.log('content check', contentType.data.choices)
 
     if(contentType.data.choices[0].text === '0'){
-
-      dataResponseObject.body.text = 'SAFE';
-      return dataResponseObject;
-
-    }
-
-    else{
+      return true
+    } else {
 
       base('AI_INPUTS').create({ //AIRTABLE STUFF
       "QUESTION": text,
@@ -107,8 +99,7 @@ async function checkContent (text, res){
       // console.log(record.getId());
       });
 
-      dataResponseObject.body.text = 'UNSAFE';
-      return dataResponseObject;
+      return false
     }
 }
 
@@ -119,9 +110,6 @@ async function getEmbeddingData(text, res){
 
   const embeddingValue = await fetch('http://0.0.0.0:5000/embedding', {
     method: 'POST', // or 'PUT'
-    headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-    },
     body: text,
     })
     .then(response => response.json())
@@ -160,44 +148,10 @@ const contentFilter =(input)=>{
 
 /// SCREEN SAVER MESSAGES ///
 
-const helloMessageArray =  [
-    // Ask me a question who is what is where is
-    [
-      8, 36,  7,  0, 3,  9,  0,
-      8,  0, 27, 38, 9, 36, 31,
-     16, 11, 10,  0
-   ],
-   [
-     0, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0
-   ],
-   [
-     23, 24, 11, 0, 16, 36, 35,
-      0,  0,  0, 0,  0,  0,  0,
-      0,  0,  0, 0
-   ],
-   [
-     23, 24, 8, 31, 0, 16, 36,
-     35,  0, 0,  0, 0,  0,  0,
-      0,  0, 0,  0
-   ],
-   [
-     23, 24, 9, 4, 9, 0, 16,
-     36, 35, 0, 0, 0, 0,  0,
-      0,  0, 0, 0
-   ],
-   [
-     0, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0, 0, 0, 0,
-     0, 0, 0, 0
-   ]
-  ]
 
 
 
-
-module.exports = {checkContent, helloMessageArray, wordWrapResponse, getEmbeddingData}
+module.exports = {isContentSafe, wordWrapResponse, getEmbeddingData}
 
 
 // const example = `I'm sorry, I don't know what you're talking about.`

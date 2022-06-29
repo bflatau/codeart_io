@@ -447,9 +447,9 @@ const initializeHardware = async () => {
   }
 
   async function wordWrapAndShowText(text) {
-    text = text.replace("'", '')
-      .replace('"', '*')
-      .replace(',', '')
+    text = text.replaceAll("'", '')
+      .replaceAll('"', '*')
+      .replaceAll(',', '')
 
     const rows = wrap(text, 18)
     const fullPages = chunk(rows, 6)
@@ -569,7 +569,7 @@ const initializeHardware = async () => {
     }
     sequenceRunning = true
     try {
-      if (await openaiController.checkContent(text) === 'UNSAFE') {
+      if (!await openaiController.isContentSafe(text)) {
         await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
       } else {
         // Start fetching embedding data
