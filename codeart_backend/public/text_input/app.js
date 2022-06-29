@@ -15,10 +15,16 @@ function handleKeyPress(event) {
         pollOpenAi(submittedText, 'embedding');
         document.getElementById("input-field").value = '';
         document.getElementById('input-field').readOnly = true;
+        document.getElementById('animation').style.display = 'block'     
+        document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
         // return false;
 
-       
     }
+
+    setTimeout(() => {
+        document.getElementById("input-field").value = '';
+      }, "30000")
+
 }
 
 
@@ -52,6 +58,8 @@ function pollOpenAi(inputText, aiEngine){
 var socket = io();
 
 socket.on('enable keyboard', function(msg) {
+    document.getElementById("waiting-text").innerText = '';
+    document.getElementById('animation').style.display = 'none' 
     document.getElementById('input-field').readOnly = false;
     document.getElementById('input-field').focus();
   });
