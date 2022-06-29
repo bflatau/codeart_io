@@ -206,15 +206,15 @@ systemctl enable myscript.service
 
 
 ### BENDO
-* reset if text after 40 seconds
-* lock terminal until split flaps are done
+* ~~reset if text after 40 seconds~~
+* ~~lock terminal until split flaps are done~~
 * test raspi again
 * ~~wireguard auto connect CHM~~
 * wireguard auto connect raspi (FAIL)
 * ~~rebuild frontend debug for 10.0.0.11~~
 * ~~default CHM server to use node 16~~
 * Format CSS for screen
-* Add to airtable
+* ~~Add to airtable~~
 https://discourse.ubuntu.com/t/using-recovery-modes/20332
 
 

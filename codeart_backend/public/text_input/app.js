@@ -15,6 +15,8 @@ function handleKeyPress(event) {
         pollOpenAi(submittedText, 'embedding');
         document.getElementById("input-field").value = '';
         document.getElementById('input-field').readOnly = true;
+        document.getElementById('helper-text-container').style.display = 'none'     
+        document.getElementById('input-field').style.backgroundColor = 'black'     
         document.getElementById('animation').style.display = 'block'     
         document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
         // return false;
@@ -59,6 +61,8 @@ var socket = io();
 
 socket.on('enable keyboard', function(msg) {
     document.getElementById("waiting-text").innerText = '';
+    document.getElementById('helper-text-container').style.display = 'block' 
+    document.getElementById('input-field').style.backgroundColor = 'grey'     
     document.getElementById('animation').style.display = 'none' 
     document.getElementById('input-field').readOnly = false;
     document.getElementById('input-field').focus();

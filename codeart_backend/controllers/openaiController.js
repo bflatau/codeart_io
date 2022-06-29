@@ -118,16 +118,16 @@ async function getEmbeddingData(text, res){
     });
 
 
-      // base('AI_INPUTS').create({  //AIRTABLE STUFF
-      //   "QUESTION": text,
-      //   "RESPONSE": formattedResponseData
-      //   }, function(err, record) {
-      //     if (err) {
-      //       console.error(err);
-      //       return;
-      //     }
-      //   // console.log(record.getId());
-      //   });
+      base('AI_INPUTS').create({  //AIRTABLE STUFF
+        "QUESTION": text,
+        "RESPONSE": `${embeddingValue.question.toUpperCase()} * ${embeddingValue.answer}`
+        }, function(err, record) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        // console.log(record.getId());
+        });
 
 
     return embeddingValue
@@ -156,39 +156,39 @@ module.exports = {isContentSafe, wordWrapResponse, getEmbeddingData}
 
 // const example = `I'm sorry, I don't know what you're talking about.`
 
-function padRight(text, max) {
-  return text + ' '.repeat(max - text.length);
-}
+// function padRight(text, max) {
+//   return text + ' '.repeat(max - text.length);
+// }
 
-function redoSpaces(text, rowLength, totalLength) {
-  const words = text.split(' ');
-  const rows = [];
-  let currRow = [];
-  let currRowLength = 0;
+// function redoSpaces(text, rowLength, totalLength) {
+//   const words = text.split(' ');
+//   const rows = [];
+//   let currRow = [];
+//   let currRowLength = 0;
 
-  words.forEach(word => {
-    if ((currRowLength + word.length + 1) <= rowLength) {
-      currRowLength += word.length;
-      currRow.push(word);
-    } else {
-      rows.push(currRow);
-      currRow = [word];
-      currRowLength = word.length;
-    }
-  });
+//   words.forEach(word => {
+//     if ((currRowLength + word.length + 1) <= rowLength) {
+//       currRowLength += word.length;
+//       currRow.push(word);
+//     } else {
+//       rows.push(currRow);
+//       currRow = [word];
+//       currRowLength = word.length;
+//     }
+//   });
   
-  if (currRow.length) {
-    rows.push(currRow);
-  }
+//   if (currRow.length) {
+//     rows.push(currRow);
+//   }
 
-  const rowsWithSpaces = rows
-    .map(row => row.join(' '))
-    .map(rowAsString => padRight(rowAsString, rowLength));
+//   const rowsWithSpaces = rows
+//     .map(row => row.join(' '))
+//     .map(rowAsString => padRight(rowAsString, rowLength));
 
-  const asString = rowsWithSpaces.join('');
+//   const asString = rowsWithSpaces.join('');
   
-  return padRight(asString, totalLength);
-}
+//   return padRight(asString, totalLength);
+// }
 
 // const redone = redoSpaces(example, 18, 108);
 // console.log('redone length', redone.length);
