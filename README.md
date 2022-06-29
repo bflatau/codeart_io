@@ -52,6 +52,12 @@
 
     `node app.js`
 
+* Configuring systemd (start on boot, auto-restart)
+
+    run `./systemd/install.sh`
+
+    Check logs using `journalctl -fu codeart_backend` and `journalctl -fu embeddings_api`
+
 ---
 
 
