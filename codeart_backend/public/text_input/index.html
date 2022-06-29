@@ -1,18 +1,30 @@
 <html>
   <head>
     <link rel="stylesheet" href="app.css">
+    <script src="socket.io-2.3.0.min.js"></script>
   </head>
   <body>
     <!-- <div>
       <iframe class="youtube-embed" width="560" height="315" src="https://www.youtube.com/embed/g8-iRMYwrdQ?autoplay=1" frameborder="0" allow="autoplay;"></iframe>
     </div> -->
    
-    <div class="request-response-container">      
-      <div id="response-helper-text-big">I'M A SUPER SMART AI. ASK ME A QUESTION</div> 
-      <div id="response-helper-text">(psst. Make sure to hit <strong>ENTER</strong> after you've typed in your question.)</div> 
+    <div class="request-response-container">
+      <div id="helper-text-container">
+        <div id="response-helper-text-big">I'M A SUPER SMART AI. ASK ME A QUESTION.</div> 
+        <div id="response-helper-text">(psst. Make sure to hit <strong>ENTER</strong> after you've typed in your question.)</div> 
+      </div>      
+      
       <div>
         <input name="input" id="input-field" placeholder=""  autofocus onkeypress="handleKeyPress(event)"</input>
       </div>
+
+      <!-- <div id="animation">
+        <div class="player_one"></div>
+        <div class="player_two"></div>
+        <div class="ball"></div>
+      </div> -->
+
+      <div id="waiting-text"></div>
     </div>
   
   </body>

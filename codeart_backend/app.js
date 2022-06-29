@@ -590,6 +590,8 @@ const initializeHardware = async () => {
     } finally {
       showText(DEFAULT_PROMPT, false)
       sequenceRunning = false
+      io.sockets.emit('enable keyboard', {enableKeyboard: true});
+
     }
   }
 
@@ -664,7 +666,7 @@ io.on('connection', socket => {
 
   /// When a user disconnects, console log and then update the clients with the user count
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    // console.log('user disconnected')
     io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
 
   })
