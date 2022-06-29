@@ -85,6 +85,7 @@ async function checkContent (text, res){
       frequency_penalty: 0.5,
       logprobs: 10, 
     });
+    console.log('content check', contentType.data.choices)
 
     if(contentType.data.choices[0].text === '0'){
 

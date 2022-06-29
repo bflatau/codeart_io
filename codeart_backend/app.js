@@ -242,6 +242,7 @@ async function initializeDiscord() {
 }
 
 async function sendDiscordDebug(message) {
+  console.log('DISCORD DEBUG', message)
   try {
     const channel = discord.channels.cache.get(DISCORD_CHANNEL_DEBUG);
     channel.send(message);
@@ -250,6 +251,7 @@ async function sendDiscordDebug(message) {
   }
 }
 async function sendDiscordError(message) {
+  console.log('DISCORD ERROR', message)
   try {
     const channel = discord.channels.cache.get(DISCORD_CHANNEL_ERROR);
     channel.send(message);
@@ -268,7 +270,8 @@ const initializeHardware = async () => {
     //vendor id | product id | serial number//
     ['10c4', 'ea60', '022809A3'], // real
     ['10c4', 'ea60', '02280A9E'], // development
-    ['1a86', '55d4', '5424024039'] //ben dev
+    ['1a86', '55d4', '5424024039'], //ben dev
+    ['1a86', '55d4', '5435001167'], //scott dev
   ])
 
   let lastState = undefined
@@ -444,8 +447,6 @@ const initializeHardware = async () => {
   }
 
   async function wordWrapAndShowText(text) {
-    const PAGE_DELAY = 6000
-
     text = text.replace("'", '')
       .replace('"', '*')
       .replace(',', '')
@@ -453,9 +454,17 @@ const initializeHardware = async () => {
     const rows = wrap(text, 18)
     const fullPages = chunk(rows, 6)
     for (const page of fullPages) {
-      showText(page.join('\n'))
+      const pageText = page.join('\n')
+      const numLetters = Array.from(pageText.matchAll(/[A-Z]/g)).length
+      showText(pageText)
       await waitForIdle();
-      await sleep(PAGE_DELAY)
+      if (numLetters > 70) {
+        await sleep(15000)
+      } else if (numLetters > 20) {
+        await sleep(8000)
+      } else {
+        await sleep(5000)
+      }
     }
   }
 
@@ -474,23 +483,13 @@ const initializeHardware = async () => {
             anyMoving = true
             break
           }
-          if (!anyMoving) {
-            return
-          }
+        }
+        if (!anyMoving) {
+          return
         }
       }
     }
     console.log('waitForIdle timed out');
-  }
-
-  function askMessage(time){
-    setTimeout(()=>{
-      splitflapConfig2d = openaiController.helloMessageArray;
-      sendSplitflapConfig();
-      const frontEndArray = splitflapConfig2d[0].concat(splitflapConfig2d[1],splitflapConfig2d[2], splitflapConfig2d[3], splitflapConfig2d[4], splitflapConfig2d[5]);
-      io.sockets.emit('button down', {buttons: '1',  flaps: frontEndArray}); // BENDO: update the splitflaplatest state so that on refresh, it's the latest state?
-
-      },time)
   }
 
 //////API ENDPOINTS ////
