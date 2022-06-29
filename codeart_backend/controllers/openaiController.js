@@ -119,7 +119,7 @@ async function getEmbeddingData(text, res){
   const embeddingValue = await fetch('http://0.0.0.0:5000/embedding', {
     method: 'POST', // or 'PUT'
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
     },
     body: text,
     })

@@ -4,6 +4,7 @@ splitflap
 splitflap/**
 ext
 ext/**
+build
 embeddings
 wireguard
 .env
