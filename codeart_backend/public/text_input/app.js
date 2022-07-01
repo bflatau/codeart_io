@@ -2,16 +2,23 @@ const localURL ='http://zerocool:8090/openai';
 const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/openai';
 const serverURL = 'http://solaire:8090/openai';
 const wireguardURL = 'http://10.0.0.11:8090/openai';
+const CHMURL = 'http://10.42.0.1:8090/openai';
 
+const urlParams = new URLSearchParams(window.location.search);
+const wireguardQueryParam = urlParams.get('wireguard');
+const fetchUrl = wireguardQueryParam ? wireguardURL : CHMURL;
 
 let typingEnabled = true;
 
-
+let resetTimeout = undefined;
 function handleKeyPress(event) {
     if (event.key == 'Enter') {
         // event.preventDefault();
         console.log('enter pressed');
         const submittedText = document.getElementById("input-field").value;  
+        if (submittedText.length === 0) {
+            return;
+        }
         pollOpenAi(submittedText, 'embedding');
         document.getElementById("input-field").value = '';
         document.getElementById('input-field').readOnly = true;
@@ -23,7 +30,8 @@ function handleKeyPress(event) {
 
     }
 
-    setTimeout(() => {
+    clearTimeout(resetTimeout);
+    resetTimeout = setTimeout(() => {
         document.getElementById("input-field").value = '';
       }, "30000")
 
@@ -34,7 +42,7 @@ function pollOpenAi(inputText, aiEngine){
 
     const data = JSON.stringify({text: inputText.toUpperCase(), ai: aiEngine});
 
-    fetch(localURL, {
+    fetch(fetchUrl, {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',

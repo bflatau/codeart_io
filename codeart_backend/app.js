@@ -20,6 +20,9 @@ const { Client, Intents } = require('discord.js');
 const DISCORD_CHANNEL_DEBUG = '990787044613705818'
 const DISCORD_CHANNEL_ERROR = '990787072950403123'
 
+const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
+let sequenceRunning = false
+
 /// SETUP CORS ///
 
 // need to call cors before setting up routes
@@ -311,6 +314,15 @@ const initializeHardware = async () => {
   sendSplitflapConfig()
   setInterval(sendSplitflapConfig, 5000)
 
+  const setInputKeyboard = () => {
+    if (!sequenceRunning) {
+      io.sockets.emit('enable keyboard', {enableKeyboard: true});
+    }
+  }
+
+  // Periodically re-sync the input keyboard status (in case something happens, don't want it to get stuck disabled)
+  setInterval(setInputKeyboard, 10000)
+
   const animationFrame = () => {
     const current = currentAnimation.next()
     if (!current.done) {
@@ -561,9 +573,7 @@ const initializeHardware = async () => {
     res.send('ok')
   })
 
-  const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
 
-  let sequenceRunning = false
   async function runOpenAiSequence(text) {
     if (sequenceRunning || text.length === 0) {
       return
@@ -590,8 +600,7 @@ const initializeHardware = async () => {
     } finally {
       showText(DEFAULT_PROMPT, false)
       sequenceRunning = false
-      io.sockets.emit('enable keyboard', {enableKeyboard: true});
-
+      setInputKeyboard()
     }
   }
 
