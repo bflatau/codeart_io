@@ -10,6 +10,7 @@ const SerialPort = require('serialport')
 const {Splitflap, Util} = require('splitflapjs')
 const {PB} = require('splitflapjs-proto')
 const {welcome, randomFill, spiral, rain, testAll, sequence1, wheelOfFortune} = require('./animations')
+const schedule = require('node-schedule');
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -19,6 +20,9 @@ const io = socketIO(server);
 const { Client, Intents } = require('discord.js');
 const DISCORD_CHANNEL_DEBUG = '990787044613705818'
 const DISCORD_CHANNEL_ERROR = '990787072950403123'
+
+const WAKEUP_HOUR = 9;
+const WAKEUP_MINUTE = 33;
 
 const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
 let sequenceRunning = false
@@ -263,6 +267,16 @@ async function sendDiscordError(message) {
   }
 }
 
+const setInputKeyboard = () => {
+  if (sequenceRunning) {
+    io.sockets.emit('keyboard', {enable: false})
+  } else {
+    io.sockets.emit('keyboard', {enable: true});
+  }
+}
+
+// Periodically re-sync the input keyboard status (in case something happens, don't want it to get stuck disabled)
+setInterval(setInputKeyboard, 10000)
 
 /// INITIALIZE HARDWARE ////
 const initializeHardware = async () => {
@@ -279,6 +293,7 @@ const initializeHardware = async () => {
 
   let lastState = undefined
   let lastDebugStatus = 0
+  let lastModuleErrorCount = 0
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
       if (message.payload === 'log') {
@@ -287,10 +302,21 @@ const initializeHardware = async () => {
         splitflapLatestState = PB.SplitflapState.toObject(message.splitflapState, {defaults: true})
 
         io.sockets.emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
+        let errors = 0
+        for (const module of splitflapLatestState.modules) {
+          if (module.state !== PB.SplitflapState.ModuleState.State.NORMAL && module.state !== PB.SplitflapState.ModuleState.State.LOOK_FOR_HOME) {
+            errors += 1
+          }
+        }
+
+        if (errors > lastModuleErrorCount) {
+          sendDiscordError(`Modules with errors increased from ${lastModuleErrorCount} to ${errors}`)
+        }
+        lastModuleErrorCount = errors
       } else if (message.payload === 'supervisorState' && message.supervisorState) {
         io.sockets.emit('splitflap_supervisor_state', PB.SupervisorState.toObject(message.supervisorState))
         const currentState = message.supervisorState?.state
-        if (currentState !== lastState) {
+        if (lastState && currentState !== lastState) {
           sendDiscordDebug(`State changed: ${JSON.stringify(message.supervisorState, undefined, 4)}`)
           if (currentState === PB.SupervisorState.State.FAULT) {
             sendDiscordError(`FAULT! ${JSON.stringify(message.supervisorState, undefined, 4)}`)
@@ -299,7 +325,9 @@ const initializeHardware = async () => {
         lastState = currentState
 
         if (Date.now() - lastDebugStatus > 1*60*60*1000) {
-          sendDiscordDebug(`Current state:\n${JSON.stringify(message.supervisorState)}`)
+          if (lastDebugStatus) {
+            sendDiscordDebug(`Current state:\n${JSON.stringify(message.supervisorState)}`)
+          }
           lastDebugStatus = Date.now()
         }
       }
@@ -314,14 +342,17 @@ const initializeHardware = async () => {
   sendSplitflapConfig()
   setInterval(sendSplitflapConfig, 5000)
 
-  const setInputKeyboard = () => {
-    if (!sequenceRunning) {
-      io.sockets.emit('enable keyboard', {enableKeyboard: true});
-    }
-  }
 
-  // Periodically re-sync the input keyboard status (in case something happens, don't want it to get stuck disabled)
-  setInterval(setInputKeyboard, 10000)
+  const wakeupRule = new schedule.RecurrenceRule();
+  wakeupRule.hour = WAKEUP_HOUR;
+  wakeupRule.minute = WAKEUP_MINUTE;
+  wakeupRule.tz = 'America/Los_Angeles'
+  const wakeupJob = schedule.scheduleJob(wakeupRule, async () => {
+    await sendDiscordDebug("Good morning! I'm going to try turning on the splitflap. Wish me luck!");
+    await sleep(1000);
+    await splitflap.hardReset();
+  })
+  console.log(`Wakeup is scheduled for ${wakeupJob.nextInvocation()}`)
 
   const animationFrame = () => {
     const current = currentAnimation.next()
@@ -419,6 +450,12 @@ const initializeHardware = async () => {
     //END BEN TESTS
   }
 
+  function translateToSplitflapAlphabet(text) {
+    return text.replaceAll("'", '')
+    .replaceAll('"', '*')
+    .replaceAll(',', '')
+  }
+
   function chunk(arr, len) {
     var chunks = [],
         i = 0,
@@ -459,26 +496,26 @@ const initializeHardware = async () => {
     return rowsWithSpaces
   }
 
-  async function wordWrapAndShowText(text, important=true) {
-    text = text.replaceAll("'", '')
-      .replaceAll('"', '*')
-      .replaceAll(',', '')
-
-    const rows = wrap(text, 18)
+  async function showTextRows(rows, important=true, skipSleep=false) {
     const fullPages = chunk(rows, 6)
-    for (const page of fullPages) {
+    for (let i = 0; i < fullPages.length; i++) {
+      const page = fullPages[i]
       const pageText = page.join('\n')
       const numLetters = Array.from(pageText.matchAll(/[A-Z]/g)).length
-      showText(pageText)
+      showText(pageText, important)
       await waitForIdle();
-      if (numLetters > 70) {
-        await sleep(15000)
-      } else if (numLetters > 20) {
-        await sleep(8000)
-      } else {
-        await sleep(5000)
+      if (!(skipSleep && i === fullPages.length - 1)) {
+        if (numLetters > 70) {
+          await sleep(15000)
+        } else {
+          await sleep(8000)
+        }
       }
     }
+  }
+
+  async function wordWrapAndShowText(text, important=true) {
+    await showTextRows(wrap(translateToSplitflapAlphabet(text), 18), important)
   }
 
   async function sleep(time) {
@@ -580,20 +617,43 @@ const initializeHardware = async () => {
     }
     sequenceRunning = true
     try {
-      // Start clearing the screen immediately, to be more responsive
-      showText('', false)
+      setInputKeyboard()
       if (text.length > 80 || !await openaiController.isContentSafe(text)) {
         await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
       } else {
         // Start fetching embedding data
-        const embeddingPromise = await openaiController.getEmbeddingData(text)
-        await wordWrapAndShowText('YOU ASKED\n\n' + text.toUpperCase())
-        const embeddingData = await embeddingPromise
+        const embeddingPromise = openaiController.getEmbeddingData(text)
 
-        await wordWrapAndShowText('THE ANSWER I FOUND\nwwwwwwwwwwwwwwwwww\n' + embeddingData.answer.toUpperCase())
-        await wordWrapAndShowText('yyyyyyyyyyyyyyyyyy\n\n' + embeddingData.question.toUpperCase())
-        // await wordWrapAndShowText('I FOUND A MATCH\n\n' + embeddingData.question.toUpperCase())
-        // await wordWrapAndShowText(embeddingData.answer.toUpperCase())
+        await showTextRows([''], false, true)
+        await sleep(1000)
+
+        const askedRows = wrap(translateToSplitflapAlphabet('pppp YOU ASKED ppp\n' + text.toUpperCase()), 18);
+        for (let i = 0; i < askedRows.length; i++) {
+          await showTextRows(askedRows.slice(0, i+1), false, true)
+          await sleep(500)
+        }
+
+        // By sleeping _before_ awaiting the embedding promise, we require a minimum of 3 seconds delay (or longer if the embedding takes longer to resolve)
+        await sleep(3000)
+        const embeddingData = await embeddingPromise
+        
+        const foundRows = wrap(translateToSplitflapAlphabet('ggggg I FOUND gggg\n' + embeddingData.question.toUpperCase()), 18);
+
+        if (askedRows.length + foundRows.length < 6) {
+          // Include a blank row if we can afford it
+          await showTextRows([...askedRows, '', ...foundRows], true, true)
+        } else if (askedRows.length + foundRows.length === 6) {
+          // Can't afford a blank line
+          await showTextRows([...askedRows, ...foundRows], true, true)
+        } else {
+          // Replace the whole screen with the "I FOUND" screen
+          await sleep(2000)
+          await showTextRows(foundRows, true, true)
+        }
+
+        await sleep(8000)
+
+        await wordWrapAndShowText(embeddingData.answer.toUpperCase() + 'w')
       }
     } catch (e) {
       sendDiscordError(`Error in openai sequence: ${e}`)
@@ -664,6 +724,7 @@ io.on('connection', socket => {
     io.to(socket.id).emit('splitflap_state', splitflapStateForFrontend(splitflapLatestState))
   }
 
+  setInputKeyboard()
   /// get mega button state when connecting and send to newly connected user
   // if (megaController.getMegaButtonState().length > 0){  
   //   megaController.getMegaButtonState().forEach(button =>{

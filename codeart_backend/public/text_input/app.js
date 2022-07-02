@@ -21,11 +21,7 @@ function handleKeyPress(event) {
         }
         pollOpenAi(submittedText, 'embedding');
         document.getElementById("input-field").value = '';
-        document.getElementById('input-field').readOnly = true;
-        document.getElementById('helper-text-container').style.display = 'none'     
-        document.getElementById('input-field').style.display = 'none'    
-        // document.getElementById('animation').style.display = 'block'     
-        document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
+        setKeyboard(false)
         // return false;
 
     }
@@ -61,17 +57,27 @@ function pollOpenAi(inputText, aiEngine){
 
 }
 
-
+function setKeyboard(enabled) {
+    if (enabled) {
+        document.getElementById('input-field').style.display = 'block'  
+        document.getElementById("waiting-text").innerText = '';
+        document.getElementById('helper-text-container').style.display = 'block'    
+        // document.getElementById('animation').style.display = 'none' 
+        document.getElementById('input-field').readOnly = false;
+        document.getElementById('input-field').focus();
+    } else {
+        document.getElementById('input-field').readOnly = true;
+        document.getElementById('helper-text-container').style.display = 'none'     
+        document.getElementById('input-field').style.display = 'none'    
+        // document.getElementById('animation').style.display = 'block'     
+        document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
+    }
+}
 
 
 ////WEBSOCKET STUFF///
 var socket = io();
 
-socket.on('enable keyboard', function(msg) {
-    document.getElementById('input-field').style.display = 'block'  
-    document.getElementById("waiting-text").innerText = '';
-    document.getElementById('helper-text-container').style.display = 'block'    
-    // document.getElementById('animation').style.display = 'none' 
-    document.getElementById('input-field').readOnly = false;
-    document.getElementById('input-field').focus();
-  });
+socket.on('keyboard', function(msg) {
+    setKeyboard(msg.enable)
+});
