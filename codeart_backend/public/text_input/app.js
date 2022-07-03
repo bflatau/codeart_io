@@ -1,8 +1,5 @@
-const localURL ='http://zerocool:8090/openai';
-const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/openai';
-const serverURL = 'http://solaire:8090/openai';
 const wireguardURL = 'http://10.0.0.11:8090/openai';
-const CHMURL = 'http://10.42.0.1:8090/openai';
+const CHMURL = 'http://10.42.0.1:8090/openai'; //SHOULD THIS GO TO zerocool if/when the server restarts and gets a new IP??
 
 const urlParams = new URLSearchParams(window.location.search);
 const wireguardQueryParam = urlParams.get('wireguard');
@@ -12,6 +9,9 @@ let typingEnabled = true;
 
 let resetTimeout = undefined;
 function handleKeyPress(event) {
+
+    const flapChars = /[^a-z @ # \$ % & \* ! ?]/gmi;
+
     if (event.key == 'Enter') {
         // event.preventDefault();
         console.log('enter pressed');
@@ -24,12 +24,18 @@ function handleKeyPress(event) {
         setKeyboard(false)
         // return false;
 
+    } else if(flapChars.test(event.key)){
+        event.preventDefault();
+        document.getElementById('warning-text').style.display = 'block' 
     }
 
     clearTimeout(resetTimeout);
     resetTimeout = setTimeout(() => {
         document.getElementById("input-field").value = '';
       }, "30000")
+
+
+
 
 }
 
@@ -62,15 +68,15 @@ function setKeyboard(enabled) {
         document.getElementById('input-field').style.display = 'block'  
         document.getElementById("waiting-text").innerText = '';
         document.getElementById('helper-text-container').style.display = 'block'    
-        // document.getElementById('animation').style.display = 'none' 
         document.getElementById('input-field').readOnly = false;
         document.getElementById('input-field').focus();
     } else {
         document.getElementById('input-field').readOnly = true;
         document.getElementById('helper-text-container').style.display = 'none'     
         document.getElementById('input-field').style.display = 'none'    
-        // document.getElementById('animation').style.display = 'block'     
         document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
+        document.getElementById('warning-text').style.display = 'none' 
+
     }
 }
 
