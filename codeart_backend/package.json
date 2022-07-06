@@ -15,9 +15,11 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/bflatau/benreact_backend#readme",
   "dependencies": {
+    "@discordjs/rest": "^0.5.0",
     "airtable": "^0.11.4",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "discord-api-types": "^0.36.0",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
     "express": "^4.17.1",

@@ -18,14 +18,21 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 const { Client, Intents } = require('discord.js');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 const DISCORD_CHANNEL_DEBUG = '990787044613705818'
 const DISCORD_CHANNEL_ERROR = '990787072950403123'
+const DISCORD_CLIENT_ID = '990787828290027551'
+const DISCORD_GUILD_ID = '990786994139451442'
+const REGISTER_COMMANDS = false; // Set to true and run the server once to register updated discord slash commands
 
 const WAKEUP_HOUR = 9;
 const WAKEUP_MINUTE = 33;
 
 const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
+
 let sequenceRunning = false
+let disabled = false
 
 /// SETUP CORS ///
 
@@ -149,6 +156,7 @@ const findPort = (ports, description, infoList) => {
 }
 
 let splitflapLatestState = null
+let splitflapLatestSupervisorState = null
 
 const splitflapStateForFrontend = (splitflapStatePb) => {
   const remappedTo2d = Util.convert1dChainlinkTo2dDualRowZigZag(splitflapStatePb.modules, 18, true)
@@ -158,14 +166,17 @@ const splitflapStateForFrontend = (splitflapStatePb) => {
   }
 }
 
-let splitflapConfig2d = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
+const emptyConfig2d = () => {
+  return [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]
+}
+let splitflapConfig2d = emptyConfig2d()
 let animationFrame2d = []
 
 
@@ -268,7 +279,7 @@ async function sendDiscordError(message) {
 }
 
 const setInputKeyboard = () => {
-  if (sequenceRunning) {
+  if (sequenceRunning || disabled) {
     io.sockets.emit('keyboard', {enable: false})
   } else {
     io.sockets.emit('keyboard', {enable: true});
@@ -293,7 +304,7 @@ const initializeHardware = async () => {
 
   let lastState = undefined
   let lastDebugStatus = 0
-  let lastModuleErrorCount = 0
+  let lastModuleErrorCount = undefined
 
   const splitflap = new Splitflap(splitflapPortInfo !== null ? splitflapPortInfo.path : null, (message) => {
       if (message.payload === 'log') {
@@ -309,12 +320,13 @@ const initializeHardware = async () => {
           }
         }
 
-        if (errors > lastModuleErrorCount) {
+        if (lastModuleErrorCount !== undefined && errors > lastModuleErrorCount) {
           sendDiscordError(`Modules with errors increased from ${lastModuleErrorCount} to ${errors}`)
         }
         lastModuleErrorCount = errors
       } else if (message.payload === 'supervisorState' && message.supervisorState) {
-        io.sockets.emit('splitflap_supervisor_state', PB.SupervisorState.toObject(message.supervisorState))
+        splitflapLatestSupervisorState = PB.SupervisorState.toObject(message.supervisorState)
+        io.sockets.emit('splitflap_supervisor_state', splitflapLatestSupervisorState)
         const currentState = message.supervisorState?.state
         if (lastState && currentState !== lastState) {
           sendDiscordDebug(`State changed: ${JSON.stringify(message.supervisorState, undefined, 4)}`)
@@ -335,7 +347,7 @@ const initializeHardware = async () => {
 
 
   const sendSplitflapConfig = () => {
-    splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(currentAnimation !== null ? animationFrame2d : splitflapConfig2d, true))
+    splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(disabled ? emptyConfig2d() : currentAnimation !== null ? animationFrame2d : splitflapConfig2d, true))
   }
 
   // Periodically sync splitflap config, e.g. in case MCU gets restarted
@@ -351,8 +363,67 @@ const initializeHardware = async () => {
     await sendDiscordDebug("Good morning! I'm going to try turning on the splitflap. Wish me luck!");
     await sleep(1000);
     await splitflap.hardReset();
+    await sleep(10000);
+    await enable();
   })
   console.log(`Wakeup is scheduled for ${wakeupJob.nextInvocation()}`)
+
+  const disable = async () => {
+    await sendDiscordDebug("Disabling!")
+    stopAnimation();
+    disabled = true
+    setInputKeyboard();
+    showText('', false);
+  }
+
+  const enable = async () => {
+    await sendDiscordDebug("Enabling!")
+    disabled = false
+    setInputKeyboard();
+    showText(DEFAULT_PROMPT, false)
+  }
+
+  if (REGISTER_COMMANDS) {
+    const commands = [
+      {
+        name: 'reset',
+        description: 'ESP32 hard reset',
+      },
+      {
+        name: 'disable',
+        description: 'Disable input and clear display',
+      },
+      {
+        name: 'enable',
+        description: 'Enable input and ',
+      },
+    ]
+    const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
+
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(Routes.applicationGuildCommands(DISCORD_CLIENT_ID, DISCORD_GUILD_ID), {
+      body: commands,
+    });
+
+    console.log('Successfully reloaded application (/) commands.');
+  }
+  discord.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return;
+  
+    if (interaction.commandName === 'reset') {
+      await sendDiscordDebug(`Running hard reset!\nrequested by bot`)
+      await splitflap.hardReset()
+      await interaction.reply('done');
+    } else if (interaction.commandName == 'disable') {
+      await disable()
+      await interaction.reply('done')
+    } else if (interaction.commandName == 'enable') {
+      await enable()
+      await interaction.reply('done')
+    }
+  });
+
 
   const animationFrame = () => {
     const current = currentAnimation.next()
@@ -405,12 +476,12 @@ const initializeHardware = async () => {
      + config2d.map((row) => '|' + row.map((flapIndex) => flaps[flapIndex]).join('') + '|').join('\n') + '\n'
      + ' ------------------ '
     console.log(text)
-    if (important) {
+    if (important && !disabled) {
       sendDiscordDebug('```' + text + '```')
     }
   }
 
-  function showText(text, important=true){
+  function getLayoutFromText(text) {
     const newLayout = []
     for (let i = 0; i < 6; i++) {
       newLayout.push(new Array(18).fill(0))
@@ -438,6 +509,11 @@ const initializeHardware = async () => {
       newLayout[row][col] = flapIndex == -1 ? 0 : flapIndex
       col++
     }
+    return newLayout
+  }
+
+  function showText(text, important=true){
+    const newLayout = getLayoutFromText(text)
     logConfig2d(newLayout, important)
     splitflapConfig2d = newLayout
     sendSplitflapConfig()
