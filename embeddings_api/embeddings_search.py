@@ -1,15 +1,11 @@
 import os
-import openai
 import pandas as pd
 import numpy as np
 import random
 import re
 import time
-from dotenv import load_dotenv, find_dotenv
-from openai.embeddings_utils import get_embedding, cosine_similarity
-load_dotenv(find_dotenv())
+from openai.embeddings_utils import cosine_similarity
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 ALLOWED_REGEX = r'[a-zA-Z\$\*\%\&\@\!\?\#\'\,\" ]*'
 
@@ -42,30 +38,54 @@ def isDisplayableInOnePage(text):
     wrapped = wrap(translateToSplitflapAlphabet(text), 18)
     return characters_ok and len(wrapped) <= 6
 
-# df = pd.read_csv('./embeddings/embedded_120k_FILTERED_babbage.csv', error_bad_lines=False, engine="python")
 # print(df)
 # df['babbage_search'] = df.babbage_search.apply(lambda row: np.array(eval(row)))
 # df.to_pickle('embeddings/embedded_120k_FILTERED_babbage.pickle.gz')
 
 # exit(0)
 
-start_load = time.time()
-df = pd.read_pickle('./embeddings/embedded_120k_FILTERED_babbage.pickle.gz')
+df = None
+def load_data(i):
+    global df
+    start_load = time.time()
 
-# Filter out embeddings with characters we can't display
-df = df[df.apply(lambda row: isDisplayableInOnePage(row['answer']) and isDisplayableInOnePage(row['question']), axis=1)]
-print("FILTERED")
-print(df)
+    # To Pickle
+    # CHUNK = 16000
+    # skip_rows = i*CHUNK
+    # nrows=CHUNK
 
-print("Parsing embedding values...")
-# df['babbage_search'] = df.babbage_search.apply(eval).apply(np.array)
-print("Done.")
+    # d = pd.read_csv('./embeddings/embedded_120k_FILTERED_babbage.csv', error_bad_lines=False, engine="python", skiprows=range(1, skip_rows + 1), nrows=nrows)
 
-print(f"Loading data took {time.time() - start_load} seconds")
+    # del d['babbage_similarity']
 
-def search_reviews(search_phrase, n=1, pprint=True):
-    print(search_phrase)
-    embedding = get_embedding(search_phrase, engine='text-search-babbage-query-001')
+    # # Filter out embeddings with characters we can't display
+    # d = d[d.apply(lambda row: isDisplayableInOnePage(row['answer']) and isDisplayableInOnePage(row['question']), axis=1)]
+    # print("FILTERED")
+    # print(d)
+
+    # print("Parsing embedding values...")
+    # d['babbage_search'] = d.babbage_search.apply(eval).apply(np.array)
+    # print("Done.")
+
+    # df = d
+
+    # df.to_pickle(f'./embeddings/embedded_120k_FILTERED_babbage_{i}.pickle')
+
+    # print('done pickling')
+
+
+    # From Pickle
+    df = pd.read_pickle(f'./embeddings/embedded_120k_FILTERED_babbage_{i}.pickle')
+
+    print(f"Loading data took {time.time() - start_load} seconds")
+
+
+
+def search_reviews(embedding):
+    global df
+    if len(df) == 0:
+        print(df)
+        return None
     df['similarities'] = df.babbage_search.apply(lambda x: cosine_similarity(x, embedding))
 
     # # Select top N, then pick one at random
@@ -75,7 +95,7 @@ def search_reviews(search_phrase, n=1, pprint=True):
     # answer = random.choice(data)
     # print(answer)
 
-    answer = df.loc[df['similarities'].idxmax()][['question', 'answer']].to_dict()
+    answer = df.loc[df['similarities'].idxmax()][['question', 'answer', 'similarities']].to_dict()
 
     return answer
 
