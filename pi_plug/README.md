@@ -25,12 +25,22 @@
 3. `npm install express`
 4. `npm install rpio`
 
+## BOOT NODE AT STARTUP ##
+
+Reference: 
+- https://rebeccamdeprey.com/blog/automatically-start-nodejs-applications-when-your-raspberry-pi-boots-up
+
+- https://pm2.keymetrics.io/docs/usage/startup/
+
+1. Install PM2 `npm install pm2 -g` (I omitted -g for permissionissues...)
+2. Run PM2 to start the app: `pm2 start app.js`
+3. Get startup command: `pm2 startup`
+4. Copy paste command and run it
+5. Save current config: `pm2 save`
+
 
 ## REFERENCE ##
 
 - Model B Rev2 pin layout: https://pi4j.com/1.2/pins/model-b-rev2.html
 
 - Using ground + pin 16 (8th from left)
-
-## TODO
--start node server on startup
