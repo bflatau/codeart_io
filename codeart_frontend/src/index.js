@@ -68,14 +68,19 @@ const stopAnimation = async () => {
   }
 }
 
-const turnPlugOn= async () => {
-  try {
-    const result = await fetch(`${plugURL}/on`,{method: 'POST'})
-    console.log(`Stop animation result: ${await result.text()}`)
-  } catch (err) {
-    alert(err)
-  }
+const turnPlugOn= () => {
+  console.log('turning on')
+  fetch(`${plugURL}/on`,{method: 'POST'}).then(response =>{
+}).catch(err =>{alert(err)}) 
+  
 }
+
+const turnPlugOff= () => {
+  fetch(`${plugURL}/off`,{method: 'POST'}).then(response =>{
+}).catch(err =>{alert(err)}) 
+  
+}
+
 
 
 
@@ -83,7 +88,7 @@ const turnPlugOn= async () => {
 ReactDOM.render(
   <React.StrictMode>
     <div id='app-content'>
-      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} startAnimation={startAnimation} stopAnimation={stopAnimation} />
+      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} startAnimation={startAnimation} stopAnimation={stopAnimation} turnPlugOn={turnPlugOn} turnPlugOff={turnPlugOff} />
     </div>
   </React.StrictMode>,
   document.getElementById('root')

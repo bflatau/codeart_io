@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { PB } from "splitflapjs-proto";
 import './style.css';
-import { plugURL } from "../../constants";
 
 const PowerChannel = (props) => {
     return (
@@ -42,6 +41,8 @@ class SplitflapDiagnostics extends Component {
 
     render() {
         const supervisorStateObj = PB.SupervisorState.toObject(this.state.supervisorState, {defaults:true, enums: String})
+
+        
         return (
             <div className="diagnostics">
                 <div>Server: {this.props.serverName}</div>
@@ -61,9 +62,9 @@ class SplitflapDiagnostics extends Component {
                     }
                 </div>
                 <div>
-                    <p>REMOTE PLUG:</p>
-                    <button onClick={()=> fetch(`${plugURL}/on`, {method: 'POST'}) }>TURN ON</button>
-                    <button onClick={()=> fetch(`${plugURL}/off`, {method: 'POST'}) }>TURN OFF</button>
+                    <p>REMOTE PLUG STATE: {this.state.plugState}</p>
+                    <button onClick={()=>{this.props.turnPlugOn(); this.setState({plugState:'ON'})}}>TURN ON</button>
+                    <button onClick={()=>{this.props.turnPlugOff(); this.setState({plugState:'OFF'})}}>TURN OFF</button> 
                 </div>
             </div>
         )
