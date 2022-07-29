@@ -124,7 +124,24 @@ HandleLidSwitchDocked=ignore
 * restart and set the changes `sudo systemctl restart systemd-logind.service`
 
 
-# SETUP RASPI:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# SETUP RASPI (OLD!!!!):
 
 ## INITIAL SETUP
 
