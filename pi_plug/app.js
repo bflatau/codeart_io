@@ -1,10 +1,17 @@
 const express = require('express');
-var rpio = require('rpio');
+const rpio = require('rpio');
+const cors = require('cors');
 
 rpio.open(16, rpio.OUTPUT, rpio.LOW);
-
-
 const app = express();
+
+
+app.use(cors({
+    origin: '*'
+}));
+
+
+
 
 app.post('/on', (req, res) => {
     rpio.write(16, rpio.LOW);

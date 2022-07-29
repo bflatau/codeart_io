@@ -17,7 +17,8 @@ class SplitflapDiagnostics extends Component {
     constructor() {
         super();
         this.state = {
-            supervisorState: {}
+            supervisorState: {},
+            plugState: 'ON'
         };
     }
 
@@ -62,7 +63,7 @@ class SplitflapDiagnostics extends Component {
                 <div>
                     <p>REMOTE PLUG:</p>
                     <button onClick={()=> fetch(`${plugURL}/on`, {method: 'POST'}) }>TURN ON</button>
-                    <button onClick={()=> fetch(`${plugURL}/off`, {method: 'POST'}) }>TURN OFFd</button>
+                    <button onClick={()=> fetch(`${plugURL}/off`, {method: 'POST'}) }>TURN OFF</button>
                 </div>
             </div>
         )

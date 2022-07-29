@@ -5,7 +5,7 @@ import './index.css';
 import Main from './components/Main/';
 import 'typeface-libre-barcode-128-text';
 import socketIOClient from "socket.io-client";
-import { apiURL } from './constants';
+import { apiURL, plugURL } from './constants';
 //const backendHost = "http://raspberrypi:8090"
 const backendHost = apiURL;
 
@@ -67,6 +67,18 @@ const stopAnimation = async () => {
     alert(err)
   }
 }
+
+const turnPlugOn= async () => {
+  try {
+    const result = await fetch(`${plugURL}/on`,{method: 'POST'})
+    console.log(`Stop animation result: ${await result.text()}`)
+  } catch (err) {
+    alert(err)
+  }
+}
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>
