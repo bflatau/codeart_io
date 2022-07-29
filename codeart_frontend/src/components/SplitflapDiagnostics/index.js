@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { PB } from "splitflapjs-proto";
 import './style.css';
+import { plugURL } from "../../constants";
 
 const PowerChannel = (props) => {
     return (
@@ -58,9 +59,15 @@ class SplitflapDiagnostics extends Component {
                         ))
                     }
                 </div>
+                <div>
+                    <p>REMOTE PLUG:</p>
+                    <button onClick={()=> fetch(`${plugURL}/on`, {method: 'POST'}) }>TURN ON</button>
+                    <button onClick={()=> fetch(`${plugURL}/off`, {method: 'POST'}) }>TURN OFFd</button>
+                </div>
             </div>
         )
     }
 }
 
 export default SplitflapDiagnostics;
+

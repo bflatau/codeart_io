@@ -29,3 +29,8 @@
 ## REFERENCE ##
 
 - Model B Rev2 pin layout: https://pi4j.com/1.2/pins/model-b-rev2.html
+
+- Using ground + pin 16 (8th from left)
+
+## TODO
+-start node server on startup
