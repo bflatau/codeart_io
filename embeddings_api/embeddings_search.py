@@ -71,10 +71,10 @@ def load_data(i):
 
     # df.to_pickle(f'./embeddings/embedded_120k_FILTERED_babbage_{i}.pickle')
 
-    # print('done pickling')
+    # print(f'done pickling {i}')
 
 
-    # From Pickle
+    # # From Pickle
     df = pd.read_pickle(f'./embeddings/embedded_120k_FILTERED_babbage_{i}.pickle')
 
     print(f"Loading data took {time.time() - start_load} seconds")

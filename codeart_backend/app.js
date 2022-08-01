@@ -11,6 +11,7 @@ const {Splitflap, Util} = require('splitflapjs')
 const {PB} = require('splitflapjs-proto')
 const {welcome, randomFill, spiral, rain, testAll, sequence1, wheelOfFortune} = require('./animations')
 const schedule = require('node-schedule');
+const fetch = require('node-fetch')
 
 /// INITIALIZE SERVICE VARIABLES ///
 const app = express();
@@ -26,8 +27,11 @@ const DISCORD_CLIENT_ID = '990787828290027551'
 const DISCORD_GUILD_ID = '990786994139451442'
 const REGISTER_COMMANDS = false; // Set to true and run the server once to register updated discord slash commands
 
-const WAKEUP_HOUR = 9;
-const WAKEUP_MINUTE = 33;
+const WAKEUP_HOUR = 8;
+const WAKEUP_MINUTE = 45;
+
+const SHUTDOWN_HOUR = 20;
+const SHUTDOWN_MINUTE = 00;
 
 const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
 
@@ -289,8 +293,17 @@ const setInputKeyboard = () => {
 // Periodically re-sync the input keyboard status (in case something happens, don't want it to get stuck disabled)
 setInterval(setInputKeyboard, 10000)
 
+const setPower = async (on) => {
+  const onoff = on ? 'on' : 'off'
+  const response = await fetch(`http://10.0.0.13:3000/${onoff}`, {method: 'POST', body: ''})
+  const data = await response.text()
+  console.log(data)
+}
+
 /// INITIALIZE HARDWARE ////
 const initializeHardware = async () => {
+  let shutdownInProgress = false
+
   console.log('Initialize hardware')
   const ports = (await SerialPort.list()).filter((portInfo) => portInfo.vendorId !== undefined)
 
@@ -320,7 +333,7 @@ const initializeHardware = async () => {
           }
         }
 
-        if (lastModuleErrorCount !== undefined && errors > lastModuleErrorCount) {
+        if (!shutdownInProgress && lastModuleErrorCount !== undefined && errors > lastModuleErrorCount) {
           sendDiscordError(`Modules with errors increased from ${lastModuleErrorCount} to ${errors}`)
         }
         lastModuleErrorCount = errors
@@ -330,7 +343,7 @@ const initializeHardware = async () => {
         const currentState = message.supervisorState?.state
         if (lastState && currentState !== lastState) {
           sendDiscordDebug(`State changed: ${JSON.stringify(message.supervisorState, undefined, 4)}`)
-          if (currentState === PB.SupervisorState.State.FAULT) {
+          if (!shutdownInProgress && currentState === PB.SupervisorState.State.FAULT) {
             sendDiscordError(`FAULT! ${JSON.stringify(message.supervisorState, undefined, 4)}`)
           }
         }
@@ -362,11 +375,32 @@ const initializeHardware = async () => {
   const wakeupJob = schedule.scheduleJob(wakeupRule, async () => {
     await sendDiscordDebug("Good morning! I'm going to try turning on the splitflap. Wish me luck!");
     await sleep(1000);
+    await disable();
+    await setPower(true);
+    await sleep(4000);
     await splitflap.hardReset();
     await sleep(10000);
     await enable();
   })
   console.log(`Wakeup is scheduled for ${wakeupJob.nextInvocation()}`)
+
+  const shutdownRule = new schedule.RecurrenceRule();
+  shutdownRule.hour = SHUTDOWN_HOUR;
+  shutdownRule.minute = SHUTDOWN_MINUTE;
+  shutdownRule.tz = 'America/Los_Angeles'
+  const shutdownJob = schedule.scheduleJob(shutdownRule, async () => {
+    await sendDiscordDebug("Good evening! I'm shutting down the splitflap for the night.");
+    await sleep(1000);
+    await disable();
+    await sleep(10000);
+    shutdownInProgress = true
+    try {
+      await setPower(false);
+      await sleep(20000);
+    } finally {
+      shutdownInProgress = false
+    }
+  })
 
   const disable = async () => {
     await sendDiscordDebug("Disabling!")
@@ -701,16 +735,16 @@ const initializeHardware = async () => {
         const embeddingPromise = openaiController.getEmbeddingData(text)
 
         await showTextRows([''], false, true)
-        await sleep(1000)
+        await sleep(300)
 
         const askedRows = wrap(translateToSplitflapAlphabet('pppp YOU ASKED ppp\n' + text.toUpperCase()), 18);
         for (let i = 0; i < askedRows.length; i++) {
           await showTextRows(askedRows.slice(0, i+1), false, true)
-          await sleep(500)
+          await sleep(200)
         }
 
         // By sleeping _before_ awaiting the embedding promise, we require a minimum of 3 seconds delay (or longer if the embedding takes longer to resolve)
-        await sleep(3000)
+        await sleep(1000)
         const embeddingData = await embeddingPromise
         
         const foundRows = wrap(translateToSplitflapAlphabet('ggggg I FOUND gggg\n' + embeddingData.question.toUpperCase()), 18);
@@ -727,7 +761,7 @@ const initializeHardware = async () => {
           await showTextRows(foundRows, true, true)
         }
 
-        await sleep(8000)
+        await sleep(5000)
 
         await wordWrapAndShowText(embeddingData.answer.toUpperCase() + 'w')
       }

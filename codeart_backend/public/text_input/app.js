@@ -23,20 +23,28 @@ function handleKeyPress(event) {
         document.getElementById("input-field").value = '';
         setKeyboard(false)
         // return false;
-
     } else if(flapChars.test(event.key)){
         event.preventDefault();
         document.getElementById('warning-text').style.display = 'block' 
+    } else {
+        document.getElementById('warning-text').style.display = 'none' 
     }
 
     clearTimeout(resetTimeout);
     resetTimeout = setTimeout(() => {
         document.getElementById("input-field").value = '';
+        document.getElementById('warning-text').style.display = 'none' 
       }, "30000")
 
 
 
 
+}
+
+const inputElement = document.getElementById("input-field");
+inputElement.onkeypress = handleKeyPress;
+inputElement.onblur = () => {
+    setTimeout(() => inputElement.focus(), 10);
 }
 
 
