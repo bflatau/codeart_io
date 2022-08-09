@@ -27,10 +27,10 @@ const DISCORD_CLIENT_ID = '990787828290027551'
 const DISCORD_GUILD_ID = '990786994139451442'
 const REGISTER_COMMANDS = false; // Set to true and run the server once to register updated discord slash commands
 
-const WAKEUP_HOUR = 8;
+const WAKEUP_HOUR = 7;
 const WAKEUP_MINUTE = 45;
 
-const SHUTDOWN_HOUR = 20;
+const SHUTDOWN_HOUR = 21;
 const SHUTDOWN_MINUTE = 00;
 
 const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
