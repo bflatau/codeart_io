@@ -16,7 +16,8 @@ class SplitflapDiagnostics extends Component {
     constructor() {
         super();
         this.state = {
-            supervisorState: {}
+            supervisorState: {},
+            plugState: 'ON'
         };
     }
 
@@ -40,6 +41,8 @@ class SplitflapDiagnostics extends Component {
 
     render() {
         const supervisorStateObj = PB.SupervisorState.toObject(this.state.supervisorState, {defaults:true, enums: String})
+
+        
         return (
             <div className="diagnostics">
                 <div>Server: {this.props.serverName}</div>
@@ -58,9 +61,15 @@ class SplitflapDiagnostics extends Component {
                         ))
                     }
                 </div>
+                <div>
+                    <p>REMOTE PLUG STATE: {this.state.plugState}</p>
+                    <button onClick={()=>{this.props.turnPlugOn(); this.setState({plugState:'ON'})}}>TURN ON</button>
+                    <button onClick={()=>{this.props.turnPlugOff(); this.setState({plugState:'OFF'})}}>TURN OFF</button> 
+                </div>
             </div>
         )
     }
 }
 
 export default SplitflapDiagnostics;
+

@@ -124,7 +124,24 @@ HandleLidSwitchDocked=ignore
 * restart and set the changes `sudo systemctl restart systemd-logind.service`
 
 
-# SETUP RASPI:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# SETUP RASPI (OLD!!!!):
 
 ## INITIAL SETUP
 
@@ -204,32 +221,3 @@ chmod 644 /etc/systemd/system/myscript.service
 systemctl enable myscript.service
 ```
 
-
-### SCOTTDO
-* ~~Fix word wrapping~~
-* ~~Python Cull Jeopardy questions~~
-* ~~Auto start Node & Flask~~
-
-
-### BENDO
-* ~~reset if text after 40 seconds~~
-* ~~lock terminal until split flaps are done~~
-* test raspi again
-* ~~wireguard auto connect CHM~~
-* wireguard auto connect raspi (FAIL)
-* ~~rebuild frontend debug for 10.0.0.11~~
-* ~~default CHM server to use node 16~~
-* Format CSS for screen
-* ~~Add to airtable~~
-https://discourse.ubuntu.com/t/using-recovery-modes/20332
-
-
-### Tools to bring:
-
-* Drill
-* Impact Driver
-* Screws/bits/drills
-* paint + paintbrushes
-* glue
-* wrenches
-* mounting brackets

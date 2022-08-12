@@ -5,7 +5,7 @@ import './index.css';
 import Main from './components/Main/';
 import 'typeface-libre-barcode-128-text';
 import socketIOClient from "socket.io-client";
-import { apiURL } from './constants';
+import { apiURL, plugURL } from './constants';
 //const backendHost = "http://raspberrypi:8090"
 const backendHost = apiURL;
 
@@ -68,10 +68,27 @@ const stopAnimation = async () => {
   }
 }
 
+const turnPlugOn= () => {
+  console.log('turning on')
+  fetch(`${plugURL}/on`,{method: 'POST'}).then(response =>{
+}).catch(err =>{alert(err)}) 
+  
+}
+
+const turnPlugOff= () => {
+  fetch(`${plugURL}/off`,{method: 'POST'}).then(response =>{
+}).catch(err =>{alert(err)}) 
+  
+}
+
+
+
+
+
 ReactDOM.render(
   <React.StrictMode>
     <div id='app-content'>
-      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} startAnimation={startAnimation} stopAnimation={stopAnimation} />
+      <Main socket={socket} splitflapHardReset={splitflapHardReset} resetModule={resetModule} startAnimation={startAnimation} stopAnimation={stopAnimation} turnPlugOn={turnPlugOn} turnPlugOff={turnPlugOff} />
     </div>
   </React.StrictMode>,
   document.getElementById('root')
