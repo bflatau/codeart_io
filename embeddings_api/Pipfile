@@ -9,10 +9,6 @@ openai = "*"
 python-dotenv = "*"
 pandas = "*"
 numpy = "*"
-plotly = "*"
-scipy = "*"
-sklearn = "*"
-swifter = "*"
 modin = {extras = ["ray"], version = "*"}
 
 [dev-packages]

@@ -1,17 +1,20 @@
 from flask import Flask
 from flask import request, jsonify
 import embeddings_search
-import json
 import multiprocessing
-from openai.embeddings_utils import get_embedding
 import os
-
+from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
+
+
 load_dotenv(find_dotenv())
+client = OpenAI(
+  api_key = os.getenv("OPENAI_API_KEY"),
+)
 
-import openai
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
+def get_embedding(text, model="text-embedding-ada-002"):
+    text = text.replace("\n", " ") #not sure if this is needed?
+    return client.embeddings.create(input = [text], model=model).data[0].embedding
 
 def init_worker(id_queue, barrier):
     global worker_barrier
@@ -49,7 +52,7 @@ if __name__ == '__main__':
             data_string = request.get_data().decode('utf-8')
             print('this is request string', data_string)
 
-            embedding = get_embedding(data_string, engine='text-search-babbage-query-001')
+            embedding = get_embedding(data_string)
             print(embedding)
             responses = list(filter(lambda x: x is not None, pool.map(run_search_partition, [embedding]*(WORKERS))))
             responses.sort(key=lambda x: x['similarities'], reverse=True)
