@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+openai = "*"
+python-dotenv = "*"
+pandas = "*"
+numpy = "*"
+plotly = "*"
+scipy = "*"
+sklearn = "*"
+swifter = "*"
+modin = {extras = ["ray"], version = "*"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
