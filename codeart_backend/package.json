@@ -27,7 +27,7 @@
     "node-fetch": "^2.6.7",
     "node-schedule": "^2.1.0",
     "onoff": "^5.0.1",
-    "openai": "^2.0.5",
+    "openai": "^3.3.0",
     "socket.io": "^2.3.0",
     "splitflapjs": "file:../ext/splitflap/software/js/splitflapjs",
     "splitflapjs-proto": "file:../ext/splitflap/software/js/splitflapjs-proto"

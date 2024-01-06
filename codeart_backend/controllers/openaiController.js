@@ -58,11 +58,6 @@ function wordWrapResponse(text) {
   return formattedText;
 }
 
-// console.log(wordWrapResponse(exampleText));
-
-
-
-
 
 /// OPEN AI API CALL /// 
 
@@ -74,18 +69,10 @@ const openai = new OpenAIApi(configuration);
 
 async function isContentSafe(text){
 
-    const contentType = await openai.createCompletion("content-filter-alpha", {
-      prompt: contentFilter(text),
-      temperature: 0.0,
-      max_tokens: 1,
-      top_p: 0,
-      frequency_penalty: 0.5,
-      logprobs: 10, 
-    });
-    console.log('content check', contentType.data.choices)
+    const moderation = await openai.createModeration({ input: text });
 
-    if(contentType.data.choices[0].text === '0'){
-      return true
+    if(moderation.data.results[0].flagged === false){
+        return true
     } else {
 
       base('AI_INPUTS').create({ //AIRTABLE STUFF
