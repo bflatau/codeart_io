@@ -11,6 +11,11 @@ client = OpenAI(
   api_key = os.getenv("OPENAI_API_KEY"),
 )
 
+def get_embedding(text, model="text-embedding-ada-002"):
+    text = text.replace("\n", " ") #not sure if this is needed?
+    return client.embeddings.create(input = [text], model=model).data[0].embedding
+
+
 
 ALLOWED_REGEX = r'[a-zA-Z\$\*\%\&\@\!\?\#\'\,\" ]*'
 
@@ -59,22 +64,44 @@ print(len(df))
 df['combined'] = "Question: " + df.question.str.strip() + "; Answer: " + df.answer.str.strip() #make superstring?
 
 
-# For testing: select a subset of rows
-df = df.head(15)
+# Select a subset of rows to process
+df = df.iloc[20000:120000]
 print("SELECTED SUBSET")
 print(len(df))
 
+"""
+Scott's notes from iteratively generating these:
+0:1000 -- embedded_120k_FILTERED_ada_1704443394422
+1000:6000 -- embedded_120k_FILTERED_ada_1704447175265
+6000:20000 -- embedded_120k_FILTERED_ada_1704450383665
+20000:120000 -- embedded_120k_FILTERED_ada_1704494377631
 
+Joined via:
+head -n 1 embedded_120k_FILTERED_ada_1704443394422.csv > embedded_ada.csv
+tail -n+2 embedded_120k_FILTERED_ada_1704443394422.csv >> embedded_ada.csv
+tail -n+2 embedded_120k_FILTERED_ada_1704447175265.csv >> embedded_ada.csv
+tail -n+2 embedded_120k_FILTERED_ada_1704450383665.csv >> embedded_ada.csv
+tail -n+2 embedded_120k_FILTERED_ada_1704494377631.csv >> embedded_ada.csv
+"""
 
-def get_embedding(text, model="text-embedding-ada-002"):
-   text = text.replace("\n", " ") #not sure if this is needed?
-   try:
-      return client.embeddings.create(input = [text], model=model).data[0].embedding
-   except Exception as e:
-      print(e)
-      return "ERR"
+def getTransform():
+    i = 0
+    def transform(value):
+        nonlocal i
 
-df['ada_embedding'] = df.combined.apply(lambda x: get_embedding(x, model='text-embedding-ada-002'))
+        # Print the item we're processing every 100th item
+        if i % 100 == 0:
+            print(i, value)
+        i += 1
+        try:
+            return get_embedding(value)
+        except Exception as e:
+            print(e)
+            return "ERR"
+    return transform
+
+input("Press enter to start making openai API calls...")
+df['ada_embedding'] = df.combined.apply(getTransform())
 
 df.to_csv(f'./embeddings/embedded_120k_FILTERED_ada_{int(time.time()*1000)}.csv', index=False)
 

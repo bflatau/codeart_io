@@ -5,6 +5,7 @@ import multiprocessing
 import os
 from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
+import random
 
 
 load_dotenv(find_dotenv())
@@ -54,9 +55,12 @@ if __name__ == '__main__':
 
             embedding = get_embedding(data_string)
             print(embedding)
-            responses = list(filter(lambda x: x is not None, pool.map(run_search_partition, [embedding]*(WORKERS))))
+            responses = sum(list(filter(lambda x: x is not None, pool.map(run_search_partition, [embedding]*(WORKERS)))), [])
             responses.sort(key=lambda x: x['similarities'], reverse=True)
             print(responses)
-            return jsonify(responses[0])
+
+            # Pick randomly from the top 10 responses across all shards
+            selected = random.choice(responses[:10])
+            return jsonify(selected)
 
         app.run()

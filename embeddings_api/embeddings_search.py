@@ -8,7 +8,7 @@ import time
 def cosine_similarity(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
-embeddings_filename_root = 'embedded_120k_FILTERED_ada'
+embeddings_filename_root = 'embedded_ada'
 
 
 df = None
@@ -48,13 +48,13 @@ def search_reviews(embedding):
         return None
     df['similarities'] = df.ada_embedding.apply(lambda x: cosine_similarity(x, embedding))
 
-    # # Select top N, then pick one at random
-    # res = df.sort_values('similarities', ascending=False).head(n)[[ 'answer', 'question']]
-    # data = res.to_dict(orient='records')
+    # Return top N
+    n = 10
+    res = df.sort_values('similarities', ascending=False).head(n)[[ 'answer', 'question', 'similarities' ]]
+    data = res.to_dict(orient='records')
     # print(data)
-    # answer = random.choice(data)
-    # print(answer)
+    return data
 
-    answer = df.loc[df['similarities'].idxmax()][['question', 'answer', 'similarities']].to_dict()
-
-    return answer
+    # Old single-answer code
+    # answer = df.loc[df['similarities'].idxmax()][['question', 'answer', 'similarities']].to_dict()
+    # return answer
