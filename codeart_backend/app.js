@@ -28,7 +28,7 @@ const DISCORD_GUILD_ID = '990786994139451442'
 const REGISTER_COMMANDS = false; // Set to true and run the server once to register updated discord slash commands
 
 const WAKEUP_HOUR = 7;
-const WAKEUP_MINUTE = 45;
+const WAKEUP_MINUTE = 00;
 
 const SHUTDOWN_HOUR = 21;
 const SHUTDOWN_MINUTE = 00;
@@ -37,6 +37,11 @@ const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO
 
 let sequenceRunning = false
 let disabled = false
+
+
+async function sleep(time) {
+  await new Promise((resolve, _) => setTimeout(resolve, time))
+}
 
 /// SETUP CORS ///
 
@@ -149,13 +154,19 @@ const findPort = (ports, description, infoList) => {
   })
 
   if (matchingPorts.length < 1) {
-    console.warn(`No matching ${description} usb serial port found (vendorId=${infoList}! Available ports: ${JSON.stringify(ports, undefined, 4)}`)
+    const msg = `No matching ${description} usb serial port found (vendorId=${infoList}! Available ports: ${JSON.stringify(ports, undefined, 4)}`
+    console.warn(msg)
+    sendDiscordDebug(msg)
     return null
   } else if (matchingPorts.length > 1) {
-    console.warn(`Multiple ${description} usb serial ports found: ${JSON.stringify(matchingPorts, undefined, 4)}`)
+    const msg = `Multiple ${description} usb serial ports found, not selecting any: ${JSON.stringify(matchingPorts, undefined, 4)}`
+    console.warn(msg)
+    sendDiscordDebug(msg)
     return null
   }
-  console.info(`Found ${description} port at ${matchingPorts[0].path}`)
+  const msg = `Found ${description} port at ${matchingPorts[0].path}`
+  console.log(msg)
+  sendDiscordDebug(msg)
   return matchingPorts[0]
 }
 
@@ -258,9 +269,19 @@ async function initializeDiscord() {
       resolve();
     });
   });
-  await discord.login(process.env.DISCORD_TOKEN)
+  while (1) {
+    try {
+      console.log('Logging into discord...')
+      await discord.login(process.env.DISCORD_TOKEN)
+      break;
+    } catch (e) {
+      console.error('ERROR DURING DISCORD LOGIN. Waiting and will try again...', e)
+      await sleep(10*1000)
+    }
+  }
   await ready
   await sendDiscordDebug('App starting')
+  console.log('Discord login complete')
 }
 
 async function sendDiscordDebug(message) {
@@ -358,6 +379,16 @@ const initializeHardware = async () => {
       }
   }, 108)
 
+  await sleep(2000);
+  // Mute alerts during hard reset at startup
+  shutdownInProgress = true;
+  try {
+    await splitflap.hardReset();
+    await sleep(20000);
+  } finally {
+    shutdownInProgress = false;
+  }
+
 
   const sendSplitflapConfig = () => {
     splitflap.setFlaps(Util.convert2dDualRowZigZagTo1dChainlink(disabled ? emptyConfig2d() : currentAnimation !== null ? animationFrame2d : splitflapConfig2d, true))
@@ -429,7 +460,19 @@ const initializeHardware = async () => {
       },
       {
         name: 'enable',
-        description: 'Enable input and ',
+        description: 'Enable input',
+      },
+      {
+        name: 'poweron',
+        description: 'Turn ON power outlet',
+      },
+      {
+        name: 'poweroff',
+        description: 'Turn OFF power outlet',
+      },
+      {
+        name: 'killbackend',
+        description: 'Kill the node backend process. In theory, systemd will then restart it...',
       },
     ]
     const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
@@ -455,6 +498,17 @@ const initializeHardware = async () => {
     } else if (interaction.commandName == 'enable') {
       await enable()
       await interaction.reply('done')
+    } else if (interaction.commandName == 'poweron') {
+      await setPower(true);
+      await interaction.reply('done with poweron, I will also run an ESP32 reset now...')
+      await sleep(4000);
+      await splitflap.hardReset();
+    } else if (interaction.commandName == 'poweroff') {
+      await setPower(false);
+      await interaction.reply('done')
+    } else if (interaction.commandName == 'killbackend') {
+      await interaction.reply('killing backend... if we\'re lucky, systemd will restart us...')
+      process.kill(1);
     }
   });
 
@@ -626,10 +680,6 @@ const initializeHardware = async () => {
 
   async function wordWrapAndShowText(text, important=true) {
     await showTextRows(wrap(translateToSplitflapAlphabet(text), 18), important)
-  }
-
-  async function sleep(time) {
-    await new Promise((resolve, _) => setTimeout(resolve, time))
   }
 
   async function waitForIdle(timeout=8000) {
