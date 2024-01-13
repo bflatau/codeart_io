@@ -1,7 +1,6 @@
 connection=wired
 dhcp=yes
 browser=firefox
-homepage_check=Server not available
 homepage=http://172.16.0.4:8090/input|https://github.com/scottbez1/smartknob
 allow_icmp_protocol=yes
 disable_navigation_bar=yes
