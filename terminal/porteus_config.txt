@@ -1,12 +1,13 @@
 connection=wired
 dhcp=yes
 browser=firefox
-homepage=http://172.16.0.4:8090/input|https://github.com/scottbez1/smartknob
+homepage=http://172.16.0.4:8090/input
 allow_icmp_protocol=yes
 disable_navigation_bar=yes
 root_password=chm_terminal_local_access
 shutdown_menu=no
-whitelist=172.16.0.4 github.com
+whitelist=172.16.0.4
 disable_zoom_controls=yes
+hide_mouse=yes
 kiosk_config=https://raw.githubusercontent.com/bflatau/codeart_io/master/terminal/porteus_config.txt
 additional_components=uefi.zip 08-ssh.xzm
