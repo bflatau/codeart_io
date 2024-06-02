@@ -125,7 +125,13 @@ HandleLidSwitchDocked=ignore
 
 
 
+###
 
+Stop node service (stop/start/restart):
+`sudo systmctl stop codeart_backend`
+
+Stop Embeddings Service (stop/start/restart):
+`sudo systemctl stop embeddings_api`
 
 
 
