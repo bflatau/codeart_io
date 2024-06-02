@@ -409,8 +409,15 @@ const initializeHardware = async () => {
     await disable();
     await setPower(true);
     await sleep(4000);
-    await splitflap.hardReset();
-    await sleep(10000);
+    // Mute alerts during hard reset at startup
+    shutdownInProgress = true;
+    try {
+      await splitflap.hardReset();
+      await sleep(10000);
+    } finally {
+      shutdownInProgress = false;
+    }
+    await disable();
     await enable();
   })
   console.log(`Wakeup is scheduled for ${wakeupJob.nextInvocation()}`)

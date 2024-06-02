@@ -1,5 +1,5 @@
 const wireguardURL = 'http://10.0.0.11:8090/openai';
-const CHMURL = 'http://172.16.0.4:8090/openai'; //SHOULD THIS GO TO zerocool if/when the server restarts and gets a new IP??
+const CHMURL = 'http://192.168.1.124:8090/openai'; //SHOULD THIS GO TO zerocool if/when the server restarts and gets a new IP??
 
 const urlParams = new URLSearchParams(window.location.search);
 const wireguardQueryParam = urlParams.get('wireguard');

@@ -100,7 +100,7 @@ const generateData = (buttonData) => {
 
     // CALL API
 
-    const localURL ='http://0.0.0.0:8090/splitflap/set_flaps';
+    const localURL ='http://192.168.1.124:8090/splitflap/set_flaps';
     const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/splitflap/set_flaps';
 
     if(buttonData){
