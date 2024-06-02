@@ -227,3 +227,6 @@ chmod 644 /etc/systemd/system/myscript.service
 systemctl enable myscript.service
 ```
 
+### MISC NOTES:
+
+was using    `"openai": "^3.3.0"`
