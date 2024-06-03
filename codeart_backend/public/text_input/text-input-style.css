@@ -78,6 +78,7 @@ body{
     color: white;
     background-color: black;
     border: 1px solid white;
+    caret-color: transparent;
 
 }
 
