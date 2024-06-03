@@ -25,6 +25,7 @@ const generateFlapsGrid = flapStates => {
             } else if (event.key === 'Shift') {
                 event.preventDefault();
             } else if (event.key !== 'Tab') {
+                console.log('this key entered', event.key)
                 event.currentTarget.nextSibling.focus();
             }
         }

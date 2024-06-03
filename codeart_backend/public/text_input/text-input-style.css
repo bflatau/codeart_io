@@ -1,0 +1,109 @@
+body{
+    background-color: black;
+    font-family: 'dos-is09'
+}
+
+@font-face {
+    font-family: "ocr-a";
+    src: url("./fonts/ocr-aregular.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "dos-is09";
+  src: url("./fonts/Web437_IBM_DOS_ISO9.woff") format('woff');
+}
+
+
+
+
+
+.btn-pressed-a-1 {
+    background-color: #FFFF66;
+}
+
+.btn-pressed-a-2 {
+    background-color: #FF00CC;
+}
+
+.btn-pressed-a-4 {
+    background-color: #FF9933;
+}
+
+.btn-pressed-a-6 {
+    background-color: #66FF66;
+}
+
+
+.btn-pressed-off {
+    background-color: black;
+    color: white;
+}
+
+
+.flaps-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    /* position: absolute; */
+    /* top: 320px; */
+    /* height: 250px; */
+    /* height: 57%; */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+      
+}
+
+/* .flap {
+    background-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 100%;
+    display: table;
+    width: 100%;
+
+} */
+
+.flap-grid-container{
+    margin: 2%;
+}
+
+.flaps-container input {
+    width: 100%;
+    text-transform: capitalize;
+    font-size: 3em;
+    text-align: center;
+    font-family: 'ocr-a';
+    color: white;
+    background-color: black;
+    border: 1px solid white;
+
+}
+
+.flaps-container input:focus {
+    outline: 2px solid red;
+    border: none
+}
+
+.flaps-container div {
+    width: 100%;
+    height: 100%;
+    text-transform: capitalize;
+    font-size: 3em;
+    text-align: center;
+    /* border: 1px solid red; */
+}
+
+table:after,
+div:after {
+    content: "";
+}
+
+#generated-data {
+    display: none;
+    /* width: 525px;
+    border: 1px solid black;
+    word-break: break-word;
+    padding: 10px; */
+}

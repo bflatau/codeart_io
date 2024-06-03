@@ -33,7 +33,8 @@ const WAKEUP_MINUTE = 00;
 const SHUTDOWN_HOUR = 21;
 const SHUTDOWN_MINUTE = 00;
 
-const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
+// const DEFAULT_PROMPT = 'ASK ME A QUESTION\nAND I WILL FIND A\nTRIVIA CLUE\n\nWHO IS wwwww?\nWHAT IS ggggg?'
+const DEFAULT_PROMPT = ' IM A SUPER COOL\np o w g y p o w g\n    OPEN SAUCE\n y p o w g y p o w\n SPLIT FLAP BOARD\nCOME PLAY WITH ME!'
 
 let sequenceRunning = false
 let disabled = false
@@ -85,8 +86,8 @@ app.use(bodyParser.urlencoded({extended: false})); //BEN NOTE: note sure what th
 // app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/public/level_editor"));
 app.use(express.static(__dirname + "/public/text_input"));
+app.use(express.static(__dirname + "/public/ai_question"));
 
 // console.log('this is dir', __dirname)
 
@@ -120,8 +121,8 @@ app.get("/debug", (req, res) => {
 });
 
 
-app.get("/text", (req, res) => {
-  res.sendFile(`${__dirname}/public/level_editor/level-editor.html`, (err) => {
+app.get("/text_input", (req, res) => {
+  res.sendFile(`${__dirname}/public/text_input/text-input.html`, (err) => {
     if (err) {
       console.log(err);
       res.end(err.message);
@@ -129,8 +130,8 @@ app.get("/text", (req, res) => {
   });
 });
 
-app.get("/input", (req, res) => {
-  res.sendFile(`${__dirname}/public/text_input/index.html`, (err) => {
+app.get("/ai_question", (req, res) => {
+  res.sendFile(`${__dirname}/public/ai_question/index.html`, (err) => {
     if (err) {
       console.log(err);
       res.end(err.message);
@@ -835,36 +836,6 @@ const initializeHardware = async () => {
     // Note: intentionally not awaiting promise so we can return immediately
     runOpenAiSequence(req.body.text)
     res.send('ok')
-
-    // const unsafeResponse = openaiController.wordWrapResponse('PLEASE ASK ANOTHER QUESTION');
-    // const safeQuestion = openaiController.wordWrapResponse('YOU ASKED\n' + req.body.text);
-    // const AIdataResponse = await openaiController.checkContent(req.body.text);  //response from OPENAI
-
-    // async function sendEmbeddings(){
-    //     const embeddingData= await openaiController.getEmbeddingData(req.body.text);  //response from OPENAI
-    //     const embeddingQuestion = embeddingData.question
-    //     const embeddingAnswer = embeddingData.answer
-
-    //     showText(openaiController.wordWrapResponse(`I FOUND A MATCH /n /n ${embeddingQuestion}`)); //send openai quesion
-
-    //     setTimeout(() => {
-    //       showText(openaiController.wordWrapResponse(embeddingAnswer)); //send openai answer
-    //       askMessage('15000'); 
-    //     }, 10000);
-
-    // }
-
-
-    // if(AIdataResponse.body.text === 'UNSAFE'){
-    //   showText(unsafeResponse);
-    //   askMessage('10000'); /// REVERT TO ASK MESSAGE
-    // } else {
-    //     showText(safeQuestion);
-    //     setTimeout(() => {
-    //       showText(openaiController.wordWrapResponse('HMMM LET ME THINK ABOUT THAT')); //send openai answer
-    //     }, 12000);
-    //     sendEmbeddings()
-    // }
 
   })
 
