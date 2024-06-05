@@ -4,10 +4,15 @@
 // 1 = yellow
 // 2 = green
 // 3 = white
-// 4 = magenta
+// 4 = pink
 // 5 = orange
 
-const generateFlapsGrid = flapStates => {
+// https://stackoverflow.com/questions/13607278/html5-restricting-input-characters
+
+
+const flapChars = /^[a-z@#\$%&\*!?]$/i;
+
+const generateFlapsGrid = () => {
     const flapsContainer = document.getElementById('flaps');
 
     for (let i = 0; i < 108; i++) {
@@ -22,8 +27,8 @@ const generateFlapsGrid = flapStates => {
                 console.log("key down:", event.key)
                 event.preventDefault();
                 event.currentTarget.nextSibling.focus();
-            }else if(event.key !== 'ArrowLeft' && event.key !== 'Tab' && event.key !== 'ArrowRight' && event.key !== 'Backspace'){ //BENDO: find a better way to omit all the other keys!
-
+            }else if(flapChars.test(event.key)){ //BENDO: find a better way to omit all the other keys!
+                    console.log('isvalidkey?',flapChars.test(event.key), event.key)
                 event.currentTarget.value = event.key
             }
         }
@@ -41,8 +46,8 @@ const generateFlapsGrid = flapStates => {
                 event.currentTarget.value = '';
             } else if (event.key === 'Shift') {
                 event.preventDefault();
-            } else if (event.key !== 'Tab') {
-                console.log('this key entered', event.key)
+            } else if (flapChars.test(event.key)) {
+                // console.log('this key entered', event.key)
                 event.currentTarget.nextSibling.focus();
             }
 
@@ -70,16 +75,13 @@ const generateFlapsGrid = flapStates => {
     }
 }
 
-const generateData = (buttonData) => {
+const generateData = () => {
     const allData = {};
     const flapsContainer = document.getElementById('flaps');
     const flapInputs = flapsContainer.children;
     const flapData = [];
-    const newFlapData = [];
-    const colorCodes = ['y', 'g', 'w', 'p', 'o']
-    // const btnData = [];
-    // const invalid = [];
     let flapString;
+
     for (let i = 0; i < flapInputs.length; i++) {
         const val = flapInputs[i].value?.trim();
 
@@ -109,26 +111,10 @@ const generateData = (buttonData) => {
         else{
             flapString += "\xa0"
         }
-
-        
-        // If uppercase and lowercase are equal, it's not a letter
-        // if (val && val.toUpperCase() === val.toLowerCase()) {
-        //     invalid.push({[i]: val});
-        // }
         
         flapData.push(val.length && val || null);
         
-        newFlapData.push({
-            id: i,
-            value: val.length && val || null,
-            isRevealed: false
-        });
     }
-
-    // if (invalid.length > 0) {
-    //     document.getElementById('generated-data').innerHTML = JSON.stringify({ ERROR_INVALID_BOXES: invalid});
-    //     return;        
-    // }
 
 
     allData.text = flapString.slice(9);
@@ -140,30 +126,23 @@ const generateData = (buttonData) => {
     // CALL API
 
     const localURL ='http://192.168.1.124:8090/splitflap/set_flaps';
-    const proxyURL = 'https://aa76-2600-1700-dd90-4c80-8007-8600-2c76-c02.ngrok.io/splitflap/set_flaps';
 
-    if(buttonData){
-        console.log(buttonData)
-    }
-
-    else{
+  
     
-        fetch(localURL, {
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: data,
-        })
-        .then(response => response.json())
-        .then(data => {
-        console.log('Success:', data);
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        });
-    }
-
+    fetch(localURL, {
+    method: 'POST', // or 'PUT'
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: data,
+    })
+    .then(response => response.json())
+    .then(data => {
+    console.log('Success:', data);
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    });
 
     // SHOW API TEXT IN BROWSER
     document.getElementById('generated-data').innerHTML = data;
@@ -173,7 +152,13 @@ const clearGenerated = () => {
     document.getElementById('generated-data').innerHTML = '';
 }
 
+const startUpFocus = () => {
+    const firstFlap = document.querySelector('[data-flap-id="0"]');
+    firstFlap.focus()
+}
+
 window.addEventListener('DOMContentLoaded', (event) => {
     // generateBtnsGrid();
     generateFlapsGrid();
+    startUpFocus();
 });
