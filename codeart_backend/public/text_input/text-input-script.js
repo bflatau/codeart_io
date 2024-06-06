@@ -7,9 +7,6 @@
 // 4 = pink
 // 5 = orange
 
-// https://stackoverflow.com/questions/13607278/html5-restricting-input-characters
-
-
 const flapChars = /^[a-z@#\$%&\*!?]$/i;
 
 const generateFlapsGrid = () => {
@@ -24,53 +21,81 @@ const generateFlapsGrid = () => {
         flapInput.onkeydown = event => {
             clearGenerated();
             if (event.key === ' ') { //SPACEBAR
-                console.log("key down:", event.key)
+                // console.log("key down:", event.key)
                 event.preventDefault();
                 event.currentTarget.nextSibling.focus();
-            }else if(flapChars.test(event.key)){ //BENDO: find a better way to omit all the other keys!
-                    console.log('isvalidkey?',flapChars.test(event.key), event.key)
-                event.currentTarget.value = event.key
-            }
-        }
-        flapInput.onkeyup = event => {
-            clearGenerated();
-
-            //CHECK KEYS PRESSED
-            if (event.key === 'ArrowLeft') {
-                event.currentTarget.previousSibling.focus();   
-            }else if (event.key === 'Backspace'){
-                event.currentTarget.value = '';
+            }else if(event.key === 'ArrowRight'){
+                event.preventDefault();
+                event.currentTarget.nextSibling.focus();
+            }else if(event.key === 'ArrowLeft'){
+                event.preventDefault();
                 event.currentTarget.previousSibling.focus();
-            }else if (event.key === ' ') {
+            }else if(event.key === 'Backspace'){
+                event.currentTarget.value = ''
+                event.currentTarget.previousSibling.focus();
+            }else if (event.key === 'ArrowUp'){
                 event.preventDefault();
-                event.currentTarget.value = '';
-            } else if (event.key === 'Shift') {
+                const upflapId = event.currentTarget.dataset.flapId;
+                const upFlap = document.querySelector(`[data-flap-id="${parseInt(upflapId) - 18}"]`);
+                upFlap.focus()
+            }else if (event.key === 'ArrowDown'){
                 event.preventDefault();
-            } else if (flapChars.test(event.key)) {
-                // console.log('this key entered', event.key)
-                event.currentTarget.nextSibling.focus();
+                const downflapId = event.currentTarget.dataset.flapId;
+                const downFlap = document.querySelector(`[data-flap-id="${parseInt(downflapId) + 18}"]`);
+                downFlap.focus()
+            }else if(flapChars.test(event.key)){ //check if valid character
+                // console.log('isvalidkey?',flapChars.test(event.key), event.key)
+                event.currentTarget.value = event.key
+                event.preventDefault()
+                event.currentTarget.nextSibling.focus()
+            }else{
+                event.preventDefault() //don't allow characters to be input
             }
 
-            // SET CSS BASED ON KEY (FOR COLORED FLAPS)
+            //HANDLE COLORED FLAPS
             if(event.key === '1' || event.currentTarget.innerHTML === '1'){ //YELLOW FLAP
                 event.currentTarget.style.color = '#FFFF66'
                 event.currentTarget.style.backgroundColor = '#FFFF66'
+                event.currentTarget.value = '1'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '2'){ //GREEN FLAP
                 event.currentTarget.style.color = '#66FF66'
                 event.currentTarget.style.backgroundColor = '#66FF66'
+                event.currentTarget.value = '2'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '3'){ //WHITE FLAP
                 event.currentTarget.style.color = 'white'
                 event.currentTarget.style.backgroundColor = 'white'
+                event.currentTarget.value = '3'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '4'){ //MAGENTA FLAP
                 event.currentTarget.style.color = '#FF00CC'
                 event.currentTarget.style.backgroundColor = '#FF00CC'
+                event.currentTarget.value = '4'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '5'){ //ORANGE FLAP
                 event.currentTarget.style.color = '#FF9933'
                 event.currentTarget.style.backgroundColor = '#FF9933'
-            }else if(event.key !== 'ArrowLeft' && event.key !== 'Tab' && event.key !== 'ArrowRight') {
-                    event.currentTarget.style.color = 'white'
+                event.currentTarget.value = '5'
+                event.currentTarget.nextSibling.focus();
+            }else if(event.key !== 'ArrowLeft' && event.key !== ' ' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowDown') { //BENDO: CHECK THIS
+                event.currentTarget.style.color = 'white'
                 event.currentTarget.style.backgroundColor = 'black'
             }
+
+            //ON ENTER (SUBMIT DATA)
+            if(event.key === 'Enter'){
+                generateData() //send data to board
+                const flapsContainer = document.getElementById('flaps');
+
+                [...flapsContainer.children].forEach(child => {
+                    child.value = '';
+                    child.style.color = 'white';
+                    child.style.backgroundColor = 'black'
+                });
+                startUpFocus();
+            }
+
         }
     }
 }

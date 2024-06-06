@@ -7,12 +7,11 @@
 // 4 = pink
 // 5 = orange
 
-const flapChars = /[a-z@#\$%&\*!?]/gmi;
+
+// https://stackoverflow.com/questions/5203407/how-to-detect-if-multiple-keys-are-pressed-at-once-using-javascript
 
 
-
-
-// do flapChars.test(event.key) to check if key is good or not
+const flapChars = /^[a-z@#\$%&\*!?]$/i;
 
 const generateFlapsGrid = () => {
     const flapsContainer = document.getElementById('flaps');
@@ -24,60 +23,74 @@ const generateFlapsGrid = () => {
         flapInput.dataset.flapId = i;
         flapsContainer.appendChild(flapInput);
         flapInput.onkeydown = event => {
-            // clearGenerated();
-            if (flapChars.test(event.key) && event.key !== 'Backspace'){
-                console.log('adding char', event.key)
-                event.currentTarget.value = event.key // if valid split flap character, make the flap that value
-
-            }else if (event.key === ' ') { //SPACEBAR
+            clearGenerated();
+            if (event.key === ' ') { //SPACEBAR
+                // console.log("key down:", event.key)
                 event.preventDefault();
                 event.currentTarget.nextSibling.focus();
-            }
-            else if(event.key === 'Backspace'){
+            }else if(event.key === 'ArrowRight'){
                 event.preventDefault();
+                event.currentTarget.nextSibling.focus();
+
+            }else if(event.key === 'ArrowLeft'){
+                event.preventDefault();
+                event.currentTarget.previousSibling.focus();
+            }else if(event.key === 'Backspace'){
                 event.currentTarget.value = ''
                 event.currentTarget.previousSibling.focus();
+
+            }else if(flapChars.test(event.key)){ //BENDO: find a better way to omit all the other keys!
+                console.log('isvalidkey?',flapChars.test(event.key), event.key)
+                event.currentTarget.value = event.key
+                event.preventDefault()
+                event.currentTarget.nextSibling.focus()
+            }else{
+                event.preventDefault() //don't allow characters to be input
             }
         }
         flapInput.onkeyup = event => {
             clearGenerated();
-
-            //CHECK KEYS PRESSED
-            // if (event.key === 'ArrowLeft') {
-            //     event.currentTarget.previousSibling.focus(); 
-            // } else 
             
-            // if (event.key === ' ') {
+            // if (event.key === ' ') { //SPACEBAR
             //     event.preventDefault();
-            //     event.currentTarget.value = '';
+            // } else if (event.key === 'Shift') {
+            //     event.preventDefault();
             // } 
-            // else if (event.key === 'Shift') {
-            //     event.preventDefault();
+            
+            // else if (flapChars.test(event.key)) {
+            //     event.currentTarget.nextSibling.focus();
+            // }
 
-            // } 
-            if (flapChars.test(event.key) || event.key === 'ArrowRight') {
-                console.log('releasing', event.key)
-                event.currentTarget.nextSibling.focus();
-            }
+
 
             // SET CSS BASED ON KEY (FOR COLORED FLAPS)
             if(event.key === '1' || event.currentTarget.innerHTML === '1'){ //YELLOW FLAP
                 event.currentTarget.style.color = '#FFFF66'
                 event.currentTarget.style.backgroundColor = '#FFFF66'
+                event.currentTarget.value = '1'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '2'){ //GREEN FLAP
                 event.currentTarget.style.color = '#66FF66'
                 event.currentTarget.style.backgroundColor = '#66FF66'
+                event.currentTarget.value = '2'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '3'){ //WHITE FLAP
                 event.currentTarget.style.color = 'white'
                 event.currentTarget.style.backgroundColor = 'white'
+                event.currentTarget.value = '3'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '4'){ //MAGENTA FLAP
                 event.currentTarget.style.color = '#FF00CC'
                 event.currentTarget.style.backgroundColor = '#FF00CC'
+                event.currentTarget.value = '4'
+                event.currentTarget.nextSibling.focus();
             }else if(event.key === '5'){ //ORANGE FLAP
                 event.currentTarget.style.color = '#FF9933'
                 event.currentTarget.style.backgroundColor = '#FF9933'
-            }else if(event.key !== 'ArrowLeft' && event.key !== 'Tab' && event.key !== 'ArrowRight') {
-                event.currentTarget.style.color = 'white'
+                event.currentTarget.value = '5'
+                event.currentTarget.nextSibling.focus();
+            }else if(event.key !== 'ArrowLeft' && event.key !== 'Tab' && event.key !== 'ArrowRight') { //BENDO: CHECK THIS
+                    event.currentTarget.style.color = 'white'
                 event.currentTarget.style.backgroundColor = 'black'
             }
         }
@@ -89,8 +102,8 @@ const generateData = () => {
     const flapsContainer = document.getElementById('flaps');
     const flapInputs = flapsContainer.children;
     const flapData = [];
-
     let flapString;
+
     for (let i = 0; i < flapInputs.length; i++) {
         const val = flapInputs[i].value?.trim();
 
@@ -120,9 +133,9 @@ const generateData = () => {
         else{
             flapString += "\xa0"
         }
-
+        
         flapData.push(val.length && val || null);
-    
+        
     }
 
 
@@ -130,10 +143,13 @@ const generateData = () => {
 
     const data = JSON.stringify(allData);
 
+    
 
     // CALL API
 
     const localURL ='http://192.168.1.124:8090/splitflap/set_flaps';
+
+  
     
     fetch(localURL, {
     method: 'POST', // or 'PUT'
@@ -150,11 +166,9 @@ const generateData = () => {
     console.error('Error:', error);
     });
 
-
     // SHOW API TEXT IN BROWSER
     document.getElementById('generated-data').innerHTML = data;
 }
-
 
 const clearGenerated = () => {
     document.getElementById('generated-data').innerHTML = '';
@@ -169,5 +183,4 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // generateBtnsGrid();
     generateFlapsGrid();
     startUpFocus();
-    
 });
