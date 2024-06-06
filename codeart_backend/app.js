@@ -312,6 +312,7 @@ const setInputKeyboard = () => {
   }
 }
 
+
 // Periodically re-sync the input keyboard status (in case something happens, don't want it to get stuck disabled)
 setInterval(setInputKeyboard, 10000)
 
@@ -737,6 +738,18 @@ const initializeHardware = async () => {
     showText(req.body.text)
     res.send('ok')
   })
+  app.post('/splitflap/set_flap_text', async (req, res) =>{
+    setInputKeyboard(); //BENDO: plug this into front end!
+    if (!await openaiController.isContentSafe(req.body.text)) {
+      await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
+      //BENDO: send back a response to the front end vs the flaps?
+    } else {
+      console.log('this is request text', req.body.text)
+      showText(req.body.text)
+      res.json('ok')
+      setInputKeyboard()
+    }
+  })
   app.post('/splitflap/text', async (req, res) => {
     await wordWrapAndShowText(req.body.text)
     res.send('ok')
@@ -863,6 +876,7 @@ io.on('connection', socket => {
   }
 
   setInputKeyboard()
+
   /// get mega button state when connecting and send to newly connected user
   // if (megaController.getMegaButtonState().length > 0){  
   //   megaController.getMegaButtonState().forEach(button =>{

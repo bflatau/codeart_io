@@ -150,7 +150,7 @@ const generateData = () => {
 
     // CALL API
 
-    const localURL ='http://192.168.1.124:8090/splitflap/set_flaps';
+    const localURL ='http://192.168.1.124:8090/splitflap/set_flap_text';
 
   
     
