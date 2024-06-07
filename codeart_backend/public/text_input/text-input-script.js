@@ -34,7 +34,9 @@ const generateFlapsGrid = () => {
                 event.currentTarget.previousSibling.focus();
             }else if(event.key === 'Backspace'){
                 event.currentTarget.value = ''
-                event.currentTarget.previousSibling.focus();
+                if(event.currentTarget.dataset.flapId > 0){
+                    event.currentTarget.previousSibling.focus();
+                }
             }else if (event.key === 'ArrowUp'){
                 event.preventDefault();
                 const upflapId = event.currentTarget.dataset.flapId;
@@ -80,7 +82,7 @@ const generateFlapsGrid = () => {
                 event.currentTarget.style.backgroundColor = '#FF9933'
                 event.currentTarget.value = '5'
                 event.currentTarget.nextSibling.focus();
-            }else if(event.key !== 'ArrowLeft' && event.key !== ' ' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowDown') { //BENDO: CHECK THIS
+            }else if(event.key !== 'ArrowLeft' && event.key !== ' ' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowDown' && flapChars.test(event.key) || event.key === 'Backspace') { //BENDO: CHECK (random characters reset this)
                 event.currentTarget.style.color = 'white'
                 event.currentTarget.style.backgroundColor = 'black'
             }
