@@ -9,6 +9,8 @@
 
 const flapChars = /^[a-z@#\$%&\*!?]$/i;
 
+let enterEnabled = true;
+
 const generateFlapsGrid = () => {
     const flapsContainer = document.getElementById('flaps');
 
@@ -84,7 +86,7 @@ const generateFlapsGrid = () => {
             }
 
             //ON ENTER (SUBMIT DATA)
-            if(event.key === 'Enter'){
+            if(event.key === 'Enter' && enterEnabled){
                 generateData() //send data to board
                 const flapsContainer = document.getElementById('flaps');
 
@@ -94,6 +96,13 @@ const generateFlapsGrid = () => {
                     child.style.backgroundColor = 'black'
                 });
                 startUpFocus();
+                enterEnabled = false;
+
+                setTimeout(() => {
+                    enterEnabled = true;
+                  }, 6000);
+            }else if (event.key === 'Enter' && !enterEnabled){
+                console.log('enter disabled!')
             }
 
         }
@@ -187,3 +196,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
     generateFlapsGrid();
     startUpFocus();
 });
+
+
+
+// var socket = io();
+
+// socket.on('keyboard', function(msg) {
+//     // setKeyboard(msg.enable)
+//     console.log('hi there')
+//     console.log('this is msg', msg)
+// });

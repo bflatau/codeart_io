@@ -1,10 +1,24 @@
 <html>
   <head>
     <link rel="stylesheet" href="text-input-style.css">
+    <script src="socket.io-2.3.0.min.js"></script>
     <script type="text/javascript" src="text-input-script.js"></script>
   </head>
   <body>
     <!-- <div class="btns-container" id="btns"></div> -->
+    <div class="instruction-container">
+      <div> 
+        <div class="instruction"><span class="bold-instruction">Available Keys:</span> A-Z, !, @, #, $, %, &, *  </div>
+        <div class="instruction"><span class="bold-instruction">Color Codes:
+        </span> 1=<span class="color-yellow"> _ </span> &nbsp;  
+        </span> 2=<span class="color-green"> _ </span>  &nbsp;
+        </span> 3=<span class="color-white"> _ </span>  &nbsp;
+        </span> 4=<span class="color-pink"> _ </span>  &nbsp;
+        </span> 5=<span class="color-orange"> _ </span>  &nbsp;
+      </div>
+      
+      </div>
+    </div>
     <div class="flap-grid-container">
       <div class="flaps-container" id="flaps"></div>
       <!-- <button onClick="generateData()">Update Flaps</button> -->
