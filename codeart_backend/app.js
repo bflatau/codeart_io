@@ -88,6 +88,7 @@ app.use(cors());
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/public/text_input"));
 app.use(express.static(__dirname + "/public/ai_question"));
+app.use(express.static(__dirname + "/public/demo_dashboard"));
 
 // console.log('this is dir', __dirname)
 
@@ -132,6 +133,16 @@ app.get("/text_input", (req, res) => {
 
 app.get("/ai_question", (req, res) => {
   res.sendFile(`${__dirname}/public/ai_question/index.html`, (err) => {
+    if (err) {
+      console.log(err);
+      res.end(err.message);
+    }
+  });
+});
+
+
+app.get("/demo_dashboard", (req, res) => {
+  res.sendFile(`${__dirname}/public/demo_dashboard/index.html`, (err) => {
     if (err) {
       console.log(err);
       res.end(err.message);
