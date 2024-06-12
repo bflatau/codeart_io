@@ -902,6 +902,15 @@ io.on('connection', socket => {
     io.sockets.emit('connected users', {numberOfUsers: io.engine.clientsCount});
 
   })
+
+
+  socket.on('demo', function(msg) {
+    socket.broadcast.emit('urlchange', msg)
+  });
+
+
+  
+
 })
 
 //// WEB SERVER STUFF /////

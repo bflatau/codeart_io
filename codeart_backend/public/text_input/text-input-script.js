@@ -200,11 +200,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
+var socket = io();
 
-// var socket = io();
 
-// socket.on('keyboard', function(msg) {
-//     // setKeyboard(msg.enable)
-//     console.log('hi there')
-//     console.log('this is msg', msg)
-// });
+socket.on('urlchange', function(msg) {
+    let baseURL = window.location.origin;
+    if(msg === 1){
+        window.location.replace(`${baseURL}/ai_question`)
+    }
+    else if(msg === 2){
+        window.location.replace(`${baseURL}/text_input`)
+    }
+  });
+
+

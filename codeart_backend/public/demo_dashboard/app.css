@@ -45,9 +45,17 @@ body{
 
 .empty{
     border: none;
+    text-align: center;
+    /* width: 200px; */
+    height: 200px;
+    color: white;
 }
 
 .spacer{
     margin-top:2.5%;
     margin-bottom: 2.5%;
+}
+
+.block-active{
+    background-color: red;
 }
