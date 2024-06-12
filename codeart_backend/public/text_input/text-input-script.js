@@ -52,6 +52,10 @@ const generateFlapsGrid = () => {
                 event.currentTarget.value = event.key
                 event.preventDefault()
                 event.currentTarget.nextSibling.focus()
+            }else if(event.key === '0'){
+                event.preventDefault();
+                let baseURL = window.location.origin;
+                window.location.replace(`${baseURL}/ai_question`)
             }else{
                 event.preventDefault() //don't allow characters to be input
             }

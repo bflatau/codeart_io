@@ -23,10 +23,20 @@ function handleKeyPress(event) {
         document.getElementById("input-field").value = '';
         setKeyboard(false)
         // return false;
+    } else if(event.key === '0'){
+        event.preventDefault();
+        console.log("HIIII")
+        let baseURL = window.location.origin;
+        window.location.replace(`${baseURL}/text_input`)
+        
+
     } else if(flapChars.test(event.key)){
         event.preventDefault();
         document.getElementById('warning-text').style.display = 'block' 
-    } else {
+    } 
+    
+    
+    else {
         document.getElementById('warning-text').style.display = 'none' 
     }
 
