@@ -230,3 +230,5 @@ systemctl enable myscript.service
 ### MISC NOTES:
 
 was using    `"openai": "^3.3.0"`
+
+hardware screen size: `1920 X 515` 

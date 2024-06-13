@@ -10,6 +10,7 @@
 const flapChars = /^[a-z@#\$%&\*!?]$/i;
 
 let enterEnabled = true;
+let typingEnabled = true;
 
 const generateFlapsGrid = () => {
     const flapsContainer = document.getElementById('flaps');
@@ -52,10 +53,10 @@ const generateFlapsGrid = () => {
                 event.currentTarget.value = event.key
                 event.preventDefault()
                 event.currentTarget.nextSibling.focus()
-            }else if(event.key === '0'){
+            }else if(event.key === 'Tab'){
                 event.preventDefault();
                 let baseURL = window.location.origin;
-                window.location.replace(`${baseURL}/ai_question`)
+                window.location.replace(`${baseURL}/ai_question`);
             }else{
                 event.preventDefault() //don't allow characters to be input
             }
@@ -103,9 +104,11 @@ const generateFlapsGrid = () => {
                 });
                 startUpFocus();
                 enterEnabled = false;
+                setKeyboard(false)
 
                 setTimeout(() => {
                     enterEnabled = true;
+                    console.log('enter enabled!')
                   }, 6000);
             }else if (event.key === 'Enter' && !enterEnabled){
                 console.log('enter disabled!')
@@ -204,17 +207,50 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
+function setKeyboard(enabled) {
+    let gridContainer = document.getElementsByClassName("flap-grid-container")
+    if (enabled) {
+        document.getElementById("waiting-text").innerText = '';
+        document.getElementById("instruction-container").style.display = 'grid';
+        gridContainer[0].style.display = 'block';
+
+        if(typingEnabled === false){
+            startUpFocus();
+            typingEnabled = true;
+        }
+        
+       
+    } else {
+        document.getElementById("waiting-text").innerText = 'PLEASE WAIT...';
+        document.getElementById("instruction-container").style.display = 'none';
+        gridContainer[0].style.display = 'none';
+        typingEnabled = false;
+
+    }
+}
+
+
+
+
+
+
+
 var socket = io();
 
+socket.on('keyboard', function(msg) {
+    setKeyboard(msg.enable)
+});
 
-socket.on('urlchange', function(msg) {
-    let baseURL = window.location.origin;
-    if(msg === 1){
-        window.location.replace(`${baseURL}/ai_question`)
-    }
-    else if(msg === 2){
-        window.location.replace(`${baseURL}/text_input`)
-    }
-  });
+
+
+// socket.on('urlchange', function(msg) {
+//     let baseURL = window.location.origin;
+//     if(msg === 1){
+//         window.location.replace(`${baseURL}/ai_question`)
+//     }
+//     else if(msg === 2){
+//         window.location.replace(`${baseURL}/text_input`)
+//     }
+//   });
 
 

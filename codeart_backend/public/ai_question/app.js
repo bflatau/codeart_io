@@ -23,22 +23,19 @@ function handleKeyPress(event) {
         document.getElementById("input-field").value = '';
         setKeyboard(false)
         // return false;
-    } else if(event.key === '0'){
+    } else if(event.key === 'Tab'){
         event.preventDefault();
-        console.log("HIIII")
         let baseURL = window.location.origin;
-        window.location.replace(`${baseURL}/text_input`)
-        
+        window.location.replace(`${baseURL}/text_input`);  
 
     } else if(flapChars.test(event.key)){
         event.preventDefault();
         document.getElementById('warning-text').style.display = 'block' 
-    } 
-    
-    
-    else {
+    } else {
         document.getElementById('warning-text').style.display = 'none' 
     }
+
+   
 
     clearTimeout(resetTimeout);
     resetTimeout = setTimeout(() => {
@@ -52,7 +49,7 @@ function handleKeyPress(event) {
 }
 
 const inputElement = document.getElementById("input-field");
-inputElement.onkeypress = handleKeyPress;
+inputElement.onkeydown = handleKeyPress; //changed from onkeypress to onkeydown..
 inputElement.onblur = () => {
     setTimeout(() => inputElement.focus(), 10);
 }
@@ -107,12 +104,12 @@ socket.on('keyboard', function(msg) {
 });
 
 
-socket.on('urlchange', function(msg) {
-    let baseURL = window.location.origin;
-    if(msg === 1){
-        window.location.replace(`${baseURL}/ai_question`)
-    }
-    else if(msg === 2){
-        window.location.replace(`${baseURL}/text_input`)
-    }
-  });
+// socket.on('urlchange', function(msg) {
+//     let baseURL = window.location.origin;
+//     if(msg === 1){
+//         window.location.replace(`${baseURL}/ai_question`)
+//     }
+//     else if(msg === 2){
+//         window.location.replace(`${baseURL}/text_input`)
+//     }
+//   });

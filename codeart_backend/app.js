@@ -751,7 +751,7 @@ const initializeHardware = async () => {
   })
   app.post('/splitflap/set_flap_text', async (req, res) =>{
     if (!await openaiController.isContentSafe(req.body.text)) {
-      await wordWrapAndShowText('PLEASE ASK ANOTHER QUESTION')
+      await wordWrapAndShowText('PLEASE ENTER SOMETHING ELSE')
       //BENDO: send back a response to the front end vs the flaps?
     } else {
       console.log('this is request text', req.body.text)
